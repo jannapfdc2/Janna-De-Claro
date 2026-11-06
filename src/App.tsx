@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import {
-  ArrowUpRight, BriefcaseBusiness, ChartNoAxesCombined, Code2, GraduationCap,
+  ArrowUpRight, BriefcaseBusiness, ChartNoAxesCombined, GraduationCap,
   Mail, MapPin, Menu, Phone, X, Award, Workflow, MonitorSmartphone,
   PanelsTopLeft, CheckCircle2, FileText
 } from "lucide-react";
@@ -70,12 +70,30 @@ const skillGroups = [
 
 const projects = [
   {
-    name: "Solar Panel Business Website Redesign",
+    name: "Solar Website & Proposal Builder",
     type: "Website Design & Development",
-    description: "A responsive solar business website concept with a guided proposal builder. Visitors can explore how solar planning works, compare system options, estimate potential savings, and prepare a preliminary proposal.",
-    tags: ["React", "TypeScript", "Vite", "Responsive UI"],
-    image: `${import.meta.env.BASE_URL}projects/solar-redesign.jpg`,
-    imageAlt: "Sunward solar website redesign with a guided solar plan and rooftop solar preview"
+    description: "Two designs for a solar business website: an original solar-energy walkthrough and proposal builder, followed by a redesigned experience for exploring system options, potential savings, and preliminary proposals.",
+    tags: ["React", "JavaScript", "TypeScript", "Responsive UI"],
+    previews: [
+      {
+        label: "Redesign",
+        name: "Sunward solar website",
+        description: "A refreshed business website with guided solar planning and a proposal builder.",
+        image: `${import.meta.env.BASE_URL}projects/solar-redesign.jpg`,
+        imageAlt: "Sunward solar website redesign with a guided solar plan and rooftop solar preview",
+        width: 1265,
+        height: 712
+      },
+      {
+        label: "Original design",
+        name: "STEC solar website",
+        description: "The original sunrise-to-night solar walkthrough and residential proposal builder.",
+        image: `${import.meta.env.BASE_URL}projects/solar-original.jpg`,
+        imageAlt: "Original STEC solar website with a solar-powered house at sunrise and an Explore Solar Demo button",
+        width: 1234,
+        height: 712
+      }
+    ]
   }
 ];
 
@@ -192,19 +210,24 @@ export default function App() {
           <SectionLabel>Selected work</SectionLabel>
           <div className="mt-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <h2 className="font-serif text-3xl font-semibold md:text-5xl">Featured project</h2>
-            <p className="max-w-md text-sm leading-7 text-[#c2c9d3]">A website redesign project exploring digital presentation, user experience, and practical business tools.</p>
+            <p className="max-w-md text-sm leading-7 text-[#c2c9d3]">One solar project, two designs—exploring digital presentation, user experience, and practical business tools.</p>
           </div>
-          {projects.map((project) => <article key={project.name} className="mt-12 grid overflow-hidden rounded-[2rem] bg-[#273550] md:grid-cols-2">
-            <a href={project.image} target="_blank" rel="noopener noreferrer" className="group flex flex-col justify-center gap-4 bg-[#e8dfcd] p-5 text-[#1c2841] sm:p-8" aria-label="View the solar website redesign preview">
-              <img src={project.image} alt={project.imageAlt} width={1265} height={712} loading="lazy" decoding="async" className="aspect-video w-full rounded-xl object-cover shadow-xl transition-transform group-hover:scale-[1.02]" />
-              <span className="flex items-center justify-between text-xs font-semibold">View design preview <ArrowUpRight size={16} aria-hidden="true" /></span>
-            </a>
-            <div className="flex flex-col justify-center p-8 md:p-12">
+          {projects.map((project) => <article key={project.name} className="mt-12 overflow-hidden rounded-[2rem] bg-[#273550]">
+            <div className="p-6 sm:p-8 md:p-10">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#d4b66f]"><PanelsTopLeft size={16} /> {project.type}</div>
               <h3 className="mt-5 font-serif text-3xl font-semibold">{project.name}</h3>
-              <p className="mt-5 text-sm leading-7 text-[#c2c9d3]">{project.description}</p>
-              <div className="mt-7 flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-white/15 px-3 py-1.5 text-[11px] text-[#e3e7ed]">{tag}</span>)}</div>
-              <p className="mt-8 flex items-center gap-2 text-xs text-[#d4b66f]"><Code2 size={15} /> Built with React and TypeScript</p>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-[#c2c9d3]">{project.description}</p>
+              <div className="mt-5 flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-white/15 px-3 py-1.5 text-[11px] text-[#e3e7ed]">{tag}</span>)}</div>
+            </div>
+            <div className="grid gap-5 px-5 pb-5 sm:px-8 sm:pb-8 md:grid-cols-2">
+              {project.previews.map((preview) => <div key={preview.label} className="overflow-hidden rounded-2xl bg-[#e8dfcd] text-[#1c2841]">
+                <a href={preview.image} target="_blank" rel="noopener noreferrer" className="group block p-4 sm:p-5" aria-label={`View ${preview.label.toLowerCase()} preview: ${preview.name}`}>
+                  <div className="mb-4 flex items-center justify-between gap-3"><span className="text-xs font-bold uppercase tracking-[0.15em] text-[#82652f]">{preview.label}</span><span className="flex items-center gap-1 text-xs font-semibold">View preview <ArrowUpRight size={16} aria-hidden="true" /></span></div>
+                  <div className="overflow-hidden rounded-xl"><img src={preview.image} alt={preview.imageAlt} width={preview.width} height={preview.height} loading="lazy" decoding="async" className="aspect-video w-full object-cover shadow-xl transition-transform group-hover:scale-[1.02]" /></div>
+                  <h4 className="mt-5 font-serif text-xl font-semibold">{preview.name}</h4>
+                  <p className="mt-2 text-sm leading-6 text-[#606979]">{preview.description}</p>
+                </a>
+              </div>)}
             </div>
           </article>)}
         </div>
