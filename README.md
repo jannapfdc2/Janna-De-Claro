@@ -6,7 +6,7 @@ A responsive personal portfolio built with React, TypeScript, Vite, Tailwind CSS
 
 - Professional profile, work history, skills, education, and contact information from the supplied resume.
 - Part-time Bookkeeper dates: **Oct 2024–Apr 2025**, corrected in both the page and the downloadable resume.
-- One featured project: **Solar Panel Business Website Redesign**, based on the supplied redesign ZIP. The 16:9 thumbnail is a screenshot of that design; clicking it opens the full preview image. No public live demo or project repository is available yet.
+- One featured project: **Solar Website & Proposal Builder**, with labeled **Redesign** and **Original design** previews from the supplied source ZIPs. Both 16:9 thumbnails open their full screenshot. The Sunward redesign remains first; the original STEC website is included alongside it. No public live demo or project repository is linked.
 
 ## Development
 
@@ -35,5 +35,7 @@ Publish the contents of `dist/` using a static host. Relative asset paths suppor
 
 - `public/Janna-Patricia-De-Claro-Resume.pdf`: supplied resume with its Bookkeeper date corrected, retaining the original layout.
 - `public/projects/solar-redesign.jpg`: screenshot of the supplied Sunward solar redesign, displayed at 16:9 and stored locally for reliable display.
+
+- `public/projects/solar-original.jpg`: screenshot of the original STEC solar website's supplied read-only demo, displayed at 16:9.
 
 The solar project is a concept preview. The portfolio does not claim a deployed demo or measured client outcomes.
