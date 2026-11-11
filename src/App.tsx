@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   ArrowDownRight,
@@ -14,6 +14,7 @@ import {
   GraduationCap,
   Mail,
   MapPin,
+  Maximize2,
   Menu,
   Monitor,
   Phone,
@@ -102,6 +103,29 @@ const skillGroups = [
   },
 ];
 
+const sampleProjects = [
+  {
+    title: 'SUNWARD Solar Website',
+    category: 'Website design',
+    image: '/projects/sunward-solar.jpg',
+    alt: 'SUNWARD Solar homepage with a warm cream-and-gold design and an interactive solar installation section.',
+    description: 'A solar business website that introduces solar energy through an interactive installation journey, system planning, and clear service information.',
+    tags: ['Website Design', 'Interactive Experience'],
+    caption: 'Homepage and solar installation experience from my SUNWARD Solar personal project.',
+  },
+  {
+    title: 'STEC Solar Proposal Tool',
+    category: 'Workflow & planning',
+    image: '/projects/stec-solar-proposal.jpg',
+    alt: 'STEC Solar Proposal Tool showing the system configuration step, proposal options, and a project summary with sample data.',
+    description: 'A guided solar proposal workflow that brings client information, energy needs, system options, and financial comparisons into one organized experience.',
+    tags: ['Workflow Design', 'Proposal Planning'],
+    caption: 'System configuration screen from my STEC Solar Proposal personal project, shown with sample data.',
+  },
+];
+
+type SampleProject = typeof sampleProjects[number];
+
 function Reveal({ children, className = '', delay = 0 }: RevealProps) {
   const reducedMotion = useReducedMotion();
 
@@ -131,6 +155,21 @@ function SectionHeading({ eyebrow, title, description }: { eyebrow: string; titl
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null as SampleProject | null);
+  const screenshotDialog = useRef(null as HTMLDialogElement | null);
+
+  useEffect(() => {
+    const dialog = screenshotDialog.current;
+    if (!dialog) return;
+    if (!selectedProject) {
+      if (dialog.open) dialog.close();
+      return;
+    }
+    if (!dialog.open) dialog.showModal();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [selectedProject]);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -295,6 +334,33 @@ export default function App() {
                 <p className="project-note"><FileText size={16} aria-hidden="true" /> Project preview and live link can be added once the final files are available.</p>
               </div>
             </Reveal>
+            <div className="sample-projects-header">
+              <p className="eyebrow"><span className="eyebrow-line" />PERSONAL EXPLORATIONS</p>
+              <h3>Sample personal projects</h3>
+              <p>A closer look at two projects where I explore website design and organized digital workflows.</p>
+            </div>
+            <div className="sample-projects-grid">
+              {sampleProjects.map((project, index) => (
+                <Reveal key={project.title} className="sample-project-card" delay={index * 0.08}>
+                  <button
+                    type="button"
+                    className="sample-screenshot-button"
+                    aria-label={'Enlarge ' + project.title + ' screenshot'}
+                    aria-haspopup="dialog"
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    <img src={project.image} alt={project.alt} width="1265" height="712" loading="lazy" decoding="async" />
+                    <span className="screenshot-hint"><Maximize2 size={14} aria-hidden="true" /> View screenshot</span>
+                  </button>
+                  <div className="sample-project-body">
+                    <p className="sample-project-category">{project.category}</p>
+                    <h4>{project.title}</h4>
+                    <p className="sample-project-description">{project.description}</p>
+                    <div className="skill-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
             <Reveal className="project-footnote"><Sparkles size={18} aria-hidden="true" /><span>I'm interested in how good systems and thoughtful design can make work easier for people.</span></Reveal>
           </div>
         </section>
@@ -346,6 +412,24 @@ export default function App() {
           </div>
         </section>
       </main>
+
+      <dialog
+        ref={screenshotDialog}
+        className="screenshot-dialog"
+        aria-labelledby="screenshot-title"
+        aria-describedby="screenshot-caption"
+        onClose={() => setSelectedProject(null)}
+        onClick={(event) => { if (event.target === event.currentTarget) event.currentTarget.close(); }}
+      >
+        {selectedProject && <div className="screenshot-dialog-content">
+          <div className="screenshot-dialog-header">
+            <h2 id="screenshot-title">{selectedProject.title}</h2>
+            <button type="button" className="screenshot-close" aria-label="Close screenshot" autoFocus onClick={() => screenshotDialog.current?.close()}><X size={22} aria-hidden="true" /></button>
+          </div>
+          <img src={selectedProject.image} alt={selectedProject.alt} width="1265" height="712" />
+          <p id="screenshot-caption">{selectedProject.caption}</p>
+        </div>}
+      </dialog>
 
       <footer className="site-footer">
         <div className="container footer-inner"><a href="#home" className="footer-brand">JDC<span>.</span></a><p>© {new Date().getFullYear()} Janna Patricia De Claro. All rights reserved.</p><a href="#home">Back to top ↑</a></div>

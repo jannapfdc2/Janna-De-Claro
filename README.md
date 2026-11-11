@@ -23,8 +23,15 @@ The site is built with React, TypeScript, Vite, Tailwind CSS, Lucide icons, and 
 - Experience
 - Skills
 - Featured Projects (Solar Business Website Redesign, Oct 2024–Apr 2025)
+- Sample personal projects (SUNWARD Solar Website and STEC Solar Proposal Tool)
 - Education and Certification
 - Contact
+
+## Personal project screenshots
+
+SUNWARD Solar Website and STEC Solar Proposal Tool are presented as screenshot samples. Each image opens in an accessible enlargement dialog that supports the close button, Escape key, and backdrop click. The STEC screenshot uses sample data.
+
+Screenshot assets are stored in `public/projects/`. The original dated Solar Business Website Redesign remains a separate project.
 
 ## Before publishing
 
