@@ -1,377 +1,355 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import {
-  ChevronDown, CheckCircle, Briefcase, Search, Monitor, Star, 
-  GraduationCap, BookOpen, Award, Mail, Phone, MapPin
+  ArrowDownRight,
+  ArrowRight,
+  ArrowUpRight,
+  Award,
+  BriefcaseBusiness,
+  CheckCircle2,
+  ChevronDown,
+  ClipboardList,
+  FileText,
+  Github,
+  GraduationCap,
+  Mail,
+  MapPin,
+  Menu,
+  Monitor,
+  Phone,
+  Sparkles,
+  Workflow,
+  X,
 } from 'lucide-react';
+import type { ReactNode } from 'react';
+
+type RevealProps = {
+  key?: string;
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+};
+
+const navLinks = [
+  { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Education', href: '#education' },
+];
+
+const experiences = [
+  {
+    position: 'Project Coordinator',
+    organization: 'Suweco Tablas Energy Corp.',
+    period: 'May 2025 — Present',
+    type: 'Project Operations',
+    bullets: [
+      'Coordinate project timelines, deliverables, and stakeholder communication.',
+      'Coordinate procurement requests, material deliveries, and payment follow-ups to support daily project operations.',
+      'Route documents and approvals for purchase requests, cash advances, diesel requests, and other transactions.',
+      'Maintain procurement, budget, and project monitoring records; prepare weekly reports, meeting minutes, and presentations.',
+      'Work with site teams, purchasing staff, and internal departments to keep information and requests moving.',
+    ],
+  },
+  {
+    position: 'Bookkeeper',
+    organization: 'Part-time',
+    period: 'Oct 2024 — Apr 2025',
+    type: 'Finance & Records',
+    bullets: [
+      'Maintained financial records and logged transactions with attention to detail.',
+      'Used QuickBooks for basic bookkeeping tasks and accurate financial documentation.',
+    ],
+  },
+  {
+    position: 'Business Process Analyst Intern',
+    organization: 'Five Star Bus Co.',
+    period: 'Sep 2023 — Dec 2023',
+    type: 'Workflow Improvement',
+    bullets: [
+      'Analyzed business processes and documented workflows to identify opportunities for improvement.',
+      'Developed and implemented a workflow to help streamline an internal company process.',
+      'Prepared process documentation and reports to communicate findings and recommendations.',
+    ],
+  },
+];
+
+const skillGroups = [
+  {
+    title: 'Administrative Support',
+    intro: 'Keeping the details organized and the work moving.',
+    icon: ClipboardList,
+    skills: ['Document Management', 'Data Entry', 'Meeting Minutes', 'Reporting', 'Follow-ups'],
+  },
+  {
+    title: 'Project Coordination',
+    intro: 'Connecting people, records, and project priorities.',
+    icon: BriefcaseBusiness,
+    skills: ['Procurement Monitoring', 'Budget Monitoring', 'Team Coordination', 'Task Tracking'],
+  },
+  {
+    title: 'Process & Analysis',
+    intro: 'Finding clearer ways to approach everyday operations.',
+    icon: Workflow,
+    skills: ['Workflow Analysis', 'Process Improvement', 'Process Documentation', 'Lean Six Sigma'],
+  },
+  {
+    title: 'Tools & Digital Skills',
+    intro: 'Comfortable learning and adapting to digital workflows.',
+    icon: Monitor,
+    skills: ['Microsoft Office', 'QuickBooks (Basic)', 'AI Tools', 'AI Automation Workflows', 'AI Workspaces', 'Basic Coding', 'Presentations'],
+  },
+];
+
+function Reveal({ children, className = '', delay = 0 }: RevealProps) {
+  const reducedMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      className={className}
+      initial={reducedMotion ? false : { opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.14 }}
+      transition={{ duration: reducedMotion ? 0 : 0.58, delay: reducedMotion ? 0 : delay, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
+  return (
+    <Reveal className="section-heading">
+      <p className="eyebrow"><span className="eyebrow-line" />{eyebrow}</p>
+      <h2>{title}</h2>
+      {description && <p className="section-description">{description}</p>}
+    </Reveal>
+  );
+}
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const updateScroll = () => setIsScrolled(window.scrollY > 16);
+    updateScroll();
+    window.addEventListener('scroll', updateScroll, { passive: true });
+    return () => window.removeEventListener('scroll', updateScroll);
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <div className="min-h-screen bg-[#f8f7f4] text-[#1c2841] font-sans selection:bg-[#1c2841] selection:text-white pb-0">
-      {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#f8f7f4]/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center text-sm font-medium text-[#1c2841]">
-          <div className="font-serif font-bold text-xl tracking-tight">
-            J. De Claro
+    <div className="site-shell">
+      <a href="#main" className="skip-link">Skip to content</a>
+      <header className={'site-header' + (isScrolled ? ' is-scrolled' : '')}>
+        <nav className="nav-container container" aria-label="Main navigation">
+          <a className="brand" href="#home" onClick={closeMenu} aria-label="Janna De Claro - home">
+            JDC<span className="brand-dot">.</span>
+          </a>
+          <div className="desktop-nav">
+            {navLinks.map((link) => <a key={link.href} href={link.href}>{link.label}</a>)}
           </div>
-          <div className="hidden md:flex gap-8">
-            <a href="#about" className="hover:text-[#c29b40] transition-colors">About</a>
-            <a href="#experience" className="hover:text-[#c29b40] transition-colors">Experience</a>
-            <a href="#skills" className="hover:text-[#c29b40] transition-colors">Skills</a>
-            <a href="#education" className="hover:text-[#c29b40] transition-colors">Education</a>
-            <a href="#contact" className="hover:text-[#c29b40] transition-colors">Contact</a>
+          <a className="nav-contact" href="#contact">Let's connect <ArrowUpRight size={15} aria-hidden="true" /></a>
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X size={23} aria-hidden="true" /> : <Menu size={23} aria-hidden="true" />}
+          </button>
+        </nav>
+        <div id="mobile-navigation" className={'mobile-nav' + (menuOpen ? ' open' : '')}>
+          {navLinks.map((link) => <a key={link.href} href={link.href} onClick={closeMenu}>{link.label}</a>)}
+          <a href="#contact" onClick={closeMenu}>Contact</a>
+        </div>
+      </header>
+
+      <main id="main" tabIndex={-1}>
+        <section id="home" className="hero">
+          <div className="hero-glow hero-glow-one" aria-hidden="true" />
+          <div className="hero-glow hero-glow-two" aria-hidden="true" />
+          <div className="container hero-grid">
+            <motion.div
+              className="hero-content"
+              initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reducedMotion ? 0 : 0.75, ease: 'easeOut' }}
+            >
+              <div className="status-pill"><span className="status-dot" /> Open to opportunities</div>
+              <p className="hero-eyebrow">HELLO, I'M JANNA PATRICIA DE CLARO</p>
+              <h1>Organized by nature.<br /><em>Driven by improvement.</em></h1>
+              <p className="hero-role">Project Coordinator <span> / </span> Administrative Support <span> / </span> Process Improvement</p>
+              <p className="hero-description">I help teams stay organized, keep project operations on track, and bring clarity to everyday workflows—with an Industrial Engineering background and a creative interest in digital projects.</p>
+              <div className="hero-actions">
+                <a className="btn btn-primary" href="#experience">Explore my experience <ArrowUpRight size={17} aria-hidden="true" /></a>
+                <a className="btn btn-secondary" href="#projects">View projects <ArrowRight size={17} aria-hidden="true" /></a>
+              </div>
+            </motion.div>
+            <motion.div
+              className="hero-aside"
+              initial={reducedMotion ? false : { opacity: 0, x: 22 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: reducedMotion ? 0 : 0.8, delay: reducedMotion ? 0 : 0.17, ease: 'easeOut' }}
+            >
+              <div className="overview-card">
+                <div className="overview-top"><span>MY FOCUS</span><Sparkles size={18} aria-hidden="true" /></div>
+                <p className="overview-quote">Turning complex tasks into <em>clear, organized workflows.</em></p>
+                <div className="overview-divider" />
+                <div className="overview-row"><CheckCircle2 size={17} aria-hidden="true" /> Administrative operations</div>
+                <div className="overview-row"><CheckCircle2 size={17} aria-hidden="true" /> Project coordination</div>
+                <div className="overview-row"><CheckCircle2 size={17} aria-hidden="true" /> Process documentation</div>
+                <div className="overview-bottom"><span>DETAIL-ORIENTED · ADAPTABLE</span><ArrowDownRight size={22} aria-hidden="true" /></div>
+              </div>
+              <div className="aside-decoration" aria-hidden="true" />
+            </motion.div>
           </div>
-        </div>
-      </nav>
+          <div className="hero-scroll container"><a href="#about">SCROLL TO EXPLORE <ChevronDown size={15} aria-hidden="true" /></a></div>
+        </section>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col justify-center px-6 pt-20 border-b border-gray-200/50">
-        <div className="max-w-4xl mx-auto w-full text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center"
-          >
-            <div className="bg-[#f0ede6] text-[#1c2841] text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-8">
-              Professional Portfolio
-            </div>
-            
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#1c2841] leading-tight mb-6 md:whitespace-nowrap">
-              Janna Patricia De Claro
-            </h1>
-            
-            <p className="text-lg md:text-xl text-[#6b7280] mb-4">
-              Industrial Engineering Graduate | Project Coordinator
-            </p>
-            
-            <p className="text-[#6b7280] max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed text-balance">
-              Detail-oriented professional with hands-on experience in project coordination, procurement monitoring, process improvement, and administrative support.
-            </p>
-            
-            <div className="flex justify-center gap-4">
-              <a href="#contact" className="px-8 py-3 bg-[#1c2841] text-white rounded-full font-medium hover:bg-[#2a3a5a] transition-colors text-sm">
-                Get in Touch
-              </a>
-              <a href="#experience" className="px-8 py-3 bg-transparent text-[#1c2841] border border-[#d1d5db] rounded-full font-medium hover:border-[#1c2841] transition-colors text-sm bg-white/50">
-                View Experience
-              </a>
-            </div>
-          </motion.div>
-        </div>
-        
-        <motion.div 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#c29b40] animate-bounce"
-        >
-          <ChevronDown className="w-6 h-6" />
-        </motion.div>
-      </section>
+        <section id="about" className="section about-section">
+          <div className="container about-layout">
+            <SectionHeading eyebrow="01 / ABOUT ME" title="A structured mind. A thoughtful approach." />
+            <Reveal className="about-copy" delay={0.1}>
+              <p>I'm a Bachelor of Science in Industrial Engineering graduate from the Technological Institute of the Philippines – Quezon City, with hands-on experience in project coordination, procurement and budget monitoring, administrative support, and process improvement.</p>
+              <p>From tracking documents and supporting project teams to developing a workflow during my internship, I enjoy creating order in busy environments. I bring adaptability, multitasking, attention to detail, and clear communication to every role. I'm also exploring AI tools, automation workflows, AI workspaces, and modern website projects to keep expanding my digital skills.</p>
+              <div className="about-highlights">
+                <div><span className="highlight-number">2+</span><span className="highlight-label">Years of experience</span></div>
+                <div><span className="highlight-number">03</span><span className="highlight-label">Professional roles</span></div>
+                <div><span className="highlight-number">01</span><span className="highlight-label">Professional certification</span></div>
+                <div><span className="highlight-number">BS</span><span className="highlight-label">Industrial Engineering</span></div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
 
-      {/* About Section */}
-      <section id="about" className="py-32 px-6 border-b border-gray-200/50 bg-white w-full flex justify-center">
-        <div className="max-w-4xl w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-10 h-px bg-[#c29b40]"></div>
-              <h2 className="text-xs font-bold tracking-widest text-[#c29b40] uppercase">
-                About Me
-              </h2>
-            </div>
-            
-            <h3 className="font-serif text-3xl md:text-4xl font-bold text-[#1c2841] mb-8">
-              Background <span style={{ fontFamily: "Georgia, serif" }}>&amp;</span> Expertise
-            </h3>
-            
-            <p className="text-lg text-[#6b7280] leading-relaxed mb-16 max-w-3xl">
-              A Bachelor of Science in Industrial Engineering graduate from the Technological Institute of the Philippines - Quezon City, with practical experience in project coordination, procurement and budget monitoring, workflow analysis, process improvement, report preparation, and administrative support. Adept at multitasking, highly adaptable, and committed to driving operational efficiency in every role. Currently researching AI automation workflows and AI workspaces to continuously build and strengthen my skills and knowledge.
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center pt-8">
-              {[
-                { number: "2+", label: "Years Experience" },
-                { number: "3", label: "Roles Held" },
-                { number: "1", label: "Certification" },
-                { number: "BS", label: "IE Degree" }
-              ].map((stat, i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div className="font-serif text-4xl font-bold text-[#1c2841] mb-2">{stat.number}</div>
-                  <div className="text-sm text-[#9ca3af]">{stat.label}</div>
-                </div>
+        <section id="experience" className="section experience-section">
+          <div className="container">
+            <SectionHeading eyebrow="02 / EXPERIENCE" title="Where experience meets execution." description="A blend of project operations, bookkeeping support, and hands-on process improvement." />
+            <div className="experience-list">
+              {experiences.map((experience, index) => (
+                <Reveal key={experience.position} className="experience-card" delay={index * 0.08}>
+                  <div className="experience-index">0{index + 1}</div>
+                  <div className="experience-body">
+                    <div className="experience-header">
+                      <div><p className="experience-type">{experience.type}</p><h3>{experience.position}</h3><p className="experience-company">{experience.organization}</p></div>
+                      <span className="period-chip">{experience.period}</span>
+                    </div>
+                    <ul className="experience-bullets">
+                      {experience.bullets.map((bullet) => <li key={bullet}><CheckCircle2 size={16} aria-hidden="true" /><span>{bullet}</span></li>)}
+                    </ul>
+                  </div>
+                </Reveal>
               ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="py-32 px-6 border-b border-gray-200/50 w-full flex justify-center">
-        <div className="max-w-4xl w-full">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-10 h-px bg-[#c29b40]"></div>
-            <h2 className="text-xs font-bold tracking-widest text-[#c29b40] uppercase">
-              Experience
-            </h2>
           </div>
-          
-          <h3 className="font-serif text-3xl md:text-4xl font-bold text-[#1c2841] mb-12">
-            Work History
-          </h3>
+        </section>
 
-          <div className="space-y-6">
-            {[
-              {
-                role: "Project Coordinator",
-                company: "Suweco Tablas Energy Corp.",
-                date: "May 2025 - Present",
-                tasks: [
-                  "Coordinate project timelines, deliverables, and stakeholder communication",
-                  "Monitor procurement activities and budget allocations",
-                  "Prepare project reports and documentation"
-                ]
-              },
-              {
-                role: "Bookkeeper",
-                company: "Part-time",
-                date: "Oct 2024 - Apr 2025",
-                tasks: [
-                  "Managed financial records and transaction logging",
-                  "Utilized QuickBooks for bookkeeping operations",
-                  "Ensured accuracy in financial documentation"
-                ]
-              },
-              {
-                role: "Business Process Analyst Intern",
-                company: "Five Star Bus Co.",
-                date: "Sept 2023 - Dec 2023",
-                tasks: [
-                  "Analyzed existing business workflows and identified inefficiencies",
-                  "Proposed process improvement initiatives",
-                  "Prepared reports and visual documentation"
-                ]
-              }
-            ].map((exp, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white p-8 md:p-10 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex flex-col md:flex-row md:items-start justify-between mb-6 gap-4">
-                  <div>
-                    <h4 className="text-xl font-bold text-[#1c2841]">{exp.role}</h4>
-                    <p className="font-medium text-[#c29b40] mt-1">{exp.company}</p>
-                  </div>
-                  <div className="inline-flex bg-[#f8f7f4] text-[#6b7280] text-sm font-medium px-4 py-1.5 rounded-full whitespace-nowrap">
-                    {exp.date}
+        <section id="skills" className="section skills-section">
+          <div className="container">
+            <SectionHeading eyebrow="03 / EXPERTISE" title="Skills that keep things moving." description="Practical capabilities developed through real work, collaboration, and ongoing learning." />
+            <div className="skills-grid">
+              {skillGroups.map((group, index) => {
+                const Icon = group.icon;
+                return (
+                  <Reveal key={group.title} className="skill-card" delay={index * 0.06}>
+                    <div className="skill-icon"><Icon size={23} strokeWidth={1.8} aria-hidden="true" /></div>
+                    <h3>{group.title}</h3>
+                    <p>{group.intro}</p>
+                    <div className="skill-tags">{group.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="projects" className="section projects-section">
+          <div className="container">
+            <SectionHeading eyebrow="04 / SELECTED WORK" title="Beyond the day-to-day." description="A selection of work that reflects both my structured and creative sides." />
+            <Reveal className="project-card">
+              <div className="project-visual" role="img" aria-label="Illustrative solar website design concept, not an actual project screenshot">
+                <div className="project-browser">
+                  <div className="browser-top"><div className="browser-dots"><i /><i /><i /></div><span>SOLAR WEBSITE / CONCEPT COVER</span></div>
+                  <div className="solar-scene">
+                    <span className="solar-scene-eyebrow">CLEAN ENERGY · MODERN DESIGN</span>
+                    <strong>POWERING A<br />BRIGHTER FUTURE.</strong>
+                    <span className="solar-scene-cta">Explore solar solutions <ArrowUpRight size={13} aria-hidden="true" /></span>
+                    <div className="solar-sun" />
+                    <div className="solar-panels" aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <span key={index} />)}</div>
                   </div>
                 </div>
-                
-                <ul className="space-y-3">
-                  {exp.tasks.map((task, j) => (
-                    <li key={j} className="flex items-start gap-3 text-[#6b7280] text-sm md:text-base">
-                      <div className="mt-1 flex-shrink-0 text-[#c29b40]">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                          <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                      </div>
-                      <span>{task}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="py-32 px-6 border-b border-gray-200/50 bg-white w-full flex justify-center">
-        <div className="max-w-4xl w-full">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-10 h-px bg-[#c29b40]"></div>
-            <h2 className="text-xs font-bold tracking-widest text-[#c29b40] uppercase">
-              Skills
-            </h2>
-          </div>
-          
-          <h3 className="font-serif text-3xl md:text-4xl font-bold text-[#1c2841] mb-12">
-            Core Competencies
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                cat: "Project & Coordination",
-                icon: <Briefcase className="w-5 h-5 text-[#1c2841]" />,
-                skills: ["Project Coordination", "Procurement Monitoring", "Budget Monitoring", "Administrative Support"]
-              },
-              {
-                cat: "Process & Analysis",
-                icon: <Search className="w-5 h-5 text-[#1c2841]" />,
-                skills: ["Workflow Analysis", "Process Improvement", "Report Preparation", "Lean Six Sigma"]
-              },
-              {
-                cat: "Technical & Office",
-                icon: <Monitor className="w-5 h-5 text-[#1c2841]" />,
-                skills: ["Microsoft Office", "Basic QuickBooks", "Basic Coding", "Data Entry", "AI Automation Workflows", "AI Workspaces"]
-              },
-              {
-                cat: "Personal Strengths",
-                icon: <Star className="w-5 h-5 text-[#1c2841]" />,
-                skills: ["Adaptability", "Multitasking", "Attention to Detail", "Communication"]
-              }
-            ].map((group, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-[#f8f7f4] p-8 rounded-2xl border border-gray-100"
-              >
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-200">
-                      {group.icon}
-                    </div>
-                    <h4 className="text-lg font-bold text-[#1c2841]">{group.cat}</h4>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {group.skills.map((skill, j) => (
-                      <span key={j} className="bg-white text-[#4b5563] text-sm px-4 py-1.5 rounded-full border border-gray-200">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Education & Certification Section */}
-      <section id="education" className="py-32 px-6 border-b border-gray-200/50 bg-[#f8f7f4] w-full flex justify-center">
-        <div className="max-w-4xl w-full">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-10 h-px bg-[#c29b40]"></div>
-            <h2 className="text-xs font-bold tracking-widest text-[#c29b40] uppercase">
-              Education & Certification
-            </h2>
-          </div>
-          
-          <h3 className="font-serif text-3xl md:text-4xl font-bold text-[#1c2841] mb-12">
-            Academic Background
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm"
-            >
-              <div className="w-10 h-10 rounded-full bg-[#f0ede6] flex items-center justify-center mb-6">
-                <GraduationCap className="w-5 h-5 text-[#1c2841]" />
+                <p className="visual-disclaimer">Illustrative cover · project screenshot to be added</p>
               </div>
-              <h4 className="text-lg font-bold text-[#1c2841] mb-2">BS Industrial Engineering</h4>
-              <p className="text-[#c29b40] text-sm font-medium mb-2">Technological Institute of the Philippines &ndash; QC</p>
-              <p className="text-[#9ca3af] text-sm">Bachelor's Degree</p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm"
-            >
-              <div className="w-10 h-10 rounded-full bg-[#f0ede6] flex items-center justify-center mb-6">
-                <BookOpen className="w-5 h-5 text-[#1c2841]" />
+              <div className="project-content">
+                <div className="project-label">FEATURED PROJECT <span>01</span></div>
+                <h3>Solar Business<br />Website Redesign</h3>
+                <p>A redesign of an earlier solar business website project, focused on presenting solar energy services through a modern, polished digital experience.</p>
+                <div className="project-meta"><span>Website Redesign</span><span>October 2024 — April 2025</span></div>
+                <p className="project-note"><FileText size={16} aria-hidden="true" /> Project preview and live link can be added once the final files are available.</p>
               </div>
-              <h4 className="text-lg font-bold text-[#1c2841] mb-2">Senior High School &ndash; STEM</h4>
-              <p className="text-[#c29b40] text-sm font-medium mb-2">Science, Technology, Engineering & Mathematics</p>
-              <p className="text-[#9ca3af] text-sm">SHS Diploma</p>
-            </motion.div>
+            </Reveal>
+            <Reveal className="project-footnote"><Sparkles size={18} aria-hidden="true" /><span>I'm interested in how good systems and thoughtful design can make work easier for people.</span></Reveal>
           </div>
+        </section>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm w-full"
-          >
-            <div className="w-10 h-10 rounded-full bg-[#fcf9f2] border border-[#f0e8d5] flex items-center justify-center mb-6">
-              <Award className="w-5 h-5 text-[#c29b40]" />
+        <section id="education" className="section education-section">
+          <div className="container">
+            <SectionHeading eyebrow="05 / BACKGROUND" title="Built on continuous learning." />
+            <div className="education-grid">
+              <Reveal className="education-card">
+                <div className="education-icon"><GraduationCap size={22} aria-hidden="true" /></div>
+                <p className="education-category">EDUCATION</p>
+                <h3>BS Industrial Engineering</h3>
+                <p>Technological Institute of the Philippines – Quezon City</p>
+                <span>Bachelor's Degree</span>
+              </Reveal>
+              <Reveal className="education-card" delay={0.08}>
+                <div className="education-icon"><GraduationCap size={22} aria-hidden="true" /></div>
+                <p className="education-category">EDUCATION</p>
+                <h3>Senior High School — STEM</h3>
+                <p>Science, Technology, Engineering & Mathematics</p>
+                <span>SHS Diploma</span>
+              </Reveal>
+              <Reveal className="education-card education-card-accent" delay={0.16}>
+                <div className="education-icon"><Award size={22} aria-hidden="true" /></div>
+                <p className="education-category">CERTIFICATION</p>
+                <h3>Lean Six Sigma White Belt</h3>
+                <p>Professional Certification</p>
+                <span>Certified</span>
+              </Reveal>
             </div>
-            <h4 className="text-lg font-bold text-[#1c2841] mb-2">Certified Lean Six Sigma White Belt</h4>
-            <p className="text-[#c29b40] text-sm font-medium">Professional Certification</p>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="pt-32 px-6 bg-[#1a2333] text-center border-b border-[#151c2a] w-full flex justify-center relative pb-32">
-        <div className="max-w-3xl w-full">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center"
-          >
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-white mb-6">
-              Let's Connect
-            </h2>
-            <p className="text-[#9ca3af] mb-12 text-sm max-w-md mx-auto">
-              I'm open to opportunities and collaborations. Feel free to reach out.
-            </p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full px-4 sm:px-0">
-              <a href="mailto:jannapfdc2@gmail.com" className="bg-[#242e42] p-8 rounded-2xl hover:bg-[#2c3850] transition-colors flex flex-col items-center justify-center gap-4 group">
-                <Mail className="w-6 h-6 text-[#c29b40] group-hover:scale-110 transition-transform" />
-                <span className="text-white text-xs sm:text-sm truncate w-full text-center">jannapfdc2@gmail.com</span>
-              </a>
-              
-              <a href="tel:+639762476313" className="bg-[#242e42] p-8 rounded-2xl hover:bg-[#2c3850] transition-colors flex flex-col items-center justify-center gap-4 group">
-                <Phone className="w-6 h-6 text-[#c29b40] group-hover:scale-110 transition-transform" />
-                <span className="text-white text-sm">+63 976 247 6313</span>
-              </a>
-              
-              <div className="bg-[#242e42] p-8 rounded-2xl flex flex-col items-center justify-center gap-4">
-                <MapPin className="w-6 h-6 text-[#c29b40]" />
-                <span className="text-white text-sm text-center">San Mateo, Rizal, Philippines</span>
-              </div>
-            </div>
-            
-            <div className="absolute bottom-0 left-0 right-0 py-8 border-t border-[#242e42] w-full px-6 bg-[#1a2333]">
-              <p className="text-xs text-[#6b7280]">
-                &copy; {new Date().getFullYear()} Janna Patricia De Claro. All rights reserved.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        <section id="contact" className="contact-section">
+          <div className="container contact-layout">
+            <Reveal>
+              <p className="eyebrow eyebrow-light"><span className="eyebrow-line" />06 / GET IN TOUCH</p>
+              <h2>Let's make great<br /><em>work happen.</em></h2>
+              <p className="contact-intro">Open to Virtual Assistant, Administrative Support, Project Coordination, and collaborative opportunities.</p>
+              <a className="btn btn-gold" href="mailto:jannapfdc2@gmail.com?subject=Opportunity%20to%20Connect">Say hello <ArrowUpRight size={17} aria-hidden="true" /></a>
+              <p className="resume-note">Resume available upon request.</p>
+            </Reveal>
+            <Reveal className="contact-info" delay={0.1}>
+              <a href="mailto:jannapfdc2@gmail.com"><Mail size={20} aria-hidden="true" /><span><small>EMAIL</small>jannapfdc2@gmail.com</span><ArrowUpRight size={17} className="contact-arrow" aria-hidden="true" /></a>
+              <a href="tel:+639762476313"><Phone size={20} aria-hidden="true" /><span><small>PHONE</small>+63 976 247 6313</span><ArrowUpRight size={17} className="contact-arrow" aria-hidden="true" /></a>
+              <div><MapPin size={20} aria-hidden="true" /><span><small>LOCATION</small>San Mateo, Rizal, Philippines</span></div>
+              <a href="https://github.com/jannapfdc2/Janna-De-Claro" target="_blank" rel="noopener noreferrer"><Github size={20} aria-hidden="true" /><span><small>GITHUB</small>View my portfolio repository</span><ArrowUpRight size={17} className="contact-arrow" aria-hidden="true" /></a>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+
+      <footer className="site-footer">
+        <div className="container footer-inner"><a href="#home" className="footer-brand">JDC<span>.</span></a><p>© {new Date().getFullYear()} Janna Patricia De Claro. All rights reserved.</p><a href="#home">Back to top ↑</a></div>
+      </footer>
     </div>
   );
 }

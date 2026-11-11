@@ -1,20 +1,36 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Janna Patricia De Claro — Portfolio
 
-# Run and deploy your AI Studio app
+A personal portfolio highlighting experience in **Project Coordination**, **Administrative Support**, and **Process Improvement**, with a featured website redesign project.
 
-This contains everything you need to run your app locally.
+## Design
 
-View your app in AI Studio: https://ai.studio/apps/233c738d-383e-4c81-82ed-994245d7a72b
+Soft ivory backgrounds, midnight-navy typography, champagne-gold accents, subtle motion, and a mobile-friendly layout. Honors reduced-motion accessibility preferences.
 
-## Run Locally
+## Run locally
 
-**Prerequisites:**  Node.js
+Requirements: Node.js and npm.
 
+1. Install dependencies: `npm install`
+2. Start the development server: `npm run dev`
+3. Check TypeScript: `npm run lint`
+4. Make a production build: `npm run build`
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+The site is built with React, TypeScript, Vite, Tailwind CSS, Lucide icons, and Motion.
+
+## Site sections
+
+- About Me
+- Experience
+- Skills
+- Featured Projects (Solar Business Website Redesign, Oct 2024–Apr 2025)
+- Education and Certification
+- Contact
+
+## Before publishing
+
+- Replace the illustrative solar project cover with an actual screenshot if available.
+- Add a real project URL only after it has been verified. Do not introduce dead links.
+- Add a resume download only after the actual PDF is placed in `public/` (for example `public/Janna-De-Claro-Resume.pdf`). Currently the website states that a resume is available upon request.
+- Check contact information and update work history dates as needed.
+
+This redesign retains the original professional background while making the portfolio better aligned with VA and project coordination opportunities.
