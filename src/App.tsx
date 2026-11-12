@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   ChevronDown,
   ClipboardList,
-  FileText,
   Github,
   GraduationCap,
   Mail,
@@ -311,34 +310,7 @@ export default function App() {
 
         <section id="projects" className="section projects-section">
           <div className="container">
-            <SectionHeading eyebrow="04 / SELECTED WORK" title="Beyond the day-to-day." description="A selection of work that reflects both my structured and creative sides." />
-            <Reveal className="project-card">
-              <div className="project-visual" role="img" aria-label="Illustrative solar website design concept, not an actual project screenshot">
-                <div className="project-browser">
-                  <div className="browser-top"><div className="browser-dots"><i /><i /><i /></div><span>SOLAR WEBSITE / CONCEPT COVER</span></div>
-                  <div className="solar-scene">
-                    <span className="solar-scene-eyebrow">CLEAN ENERGY · MODERN DESIGN</span>
-                    <strong>POWERING A<br />BRIGHTER FUTURE.</strong>
-                    <span className="solar-scene-cta">Explore solar solutions <ArrowUpRight size={13} aria-hidden="true" /></span>
-                    <div className="solar-sun" />
-                    <div className="solar-panels" aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <span key={index} />)}</div>
-                  </div>
-                </div>
-                <p className="visual-disclaimer">Illustrative cover · project screenshot to be added</p>
-              </div>
-              <div className="project-content">
-                <div className="project-label">FEATURED PROJECT <span>01</span></div>
-                <h3>Solar Business<br />Website Redesign</h3>
-                <p>A redesign of an earlier solar business website project, focused on presenting solar energy services through a modern, polished digital experience.</p>
-                <div className="project-meta"><span>Website Redesign</span><span>October 2024 — April 2025</span></div>
-                <p className="project-note"><FileText size={16} aria-hidden="true" /> Project preview and live link can be added once the final files are available.</p>
-              </div>
-            </Reveal>
-            <div className="sample-projects-header">
-              <p className="eyebrow"><span className="eyebrow-line" />PERSONAL EXPLORATIONS</p>
-              <h3>Sample personal projects</h3>
-              <p>A closer look at two projects where I explore website design and organized digital workflows.</p>
-            </div>
+            <SectionHeading eyebrow="04 / SELECTED WORK" title="Featured personal projects." description="A selection of my personal projects exploring website design and organized digital workflows." />
             <div className="sample-projects-grid">
               {sampleProjects.map((project, index) => (
                 <Reveal key={project.title} className="sample-project-card" delay={index * 0.08}>
@@ -354,7 +326,7 @@ export default function App() {
                   </button>
                   <div className="sample-project-body">
                     <p className="sample-project-category">{project.category}</p>
-                    <h4>{project.title}</h4>
+                    <h3>{project.title}</h3>
                     <p className="sample-project-description">{project.description}</p>
                     <div className="skill-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                   </div>

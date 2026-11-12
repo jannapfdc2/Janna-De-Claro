@@ -132,39 +132,12 @@ h1 em { color: #aa854c; font-weight: 500; }
 .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .skill-tags span { font-size: 11px; color: #52647c; background: #f6f8fa; border: 1px solid #e5e9ed; padding: 8px 11px; border-radius: 100px; }
 
-/* Featured project */
+/* Featured personal projects */
 .projects-section { background: #fff; }
-.project-card { display: grid; grid-template-columns: 1.13fr .87fr; min-height: 440px; background: #f7f5f1; border: 1px solid #e9e5df; border-radius: 13px; overflow: hidden; }
-.project-visual { position: relative; padding: 36px 25px 30px; background: linear-gradient(135deg,#d4dfe9,#f2e9d7); display: flex; flex-direction: column; justify-content: center; }
-.project-browser { width: 100%; max-width: 560px; margin-inline: auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 23px 42px rgba(21,40,61,.2); transform: rotate(-1.3deg); }
-.browser-top { height: 35px; display: flex; align-items: center; justify-content: space-between; padding: 0 13px; gap: 10px; color: #8192a4; font-size: 7px; letter-spacing: .12em; font-weight: 700; }
-.browser-dots { display: flex; gap: 5px; }
-.browser-dots i { width: 6px; height: 6px; border-radius: 50%; background: #d5dde2; }
-.solar-scene { position: relative; min-height: 285px; padding: 38px 35px; isolation: isolate; overflow: hidden; background: linear-gradient(160deg,#142842 0%,#3c607a 56%,#d9b17b 100%); color: white; }
-.solar-scene-eyebrow { position: relative; z-index: 2; display: block; font-size: 8px; letter-spacing: .17em; font-weight: 700; color: #f1d9b1; margin-bottom: 16px; }
-.solar-scene strong { position: relative; z-index: 2; display: block; max-width: 260px; font: 600 clamp(23px,2.3vw,32px)/1.18 var(--font-serif); }
-.solar-scene-cta { position: relative; z-index: 2; display: inline-flex; gap: 9px; align-items: center; padding: 8px 10px; margin-top: 25px; background: #f4e2be; color: #1e344b; font-size: 8px; font-weight: 700; border-radius: 3px; }
-.solar-sun { position: absolute; right: 2%; top: 7%; width: 155px; height: 155px; background: radial-gradient(circle,rgba(255,236,182,.92),rgba(237,186,115,.36) 58%,transparent 71%); filter: blur(4px); }
-.solar-panels { position: absolute; width: 300px; height: 130px; right: -65px; bottom: -38px; transform: skewX(-16deg) rotate(-9deg); display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: repeat(3,1fr); gap: 4px; padding: 5px; border: 5px solid #aab6c2; box-shadow: 0 0 0 9px rgba(17,34,51,.3); background: #d6e2eb; }
-.solar-panels span { display: block; background: repeating-linear-gradient(90deg,#1d466d 0%,#27517c 26%,#2c567d 28%,#1a3857 32%); box-shadow: inset 0 0 0 1px #608bab; }
-.visual-disclaimer { margin: 16px 0 0; text-align: center; color: #53647b; font-size: 10px; font-weight: 500; }
-.project-content { padding: clamp(32px,4vw,58px); display: flex; flex-direction: column; justify-content: center; }
-.project-label { display: flex; gap: 10px; align-items: center; color: var(--gold-dark); font-size: 10px; font-weight: 700; letter-spacing: .17em; margin-bottom: 25px; }
-.project-label span { font: 600 20px var(--font-serif); color: #d1b787; }
-.project-content h3 { color: var(--navy); font: 600 clamp(29px,3.2vw,42px)/1.22 var(--font-serif); letter-spacing: -.04em; margin-bottom: 19px; }
-.project-content > p { font-size: 14px; color: #68768b; line-height: 1.8; margin-bottom: 26px; }
-.project-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.project-meta span { padding: 8px 11px; background: white; border: 1px solid #ebe3d5; border-radius: 100px; color: #5e6b7c; font-size: 11px; }
-.project-content .project-note { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 11px; color: #758398; line-height: 1.55; }
-.project-note svg { flex-shrink: 0; color: #a88a56; }
 .project-footnote { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #7a8796; margin-top: 29px; }
 .project-footnote svg { color: #a58650; flex-shrink: 0; }
 
 /* Personal project screenshots */
-.sample-projects-header { margin: 72px 0 30px; max-width: 680px; }
-.sample-projects-header .eyebrow { margin-bottom: 16px; }
-.sample-projects-header h3 { font: 600 clamp(29px,3vw,40px)/1.2 var(--font-serif); letter-spacing: -.035em; color: var(--navy); margin-bottom: 15px; }
-.sample-projects-header > p:last-child { color: var(--muted); font-size: 14px; line-height: 1.8; margin-bottom: 0; }
 .sample-projects-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .sample-project-card { min-width: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--ivory); }
 .sample-screenshot-button { display: block; position: relative; width: 100%; padding: 0; border: 0; border-radius: 11px 11px 0 0; overflow: hidden; cursor: zoom-in; background: #edf1ed; }
@@ -173,7 +146,7 @@ h1 em { color: #aa854c; font-weight: 500; }
 .sample-screenshot-button:hover .screenshot-hint { background: #334665; }
 .sample-project-body { padding: 29px; }
 .sample-project-category { color: var(--gold-dark); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 12px; }
-.sample-project-body h4 { color: var(--navy); font: 600 clamp(23px,2.1vw,28px)/1.3 var(--font-serif); margin-bottom: 13px; }
+.sample-project-body h3 { color: var(--navy); font: 600 clamp(23px,2.1vw,28px)/1.3 var(--font-serif); margin-bottom: 13px; }
 .sample-project-description { color: #606e82; font-size: 13px; line-height: 1.8; margin-bottom: 22px; }
 .screenshot-dialog { width: min(1120px, calc(100vw - 32px)); max-height: calc(100svh - 32px); margin: auto; padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--ivory); color: var(--navy); overflow: auto; box-shadow: 0 20px 80px #0005; }
 .screenshot-dialog::backdrop { background: rgba(14,25,42,.78); }
@@ -185,7 +158,6 @@ h1 em { color: #aa854c; font-weight: 500; }
 #screenshot-caption { padding: 18px 22px; margin: 0; color: #606e82; font-size: 13px; line-height: 1.7; }
 @media (max-width: 700px) {
   .sample-projects-grid { grid-template-columns: 1fr; }
-  .sample-projects-header { margin-top: 54px; }
   .sample-project-body { padding: 24px; }
   .screenshot-dialog-header { padding: 12px 15px; gap: 12px; }
 }
@@ -245,11 +217,7 @@ h1 em { color: #aa854c; font-weight: 500; }
   .overview-quote { margin: 23px 0; }
   .hero-scroll { padding-bottom: 25px; }
   .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 30px; }
-  .experience-header { flex-wrap: wrap; }
-  .project-card { grid-template-columns: 1fr; }
-  .project-visual { padding: 35px; }
-  .project-content { padding: 35px; }
-  .education-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .experience-header { flex-wrap: wrap; }  .education-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 600px) {
   .container { width: min(100% - 36px, 1160px); }
@@ -271,13 +239,7 @@ h1 em { color: #aa854c; font-weight: 500; }
   .experience-company { margin-bottom: 15px; }
   .period-chip { margin-bottom: 14px; }
   .skills-grid, .education-grid { grid-template-columns: 1fr; }
-  .skill-card, .education-card { padding: 25px; }
-  .project-visual { padding: 22px 13px; }
-  .solar-scene { padding: 27px 20px; min-height: 250px; }
-  .solar-scene strong { font-size: 23px; }
-  .solar-panels { right: -165px; }
-  .browser-top { font-size: 6px; }
-  .contact-section { padding: 80px 0; }
+  .skill-card, .education-card { padding: 25px; }  .contact-section { padding: 80px 0; }
   .footer-inner { flex-wrap: wrap; }
   .footer-inner p { order: 3; flex-basis: 100%; }
 }

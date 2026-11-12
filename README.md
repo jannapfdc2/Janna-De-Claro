@@ -1,6 +1,6 @@
 # Janna Patricia De Claro — Portfolio
 
-A personal portfolio highlighting experience in **Project Coordination**, **Administrative Support**, and **Process Improvement**, with a featured website redesign project.
+A personal portfolio highlighting experience in **Project Coordination**, **Administrative Support**, and **Process Improvement**, with featured personal projects in website and workflow design.
 
 ## Design
 
@@ -22,8 +22,7 @@ The site is built with React, TypeScript, Vite, Tailwind CSS, Lucide icons, and 
 - About Me
 - Experience
 - Skills
-- Featured Projects (Solar Business Website Redesign, Oct 2024–Apr 2025)
-- Sample personal projects (SUNWARD Solar Website and STEC Solar Proposal Tool)
+- Featured personal projects (SUNWARD Solar Website and STEC Solar Proposal Tool)
 - Education and Certification
 - Contact
 
@@ -31,7 +30,7 @@ The site is built with React, TypeScript, Vite, Tailwind CSS, Lucide icons, and 
 
 SUNWARD Solar Website and STEC Solar Proposal Tool are presented as screenshot samples. Each image opens in an accessible enlargement dialog that supports the close button, Escape key, and backdrop click. The STEC screenshot uses sample data.
 
-Screenshot assets are stored in `public/projects/`. The original dated Solar Business Website Redesign remains a separate project.
+Screenshot assets are stored in `public/projects/`.
 
 ## Before publishing
 
