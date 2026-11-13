@@ -26,10 +26,6 @@ The site is built with React, TypeScript, Vite, Tailwind CSS, Lucide icons, and 
 - Education and Certification
 - Contact
 
-## Portrait
-
-The About Me section includes the owner-provided portrait in `public/images/janna-de-claro.png`, displayed at a small size with its original proportions.
-
 ## Personal project screenshots
 
 SUNWARD Solar Website and STEC Solar Proposal Tool are presented as screenshot samples. Each image opens in an accessible enlargement dialog that supports the close button, Escape key, and backdrop click. The STEC screenshot uses sample data.

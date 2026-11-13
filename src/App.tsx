@@ -253,12 +253,7 @@ export default function App() {
 
         <section id="about" className="section about-section">
           <div className="container about-layout">
-            <div className="about-intro">
-              <SectionHeading eyebrow="01 / ABOUT ME" title="A structured mind. A thoughtful approach." />
-              <div className="about-portrait">
-                <img src="/images/janna-de-claro.png" alt="Janna Patricia De Claro" width="227" height="243" loading="lazy" decoding="async" />
-              </div>
-            </div>
+            <SectionHeading eyebrow="01 / ABOUT ME" title="A structured mind. A thoughtful approach." />
             <Reveal className="about-copy" delay={0.1}>
               <p>I'm a Bachelor of Science in Industrial Engineering graduate from the Technological Institute of the Philippines – Quezon City, with hands-on experience in project coordination, procurement and budget monitoring, administrative support, and process improvement.</p>
               <p>From tracking documents and supporting project teams to developing a workflow during my internship, I enjoy creating order in busy environments. I bring adaptability, multitasking, attention to detail, and clear communication to every role. I'm also exploring AI tools, automation workflows, AI workspaces, and modern website projects to keep expanding my digital skills.</p>

@@ -99,8 +99,6 @@ h1 em { color: #aa854c; font-weight: 500; }
 .about-section { background: #fff; }
 .about-layout { display: grid; grid-template-columns: .83fr 1.17fr; gap: 100px; align-items: start; }
 .about-layout .section-heading { margin-bottom: 0; }
-.about-portrait { width: min(216px, 100%); margin-top: 30px; padding: 8px; border: 1px solid var(--gold); border-radius: 20px; background: var(--ivory); }
-.about-portrait img { display: block; width: 100%; height: auto; border-radius: 12px; }
 .about-copy > p { font-size: 15px; line-height: 2; color: #5a687b; margin-bottom: 21px; }
 .about-highlights { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; border-top: 1px solid var(--line); margin-top: 39px; padding-top: 28px; }
 .about-highlights > div { display: flex; flex-direction: column; gap: 7px; }
