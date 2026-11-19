@@ -1,412 +1,238 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
-import {
-  ArrowDownRight,
-  ArrowRight,
-  ArrowUpRight,
-  Award,
-  BriefcaseBusiness,
-  CheckCircle2,
-  ChevronDown,
-  ClipboardList,
-  Github,
-  GraduationCap,
-  Mail,
-  MapPin,
-  Maximize2,
-  Menu,
-  Monitor,
-  Phone,
-  Sparkles,
-  Workflow,
-  X,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
+import type { ReactNode, KeyboardEvent, FormEvent } from 'react';
+import { ChevronDown, ClipboardList, Copy, FileText, Github, GraduationCap, Mail, MapPin, Maximize2, Menu, Phone, Plus, X } from 'lucide-react';
+import { cashierStages, clientSteps, experiences, inquiryTopics, monitoring, research, sampleProjects, services, skillGroups } from './portfolioData';
 
-type RevealProps = {
-  key?: string;
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-};
-
+type Project = typeof sampleProjects[number];
 const navLinks = [
-  { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Work', href: '#projects' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Education', href: '#education' },
+  { label: 'My approach', href: '#approach' },
+  { label: 'About', href: '#about' },
 ];
 
-const experiences = [
-  {
-    position: 'Project Coordinator',
-    organization: 'Suweco Tablas Energy Corp.',
-    period: 'May 2025 — Present',
-    type: 'Project Operations',
-    bullets: [
-      'Coordinate project timelines, deliverables, and stakeholder communication.',
-      'Coordinate procurement requests, material deliveries, and payment follow-ups to support daily project operations.',
-      'Route documents and approvals for purchase requests, cash advances, diesel requests, and other transactions.',
-      'Use company-provided tracking templates to monitor procurement, project budgets, and delivery status in support of daily project coordination.',
-      'Prepare weekly reports, meeting minutes, and presentations.',
-      'Work with site teams, purchasing staff, and internal departments to keep information and requests moving.',
-    ],
-  },
-  {
-    position: 'Bookkeeper',
-    organization: 'Part-time',
-    period: 'Oct 2024 — Apr 2025',
-    type: 'Finance & Records',
-    bullets: [
-      'Maintained financial records and logged transactions with attention to detail.',
-      'Used QuickBooks for basic bookkeeping tasks and accurate financial documentation.',
-    ],
-  },
-  {
-    position: 'Business Process Analyst Intern',
-    organization: 'Five Star Bus Co.',
-    period: 'Sep 2023 — Dec 2023',
-    type: 'Workflow Improvement',
-    bullets: [
-      'Analyzed business processes and documented workflows to identify opportunities for improvement.',
-      'Developed and implemented a workflow to help streamline an internal company process.',
-      'Prepared process documentation and reports to communicate findings and recommendations.',
-    ],
-  },
-];
-
-const skillGroups = [
-  {
-    title: 'Administrative Support',
-    intro: 'Keeping the details organized and the work moving.',
-    icon: ClipboardList,
-    skills: ['Document Management', 'Data Entry', 'Meeting Minutes', 'Reporting', 'Follow-ups'],
-  },
-  {
-    title: 'Project Coordination',
-    intro: 'Connecting people, records, and project priorities.',
-    icon: BriefcaseBusiness,
-    skills: ['Procurement Monitoring', 'Budget Monitoring', 'Team Coordination', 'Task Tracking'],
-  },
-  {
-    title: 'Process & Analysis',
-    intro: 'Finding clearer ways to approach everyday operations.',
-    icon: Workflow,
-    skills: ['Workflow Analysis', 'Process Improvement', 'Process Documentation', 'Lean Six Sigma'],
-  },
-  {
-    title: 'Tools & Digital Skills',
-    intro: 'Comfortable learning and adapting to digital workflows.',
-    icon: Monitor,
-    skills: ['Microsoft Office', 'QuickBooks (Basic)', 'AI Tools', 'AI Automation Workflows', 'AI Workspaces', 'Basic Coding', 'Presentations'],
-  },
-];
-
-const sampleProjects = [
-  {
-    title: 'SUNWARD Solar Website',
-    category: 'Website design',
-    image: '/projects/sunward-solar.jpg',
-    alt: 'SUNWARD Solar homepage with a warm cream-and-gold design and an interactive solar installation section.',
-    description: 'A solar business website that introduces solar energy through an interactive installation journey, system planning, and clear service information.',
-    tags: ['Website Design', 'Interactive Experience'],
-    caption: 'Homepage and solar installation experience from my SUNWARD Solar personal project.',
-  },
-  {
-    title: 'STEC Solar Proposal Tool',
-    category: 'Workflow & planning',
-    image: '/projects/stec-solar-proposal.jpg',
-    alt: 'STEC Solar Proposal Tool showing the system configuration step, proposal options, and a project summary with sample data.',
-    description: 'A guided solar proposal workflow that brings client information, energy needs, system options, and financial comparisons into one organized experience.',
-    tags: ['Workflow Design', 'Proposal Planning'],
-    caption: 'System configuration screen from my STEC Solar Proposal personal project, shown with sample data.',
-  },
-];
-
-type SampleProject = typeof sampleProjects[number];
-
-function Reveal({ children, className = '', delay = 0 }: RevealProps) {
-  const reducedMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      className={className}
-      initial={reducedMotion ? false : { opacity: 0, y: 22 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.14 }}
-      transition={{ duration: reducedMotion ? 0 : 0.58, delay: reducedMotion ? 0 : delay, ease: 'easeOut' }}
-    >
-      {children}
-    </motion.div>
-  );
+function Tabs<T extends { label: string }>({ id, label, items, children, numbered = false }: {
+  id: string; label: string; items: T[]; children: (item: T, index: number) => ReactNode; numbered?: boolean;
+}) {
+  const [active, setActive] = useState(0);
+  const buttons = useRef<Array<HTMLButtonElement | null>>([]);
+  function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    let next = index;
+    if (event.key === 'ArrowRight') next = (index + 1) % items.length;
+    else if (event.key === 'ArrowLeft') next = (index - 1 + items.length) % items.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = items.length - 1;
+    else return;
+    event.preventDefault();
+    setActive(next);
+    buttons.current[next]?.focus();
+  }
+  return <div className={'tabs tabs-' + id}>
+    <div className="tab-list" role="tablist" aria-label={label}>
+      {items.map((item, index) => <button key={item.label} type="button" role="tab"
+        id={`${id}-tab-${index}`} aria-selected={active === index} aria-controls={`${id}-panel-${index}`}
+        tabIndex={active === index ? 0 : -1} ref={(node) => { buttons.current[index] = node; }}
+        onClick={() => setActive(index)} onKeyDown={(event) => navigate(event, index)}>
+        {numbered && <span className="step-number" aria-hidden="true">{index + 1}</span>}{item.label}
+      </button>)}
+    </div>
+    {items.map((item, index) => <div key={item.label} id={`${id}-panel-${index}`} role="tabpanel"
+      aria-labelledby={`${id}-tab-${index}`} hidden={active !== index} tabIndex={0} className="tab-panel">
+      {children(item, index)}
+    </div>)}
+  </div>;
 }
 
-function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
-  return (
-    <Reveal className="section-heading">
-      <p className="eyebrow"><span className="eyebrow-line" />{eyebrow}</p>
-      <h2>{title}</h2>
-      {description && <p className="section-description">{description}</p>}
-    </Reveal>
-  );
+function SectionTitle({ label, title, children }: { label: string; title: string; children?: ReactNode }) {
+  return <div className="section-heading"><p className="section-label">{label}</p><h2>{title}</h2>{children && <p className="section-intro">{children}</p>}</div>;
+}
+
+function CashierWorkflow() {
+  return <section id="cashier-workflow" className="workflow-section section">
+    <div className="container">
+      <div className="workflow-intro">
+        <SectionTitle label="Internship case study" title="A process everyone can follow.">
+          Cashier Management Workflow · Five Star Bus Co.
+        </SectionTitle>
+        <div className="workflow-context"><span className="paper-label"><FileText size={17} aria-hidden="true" /> Four-page process flowchart</span>
+          <p>I mapped ticket encoding and cash remittance, documenting responsibilities, verification steps, and exceptions as a reference for standardized procedures.</p>
+        </div>
+      </div>
+      <p className="interaction-note">Select a stage to explore the workflow.</p>
+      <Tabs id="cashier" label="Cashier workflow stages" items={cashierStages} numbered>
+        {(stage, index) => <div className="workflow-panel">
+          <div className="workflow-story">
+            <p className="stage-counter">Stage {index + 1} of 4</p>
+            <h3>{stage.title}</h3><p>{stage.summary}</p>
+            <ol className="process-actions">{stage.steps.map(step => <li key={step}>{step}</li>)}</ol>
+          </div>
+          <div className="handoff-sheet">
+            <p className="sheet-label">People & handoffs</p>
+            <div className="role-route" aria-label={'Handoff: ' + stage.handoff}>{stage.roles.map(role => <span key={role}>{role}</span>)}</div>
+            <p className="route-caption">{stage.handoff}</p>
+            <dl><div><dt>Starts with</dt><dd>{stage.input}</dd></div><div><dt>Produces</dt><dd>{stage.output}</dd></div></dl>
+          </div>
+        </div>}
+      </Tabs>
+      <details className="exception-details"><summary><span>What happens when records don’t match?</span><Plus size={20} aria-hidden="true" /></summary>
+        <div className="exception-grid"><div><h3>During tally validation</h3><p>The typist rechecks and recomputes. The documented path includes informing the crew about short/over computations, crew rechecking, returning to encoding where needed, and agreement-letter handling.</p></div>
+          <div><h3>During cash remittance</h3><p>If the cashier finds that ticket-entry details do not match the supporting records, the cashier informs the typist and rejects the entry so it can return to encoding for correction.</p></div></div>
+      </details>
+      <p className="workflow-source">Condensed walkthrough of my internship flowchart. The original output is process documentation; this interactive presentation makes the mapped workflow easier to explore.</p>
+    </div>
+  </section>;
 }
 
 export default function App() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null as SampleProject | null);
-  const screenshotDialog = useRef(null as HTMLDialogElement | null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [topic, setTopic] = useState(inquiryTopics[0]);
+  const [contactStatus, setContactStatus] = useState('');
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+  const menuRef = useRef<HTMLButtonElement | null>(null);
+  const menuPanelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const dialog = screenshotDialog.current;
-    if (!dialog) return;
-    if (!selectedProject) {
-      if (dialog.open) dialog.close();
-      return;
-    }
-    if (!dialog.open) dialog.showModal();
-    const previousOverflow = document.body.style.overflow;
+    const dialog = dialogRef.current;
+    if (!dialog || !selectedProject) return;
+    dialog.showModal();
+    const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = previousOverflow; };
+    return () => { document.body.style.overflow = previous; };
   }, [selectedProject]);
-  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const updateScroll = () => setIsScrolled(window.scrollY > 16);
-    updateScroll();
-    window.addEventListener('scroll', updateScroll, { passive: true });
-    return () => window.removeEventListener('scroll', updateScroll);
+    const onEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape' && menuOpen) { setMenuOpen(false); menuRef.current?.focus(); }
+    };
+    const onPointer = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (menuOpen && !menuPanelRef.current?.contains(target) && !menuRef.current?.contains(target)) setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onEscape);
+    document.addEventListener('pointerdown', onPointer);
+    return () => { document.removeEventListener('keydown', onEscape); document.removeEventListener('pointerdown', onPointer); };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const revealLinkedDetail = () => {
+      const target = document.getElementById(window.location.hash.slice(1));
+      if (target instanceof HTMLDetailsElement) target.open = true;
+    };
+    revealLinkedDetail();
+    window.addEventListener('hashchange', revealLinkedDetail);
+    return () => window.removeEventListener('hashchange', revealLinkedDetail);
   }, []);
 
-  const closeMenu = () => setMenuOpen(false);
+  function closeDialog() {
+    setSelectedProject(null);
+    openerRef.current?.focus({ preventScroll: true });
+  }
 
-  return (
-    <div className="site-shell">
-      <a href="#main" className="skip-link">Skip to content</a>
-      <header className={'site-header' + (isScrolled ? ' is-scrolled' : '')}>
-        <nav className="nav-container container" aria-label="Main navigation">
-          <a className="brand" href="#home" onClick={closeMenu} aria-label="Janna De Claro - home">
-            JDC<span className="brand-dot">.</span>
-          </a>
-          <div className="desktop-nav">
-            {navLinks.map((link) => <a key={link.href} href={link.href}>{link.label}</a>)}
+  function composeEmail(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const name = String(data.get('name') || '').trim();
+    const message = String(data.get('message') || '').trim();
+    if (!message) { setContactStatus('Please add a short description of what you need.'); return; }
+    const body = `Hi Janna,\n\nI'm interested in ${topic.toLowerCase()}.\n\n${message}\n\n${name ? 'Best,\n' + name : ''}`;
+    window.location.href = `mailto:jannapfdc2@gmail.com?subject=${encodeURIComponent('Portfolio inquiry: ' + topic)}&body=${encodeURIComponent(body)}`;
+    setContactStatus('Your email app should open with a draft to review and send. You can also email me directly at jannapfdc2@gmail.com.');
+  }
+
+  async function copyEmail() {
+    try { await navigator.clipboard.writeText('jannapfdc2@gmail.com'); setContactStatus('Email address copied.'); }
+    catch { setContactStatus('You can copy my email address here: jannapfdc2@gmail.com.'); }
+  }
+
+  return <div className="site-shell">
+    <a href="#main" className="skip-link">Skip to content</a>
+    <header className="site-header">
+      <nav className="container nav-container" aria-label="Main navigation">
+        <a className="brand" href="#home" onClick={() => setMenuOpen(false)} aria-label="Janna De Claro home">JDC<span>.</span></a>
+        <div className="desktop-nav">{navLinks.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</div>
+        <a href="#contact" className="nav-contact">Let’s work together</a>
+        <button type="button" ref={menuRef} className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}</button>
+      </nav>
+      <div id="mobile-navigation" className="mobile-nav" ref={menuPanelRef} hidden={!menuOpen}>{navLinks.map(link => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>)}<a href="#contact" onClick={() => setMenuOpen(false)}>Let’s work together</a></div>
+    </header>
+    <main id="main" tabIndex={-1}>
+      <section id="home" className="hero">
+        <div className="container hero-topline"><span>Janna Patricia De Claro</span><span>Industrial Engineering graduate</span></div>
+        <div className="container hero-layout">
+          <div className="hero-copy"><p className="hero-role">Process & operations support</p><h1>Organized by nature.<br />Driven by improvement.</h1>
+            <p className="hero-description">I help teams organize the details, document clear processes, and keep everyday operations moving—with a practical curiosity for digital tools.</p>
+            <div className="hero-actions"><a href="#services" className="btn btn-primary">Find the support you need</a><a href="#projects" className="text-link">Explore my work</a></div>
+            <p className="availability">Open to project, VA, and collaborative opportunities</p>
           </div>
-          <a className="nav-contact" href="#contact">Let's connect <ArrowUpRight size={15} aria-hidden="true" /></a>
-          <button
-            type="button"
-            className="menu-toggle"
-            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={23} aria-hidden="true" /> : <Menu size={23} aria-hidden="true" />}
-          </button>
-        </nav>
-        <div id="mobile-navigation" className={'mobile-nav' + (menuOpen ? ' open' : '')}>
-          {navLinks.map((link) => <a key={link.href} href={link.href} onClick={closeMenu}>{link.label}</a>)}
-          <a href="#contact" onClick={closeMenu}>Contact</a>
+          <aside className="portfolio-directory" aria-label="Explore the portfolio"><p>A little structure.<br />A clearer way forward.</p><div className="directory-links">
+            <a href="#cashier-workflow"><FileText size={19} aria-hidden="true" /><span>Explore a process<span>Cashier workflow case study</span></span></a>
+            <a href="#projects"><Maximize2 size={19} aria-hidden="true" /><span>See something I made<span>Personal digital projects</span></span></a>
+            <a href="#approach"><ClipboardList size={19} aria-hidden="true" /><span>Picture working together<span>My approach to your project</span></span></a>
+          </div><span className="directory-footer">Thoughtful systems. Practical support.</span></aside>
         </div>
-      </header>
+        <div className="container hero-bottom"><span>Project coordination</span><span>Process documentation</span><span>Bookkeeping support</span></div>
+      </section>
 
-      <main id="main" tabIndex={-1}>
-        <section id="home" className="hero">
-          <div className="hero-glow hero-glow-one" aria-hidden="true" />
-          <div className="hero-glow hero-glow-two" aria-hidden="true" />
-          <div className="container hero-grid">
-            <motion.div
-              className="hero-content"
-              initial={reducedMotion ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: reducedMotion ? 0 : 0.75, ease: 'easeOut' }}
-            >
-              <div className="status-pill"><span className="status-dot" /> Open to opportunities</div>
-              <p className="hero-eyebrow">HELLO, I'M JANNA PATRICIA DE CLARO</p>
-              <h1>Organized by nature.<br /><em>Driven by improvement.</em></h1>
-              <p className="hero-role">Project Coordinator <span> / </span> Administrative Support <span> / </span> Process Improvement</p>
-              <p className="hero-description">I help teams stay organized, keep project operations on track, and bring clarity to everyday workflows—with an Industrial Engineering background and a creative interest in digital projects.</p>
-              <div className="hero-actions">
-                <a className="btn btn-primary" href="#experience">Explore my experience <ArrowUpRight size={17} aria-hidden="true" /></a>
-                <a className="btn btn-secondary" href="#projects">View projects <ArrowRight size={17} aria-hidden="true" /></a>
-              </div>
-            </motion.div>
-            <motion.div
-              className="hero-aside"
-              initial={reducedMotion ? false : { opacity: 0, x: 22 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: reducedMotion ? 0 : 0.8, delay: reducedMotion ? 0 : 0.17, ease: 'easeOut' }}
-            >
-              <div className="overview-card">
-                <div className="overview-top"><span>MY FOCUS</span><Sparkles size={18} aria-hidden="true" /></div>
-                <p className="overview-quote">Turning complex tasks into <em>clear, organized workflows.</em></p>
-                <div className="overview-divider" />
-                <div className="overview-row"><CheckCircle2 size={17} aria-hidden="true" /> Administrative operations</div>
-                <div className="overview-row"><CheckCircle2 size={17} aria-hidden="true" /> Project coordination</div>
-                <div className="overview-row"><CheckCircle2 size={17} aria-hidden="true" /> Process documentation</div>
-                <div className="overview-bottom"><span>DETAIL-ORIENTED · ADAPTABLE</span><ArrowDownRight size={22} aria-hidden="true" /></div>
-              </div>
-              <div className="aside-decoration" aria-hidden="true" />
-            </motion.div>
+      <section id="services" className="section services-section"><div className="container">
+        <SectionTitle label="How I can help" title="What needs a little more structure?">Choose the kind of support you’re looking for.</SectionTitle>
+        <Tabs id="services" label="Types of support" items={services}>{service => <div className="service-content"><div><h3>{service.title}</h3><p>{service.description}</p><a href={service.link} className="text-link">{service.linkLabel}</a></div><div className="service-scope"><p className="sheet-label">Where I can support you</p><ul>{service.tasks.map(task => <li key={task}>{task}</li>)}</ul><p className="evidence-note">{service.evidence}</p></div></div>}</Tabs>
+      </div></section>
+
+      <section id="projects" className="section projects-section"><div className="container">
+        <SectionTitle label="Selected personal work" title="Ideas made useful.">Personal projects exploring website design and organized digital workflows. Select a screenshot for a closer look.</SectionTitle>
+        <div className="sample-projects-grid">{sampleProjects.map(project => <article className="sample-project" key={project.title}>
+          <button type="button" className="sample-screenshot-button" aria-label={'Enlarge ' + project.title + ' screenshot'} aria-haspopup="dialog" onClick={event => { openerRef.current = event.currentTarget; setSelectedProject(project); }}><img src={project.image} alt={project.alt} width="1265" height="712" loading="lazy" decoding="async" /><span className="screenshot-hint"><Maximize2 size={16} aria-hidden="true" /> View screenshot</span></button>
+          <div className="project-heading"><p>{project.category}</p><span>Personal project</span></div><h3>{project.title}</h3><p className="project-description">{project.description}</p><div className="skill-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+        </article>)}</div>
+        <div className="exploration-note"><span>Currently exploring</span><p>AI tools, automation workflows, and web-based systems that could make team handoffs and everyday work more organized.</p></div>
+      </div></section>
+
+      <CashierWorkflow />
+
+      <section id="experience" className="section experience-section"><div className="container">
+        <SectionTitle label="My experience" title="Grounded in everyday operations.">Select a role to see the work behind it.</SectionTitle>
+        <div className="experience-list">{experiences.map((experience, index) => <details className="experience-detail" id={index === 1 ? 'bookkeeping-experience' : index === 2 ? 'process-experience' : 'coordination-experience'} key={experience.position} open={index === 0}>
+          <summary><span className="experience-summary"><span className="experience-company">{experience.organization}</span><span className="experience-title">{experience.position}</span></span><span className="period">{experience.period}</span><Plus size={22} aria-hidden="true" /></summary>
+          <div className="experience-body"><p className="experience-type">{experience.type}</p><ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
+            {index === 0 && <div className="monitoring-block"><h3>What I monitor</h3><p>Using company-provided tracking templates.</p><Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>{item => <div className="monitoring-content"><p>{item.text}</p><p><strong>Records involved:</strong> {item.record}</p></div>}</Tabs></div>}
+            {index === 2 && <a href="#cashier-workflow" className="text-link">Explore the cashier workflow case study</a>}
           </div>
-          <div className="hero-scroll container"><a href="#about">SCROLL TO EXPLORE <ChevronDown size={15} aria-hidden="true" /></a></div>
-        </section>
+        </details>)}</div>
+      </div></section>
 
-        <section id="about" className="section about-section">
-          <div className="container about-layout">
-            <SectionHeading eyebrow="01 / ABOUT ME" title="A structured mind. A thoughtful approach." />
-            <Reveal className="about-copy" delay={0.1}>
-              <p>I'm a Bachelor of Science in Industrial Engineering graduate from the Technological Institute of the Philippines – Quezon City, with hands-on experience in project coordination, procurement and budget monitoring, administrative support, and process improvement.</p>
-              <p>From tracking documents and supporting project teams to developing a workflow during my internship, I enjoy creating order in busy environments. I bring adaptability, multitasking, attention to detail, and clear communication to every role. I'm also exploring AI tools, automation workflows, AI workspaces, and modern website projects to keep expanding my digital skills.</p>
-              <div className="about-highlights">
-                <div><span className="highlight-number">2+</span><span className="highlight-label">Years of experience</span></div>
-                <div><span className="highlight-number">03</span><span className="highlight-label">Professional roles</span></div>
-                <div><span className="highlight-number">01</span><span className="highlight-label">Professional certification</span></div>
-                <div><span className="highlight-number">BS</span><span className="highlight-label">Industrial Engineering</span></div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+      <section id="approach" className="section approach-section"><div className="container">
+        <SectionTitle label="How I work with clients" title="From your challenge to a clear next step.">My proposed approach for new engagements, adapted to your team and agreed scope.</SectionTitle>
+        <Tabs id="approach" label="Working together stages" items={clientSteps} numbered>{step => <div className="approach-content"><h3>{step.title}</h3><div className="approach-columns"><div><h4>What I do</h4><p>{step.action}</p></div><div><h4>What I need from you</h4><p>{step.need}</p></div><div><h4>What you receive</h4><p>{step.receive}</p></div></div></div>}</Tabs>
+        <a href="#contact" className="text-link">Tell me about your project</a>
+      </div></section>
 
-        <section id="experience" className="section experience-section">
-          <div className="container">
-            <SectionHeading eyebrow="02 / EXPERIENCE" title="Where experience meets execution." description="A blend of project operations, bookkeeping support, and hands-on process improvement." />
-            <div className="experience-list">
-              {experiences.map((experience, index) => (
-                <Reveal key={experience.position} className="experience-card" delay={index * 0.08}>
-                  <div className="experience-index">0{index + 1}</div>
-                  <div className="experience-body">
-                    <div className="experience-header">
-                      <div><p className="experience-type">{experience.type}</p><h3>{experience.position}</h3><p className="experience-company">{experience.organization}</p></div>
-                      <span className="period-chip">{experience.period}</span>
-                    </div>
-                    <ul className="experience-bullets">
-                      {experience.bullets.map((bullet) => <li key={bullet}><CheckCircle2 size={16} aria-hidden="true" /><span>{bullet}</span></li>)}
-                    </ul>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+      <section id="about" className="section about-section"><div className="container about-layout">
+        <SectionTitle label="About me" title="A structured mind. A curious outlook." />
+        <div className="about-copy"><p>I’m Janna, a BS Industrial Engineering graduate from the Technological Institute of the Philippines – Quezon City. My experience spans project coordination, process documentation, administrative support, and part-time bookkeeping.</p><p>I enjoy finding order in busy environments—whether that means following up on project requests, organizing expense records, or mapping how a team’s work flows from one person to the next.</p><p>I bring adaptability, attention to detail, multitasking, and clear communication to my work. I’m also exploring AI tools, automation, and website-based workflows to turn ideas into useful outputs.</p><p className="volunteer-note">I’m open to volunteer opportunities where I can contribute, learn, and support meaningful work.</p><a href="#contact" className="text-link" onClick={() => setTopic('Volunteer opportunity')}>Discuss a volunteer opportunity</a></div>
+      </div></section>
 
-        <section id="skills" className="section skills-section">
-          <div className="container">
-            <SectionHeading eyebrow="03 / EXPERTISE" title="Skills that keep things moving." description="Practical capabilities developed through real work, collaboration, and ongoing learning." />
-            <div className="skills-grid">
-              {skillGroups.map((group, index) => {
-                const Icon = group.icon;
-                return (
-                  <Reveal key={group.title} className="skill-card" delay={index * 0.06}>
-                    <div className="skill-icon"><Icon size={23} strokeWidth={1.8} aria-hidden="true" /></div>
-                    <h3>{group.title}</h3>
-                    <p>{group.intro}</p>
-                    <div className="skill-tags">{group.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
-                  </Reveal>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+      <section id="skills" className="section skills-section"><div className="container">
+        <SectionTitle label="Skills in context" title="The tools behind the work." />
+        <div className="skills-grid">{skillGroups.map((group, index) => { const Icon = group.icon; return <article className="skill-group" key={group.title}><Icon size={24} aria-hidden="true" /><h3>{group.title}</h3><p>{group.intro}</p><div className="skill-tags">{group.skills.map(skill => <span key={skill}>{skill}</span>)}</div><a className="text-link" href={index === 2 ? '#cashier-workflow' : index === 3 ? '#projects' : '#coordination-experience'}>{index === 3 ? 'See personal explorations' : 'See related experience'}</a></article>; })}</div>
+      </div></section>
 
-        <section id="projects" className="section projects-section">
-          <div className="container">
-            <SectionHeading eyebrow="04 / SELECTED WORK" title="Featured personal projects." description="A selection of my personal projects exploring website design and organized digital workflows." />
-            <div className="sample-projects-grid">
-              {sampleProjects.map((project, index) => (
-                <Reveal key={project.title} className="sample-project-card" delay={index * 0.08}>
-                  <button
-                    type="button"
-                    className="sample-screenshot-button"
-                    aria-label={'Enlarge ' + project.title + ' screenshot'}
-                    aria-haspopup="dialog"
-                    onClick={() => setSelectedProject(project)}
-                  >
-                    <img src={project.image} alt={project.alt} width="1265" height="712" loading="lazy" decoding="async" />
-                    <span className="screenshot-hint"><Maximize2 size={14} aria-hidden="true" /> View screenshot</span>
-                  </button>
-                  <div className="sample-project-body">
-                    <p className="sample-project-category">{project.category}</p>
-                    <h3>{project.title}</h3>
-                    <p className="sample-project-description">{project.description}</p>
-                    <div className="skill-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-            <Reveal className="project-footnote"><Sparkles size={18} aria-hidden="true" /><span>I'm interested in how good systems and thoughtful design can make work easier for people.</span></Reveal>
-          </div>
-        </section>
+      <section id="education" className="section education-section"><div className="container">
+        <SectionTitle label="Learning & foundations" title="An Industrial Engineering perspective." />
+        <div className="education-layout"><div className="education-records"><div><GraduationCap size={22} aria-hidden="true" /><div><h3>BS Industrial Engineering</h3><p>Technological Institute of the Philippines – Quezon City</p><span>Bachelor’s degree</span></div></div><div><FileText size={22} aria-hidden="true" /><div><h3>Lean Six Sigma White Belt</h3><p>Professional certification</p></div></div><details className="prior-education"><summary>Earlier education <ChevronDown size={18} aria-hidden="true" /></summary><p>Senior High School — STEM<br />Science, Technology, Engineering & Mathematics<br />SHS Diploma</p></details></div>
+          <div className="academic-work"><h3>Academic research experience</h3><p>Research projects that shaped how I approach problems.</p>{research.map(item => <details key={item.title}><summary>{item.title}<Plus size={18} aria-hidden="true" /></summary><p>{item.detail}</p></details>)}</div>
+        </div>
+      </div></section>
 
-        <section id="education" className="section education-section">
-          <div className="container">
-            <SectionHeading eyebrow="05 / BACKGROUND" title="Built on continuous learning." />
-            <div className="education-grid">
-              <Reveal className="education-card">
-                <div className="education-icon"><GraduationCap size={22} aria-hidden="true" /></div>
-                <p className="education-category">EDUCATION</p>
-                <h3>BS Industrial Engineering</h3>
-                <p>Technological Institute of the Philippines – Quezon City</p>
-                <span>Bachelor's Degree</span>
-              </Reveal>
-              <Reveal className="education-card" delay={0.08}>
-                <div className="education-icon"><GraduationCap size={22} aria-hidden="true" /></div>
-                <p className="education-category">EDUCATION</p>
-                <h3>Senior High School — STEM</h3>
-                <p>Science, Technology, Engineering & Mathematics</p>
-                <span>SHS Diploma</span>
-              </Reveal>
-              <Reveal className="education-card education-card-accent" delay={0.16}>
-                <div className="education-icon"><Award size={22} aria-hidden="true" /></div>
-                <p className="education-category">CERTIFICATION</p>
-                <h3>Lean Six Sigma White Belt</h3>
-                <p>Professional Certification</p>
-                <span>Certified</span>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="contact-section">
-          <div className="container contact-layout">
-            <Reveal>
-              <p className="eyebrow eyebrow-light"><span className="eyebrow-line" />06 / GET IN TOUCH</p>
-              <h2>Let's make great<br /><em>work happen.</em></h2>
-              <p className="contact-intro">Open to Virtual Assistant, Administrative Support, Project Coordination, and collaborative opportunities.</p>
-              <a className="btn btn-gold" href="mailto:jannapfdc2@gmail.com?subject=Opportunity%20to%20Connect">Say hello <ArrowUpRight size={17} aria-hidden="true" /></a>
-              <p className="resume-note">Resume available upon request.</p>
-            </Reveal>
-            <Reveal className="contact-info" delay={0.1}>
-              <a href="mailto:jannapfdc2@gmail.com"><Mail size={20} aria-hidden="true" /><span><small>EMAIL</small>jannapfdc2@gmail.com</span><ArrowUpRight size={17} className="contact-arrow" aria-hidden="true" /></a>
-              <a href="tel:+639762476313"><Phone size={20} aria-hidden="true" /><span><small>PHONE</small>+63 976 247 6313</span><ArrowUpRight size={17} className="contact-arrow" aria-hidden="true" /></a>
-              <div><MapPin size={20} aria-hidden="true" /><span><small>LOCATION</small>San Mateo, Rizal, Philippines</span></div>
-              <a href="https://github.com/jannapfdc2/Janna-De-Claro" target="_blank" rel="noopener noreferrer"><Github size={20} aria-hidden="true" /><span><small>GITHUB</small>View my portfolio repository</span><ArrowUpRight size={17} className="contact-arrow" aria-hidden="true" /></a>
-            </Reveal>
-          </div>
-        </section>
-      </main>
-
-      <dialog
-        ref={screenshotDialog}
-        className="screenshot-dialog"
-        aria-labelledby="screenshot-title"
-        aria-describedby="screenshot-caption"
-        onClose={() => setSelectedProject(null)}
-        onClick={(event) => { if (event.target === event.currentTarget) event.currentTarget.close(); }}
-      >
-        {selectedProject && <div className="screenshot-dialog-content">
-          <div className="screenshot-dialog-header">
-            <h2 id="screenshot-title">{selectedProject.title}</h2>
-            <button type="button" className="screenshot-close" aria-label="Close screenshot" autoFocus onClick={() => screenshotDialog.current?.close()}><X size={22} aria-hidden="true" /></button>
-          </div>
-          <img src={selectedProject.image} alt={selectedProject.alt} width="1265" height="712" />
-          <p id="screenshot-caption">{selectedProject.caption}</p>
-        </div>}
-      </dialog>
-
-      <footer className="site-footer">
-        <div className="container footer-inner"><a href="#home" className="footer-brand">JDC<span>.</span></a><p>© {new Date().getFullYear()} Janna Patricia De Claro. All rights reserved.</p><a href="#home">Back to top ↑</a></div>
-      </footer>
-    </div>
-  );
+      <section id="contact" className="contact-section section"><div className="container contact-layout"><div className="contact-copy"><p className="section-label">Let’s connect</p><h2>What can we organize together?</h2><p>Tell me what your team needs. I’m open to project coordination, virtual assistance, process documentation, bookkeeping support, and collaborative opportunities.</p><div className="contact-links"><a href="mailto:jannapfdc2@gmail.com"><Mail size={20} aria-hidden="true" />jannapfdc2@gmail.com</a><button type="button" onClick={copyEmail}><Copy size={16} aria-hidden="true" />Copy email address</button><a href="tel:+639762476313"><Phone size={20} aria-hidden="true" />+63 976 247 6313</a><p><MapPin size={20} aria-hidden="true" />San Mateo, Rizal, Philippines</p></div><p className="resume-note">Resume available upon request.</p></div>
+          <form className="inquiry-form" onSubmit={composeEmail}><h3>Start a conversation</h3><label htmlFor="inquiry-topic">I’m looking for</label><div className="select-wrap"><select id="inquiry-topic" value={topic} onChange={event => setTopic(event.target.value)}>{inquiryTopics.map(item => <option key={item}>{item}</option>)}</select><ChevronDown size={18} aria-hidden="true" /></div><label htmlFor="inquiry-name">Your name <span>(optional)</span></label><input id="inquiry-name" name="name" autoComplete="name" maxLength={100} /><label htmlFor="inquiry-message">What would you like help with?</label><textarea id="inquiry-message" name="message" rows={4} maxLength={1500} required placeholder="A little about your workflow, goals, or project…" /><p className="form-note">This opens a draft in your email app for you to review and send.</p><button type="submit" className="btn btn-gold">Open email draft</button><p className="contact-status" role="status" aria-live="polite">{contactStatus}</p></form>
+      </div></section>
+    </main>
+    <dialog ref={dialogRef} className="screenshot-dialog" aria-labelledby="screenshot-title" aria-describedby="screenshot-caption" onClose={closeDialog} onClick={event => { if (event.target === event.currentTarget) event.currentTarget.close(); }}>
+      {selectedProject && <div className="screenshot-dialog-content"><div className="screenshot-dialog-header"><h2 id="screenshot-title">{selectedProject.title}</h2><button type="button" className="screenshot-close" aria-label="Close screenshot" autoFocus onClick={() => dialogRef.current?.close()}><X size={22} aria-hidden="true" /></button></div><img src={selectedProject.image} alt={selectedProject.alt} width="1265" height="712" /><div className="dialog-copy"><p id="screenshot-caption">{selectedProject.caption}</p><p>{selectedProject.description}</p><span>Personal project · Screenshot preview</span></div></div>}
+    </dialog>
+    <footer className="site-footer"><div className="container footer-inner"><a href="#home" className="brand" aria-label="Janna De Claro home">JDC<span>.</span></a><p>© {new Date().getFullYear()} Janna Patricia De Claro</p><a href="https://github.com/jannapfdc2/Janna-De-Claro" target="_blank" rel="noopener noreferrer"><Github size={18} aria-hidden="true" />Portfolio repository</a><a href="#home">Back to top</a></div></footer>
+  </div>;
 }

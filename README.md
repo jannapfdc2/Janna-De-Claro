@@ -1,41 +1,32 @@
 # Janna Patricia De Claro — Portfolio
 
-A personal portfolio highlighting experience in **Project Coordination**, **Administrative Support**, and **Process Improvement**, with featured personal projects in website and workflow design.
-
-## Design
-
-Soft ivory backgrounds, midnight-navy typography, champagne-gold accents, subtle motion, and a mobile-friendly layout. Honors reduced-motion accessibility preferences.
+An interactive portfolio for an Industrial Engineering graduate with experience in project coordination, process documentation, administrative support, and bookkeeping.
 
 ## Run locally
 
-Requirements: Node.js and npm.
+- Install dependencies: `npm install`
+- Start the development server: `npm run dev`
+- Check TypeScript: `npm run lint`
+- Build for production: `npm run build`
 
-1. Install dependencies: `npm install`
-2. Start the development server: `npm run dev`
-3. Check TypeScript: `npm run lint`
-4. Make a production build: `npm run build`
+Built with React, TypeScript, Vite, Tailwind CSS, and Lucide icons. The existing package manifest and entry point are retained.
 
-The site is built with React, TypeScript, Vite, Tailwind CSS, Lucide icons, and Motion.
+## Experience
 
-## Site sections
+Soft ivory, navy, and champagne-gold styling, editorial typography, and restrained motion inspired by the supplied visual reference. The site includes:
 
-- About Me
-- Experience
-- Skills
-- Featured personal projects (SUNWARD Solar Website and STEC Solar Proposal Tool)
-- Education and Certification
-- Contact
+- Service tabs with scope and links to relevant experience.
+- SUNWARD Solar Website and STEC Solar Proposal Tool screenshot previews. Images open in labeled native dialogs with close, Escape, backdrop dismissal, and explicit focus restoration. STEC uses sample data; no live demo links are claimed.
+- A four-stage interactive cashier-management case study based on Janna's internship process flowchart, including role handoffs and discrepancy paths. This is a condensed presentation of process documentation, not a software implementation claim. The original internal file and staff-name footer are not included.
+- Expandable professional roles, with procurement, budget, and delivery monitoring described as use of company-provided templates.
+- A five-step proposed client approach covering what Janna does, what the client provides, and the expected deliverable at each stage.
+- Text-only About Me, original skill groups, education and certification, academic research themes, and an invitation to volunteer opportunities.
+- A topic-based inquiry form that opens an email draft for the visitor to review and send. No messages are sent by the site and no backend stores form contents.
 
-## Personal project screenshots
+## Content maintenance
 
-SUNWARD Solar Website and STEC Solar Proposal Tool are presented as screenshot samples. Each image opens in an accessible enlargement dialog that supports the close button, Escape key, and backdrop click. The STEC screenshot uses sample data.
+Editable portfolio content lives in `src/portfolioData.ts`. Interactions and page composition live in `src/App.tsx`; styles are in `src/index.css`. Screenshot assets are in `public/projects/`.
 
-Screenshot assets are stored in `public/projects/`.
+Tabs support Left/Right/Home/End navigation. Reduced-motion preferences are respected. The page includes visible keyboard focus, a skip link, accessible labels, native disclosure controls, and responsive layouts.
 
-## Before publishing
-
-- Add a real project URL only after it has been verified. Do not introduce dead links.
-- Add a resume download only after the actual PDF is placed in `public/` (for example `public/Janna-De-Claro-Resume.pdf`). Currently the website states that a resume is available upon request.
-- Check contact information and update work history dates as needed.
-
-This redesign retains the original professional background while making the portfolio better aligned with VA and project coordination opportunities.
+Only add a resume download after a real public PDF is supplied. The current portfolio states that a resume is available upon request. Keep project status, dates, claims, and contact details aligned with the owner's confirmed information.
