@@ -711,3 +711,30 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .awf-step-copy { animation: none !important; }
   .awf-shape, .awf-node-text, .awf-mobile-node { transition: none !important; }
 }
+
+
+/* Scroll-triggered entrance animations: opt-in via JS, once per element. */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-reveal {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition:
+      opacity 760ms cubic-bezier(.22, 1, .36, 1),
+      transform 760ms cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .scroll-reveal.is-revealed,
+  .scroll-reveal:focus-within {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media print {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

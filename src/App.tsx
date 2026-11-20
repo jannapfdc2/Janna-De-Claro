@@ -115,6 +115,68 @@ export default function App() {
     return () => { document.removeEventListener('keydown', onEscape); document.removeEventListener('pointerdown', onPointer); };
   }, [menuOpen]);
 
+
+  // Reveal stable page elements on first entry; keep tab panels and dialogs untouched.
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+
+    const selector = [
+      '.hero-topline',
+      '.hero-copy > .hero-role',
+      '.hero-copy > h1',
+      '.hero-copy > .hero-description',
+      '.hero-copy > .hero-actions',
+      '.hero-copy > .availability',
+      '.portfolio-directory',
+      '.hero-bottom > span',
+      '.section-heading',
+      '.services-section .tabs',
+      '.sample-projects-grid > .sample-project',
+      '.exploration-note',
+      '.workflow-context',
+      '.awf-story',
+      '.internship-gallery',
+      '.experience-list > .experience-detail',
+      '.approach-section > .container > .tabs',
+      '.approach-section > .container > .text-link',
+      '.about-copy > p',
+      '.about-copy > .text-link',
+      '.skills-grid > .skill-group',
+      '.education-records',
+      '.academic-work',
+      '.contact-copy',
+      '.inquiry-form',
+    ].join(', ');
+
+    const stagger = (query: string, interval: number) => {
+      document.querySelectorAll<HTMLElement>(query).forEach((element, index) => {
+        element.style.setProperty('--reveal-delay', Math.min(index, 4) * interval + 'ms');
+      });
+    };
+
+    stagger('.hero-copy > .hero-role, .hero-copy > h1, .hero-copy > .hero-description, .hero-copy > .hero-actions, .hero-copy > .availability', 90);
+    stagger('.hero-bottom > span', 90);
+    stagger('.sample-projects-grid > .sample-project', 140);
+    stagger('.skills-grid > .skill-group', 110);
+    stagger('.experience-list > .experience-detail', 85);
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+
+    document.querySelectorAll<HTMLElement>(selector).forEach(element => {
+      element.classList.add('scroll-reveal');
+      observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const revealLinkedDetail = () => {
       const target = document.getElementById(window.location.hash.slice(1));
