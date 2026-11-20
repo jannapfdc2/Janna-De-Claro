@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { RotateCcw } from 'lucide-react';
 
 const STAGE_DURATION = 2300;
 
@@ -34,6 +33,7 @@ const stages = [
 
 export default function AnimatedWorkflow() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isObservingInView = useRef(false);
   const [active, setActive] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [inView, setInView] = useState(false);
@@ -65,9 +65,26 @@ export default function AnimatedWorkflow() {
       setInView(true);
       return;
     }
+
+    // Scroll-triggered replay, without a button. Entering the viewport starts
+    // a fresh walkthrough; leaving it fully resets for the next visit.
+    // Different enter/exit thresholds avoid resets from tiny scroll movements.
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.18 }
+      ([entry]) => {
+        const ratio = entry.intersectionRatio;
+        if (!isObservingInView.current && ratio >= 0.28) {
+          isObservingInView.current = true;
+          setActive(0);
+          setCompleted(false);
+          setInView(true);
+        } else if (isObservingInView.current && ratio < 0.06) {
+          isObservingInView.current = false;
+          setInView(false);
+          setActive(0);
+          setCompleted(false);
+        }
+      },
+      { threshold: [0, 0.06, 0.28] }
     );
     observer.observe(section);
     return () => observer.disconnect();
@@ -83,7 +100,7 @@ export default function AnimatedWorkflow() {
   const finished = completed || reducedMotion;
   const playing = inView && pageVisible && !finished;
 
-  // Plays once, pausing when the diagram is not visible.
+  // Plays once per viewport entry. Scroll away and return to replay.
   useEffect(() => {
     if (!playing) return;
 
@@ -94,11 +111,6 @@ export default function AnimatedWorkflow() {
 
     return () => window.clearTimeout(timeout);
   }, [active, playing]);
-
-  function replay() {
-    setActive(0);
-    setCompleted(false);
-  }
 
   const nodeClass = (index: number) =>
     'awf-node' +
@@ -117,7 +129,7 @@ export default function AnimatedWorkflow() {
     >
       <div className="awf-meta">
         <p className="workflow-case-label">01 / MY PROCESS MAPPING APPROACH</p>
-        <span>{finished ? 'Complete' : playing ? 'Playing once' : 'Five-step methodology'}</span>
+        <span>{finished ? 'Scroll away & back to replay' : playing ? 'Playing once' : 'Scroll to play'}</span>
       </div>
 
       <div
@@ -220,12 +232,6 @@ export default function AnimatedWorkflow() {
               : stages[active].detail}
           </p>
         </div>
-        {completed && !reducedMotion && (
-          <button type="button" className="awf-control" onClick={replay}>
-            <RotateCcw size={16} aria-hidden="true" />
-            Replay
-          </button>
-        )}
       </div>
     </div>
   );
