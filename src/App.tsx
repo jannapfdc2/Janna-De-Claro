@@ -1,4 +1,5 @@
 import InternshipFlowchart from './InternshipFlowchart';
+import AnimatedWorkflow from './AnimatedWorkflow';
 import ProjectPreview from './ProjectPreview';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode, KeyboardEvent, FormEvent } from 'react';
@@ -87,6 +88,7 @@ function InternshipContribution() {
           </span>
         </div>
 
+        <AnimatedWorkflow />
         <InternshipFlowchart />
       </div>
     </section>
