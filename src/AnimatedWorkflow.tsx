@@ -1,30 +1,60 @@
 import { useEffect, useRef, useState } from 'react';
 import { RotateCcw } from 'lucide-react';
 
-const STAGE_DURATION = 2700;
+const STAGE_DURATION = 2500;
 
-// An illustrative overview: company-specific operating details remain in
-// the separate source document, subject to publication permission.
+// An illustrative IE methodology, not a transcription of confidential
+// operational instructions or a claim that an SOP was implemented.
 const stages = [
   {
-    label: 'Record intake',
-    title: 'Identify process inputs',
-    description: 'Understand the records, documents, and information entering a workflow.',
+    label: 'Understand',
+    short: 'Define scope',
+    subtitle: 'Inputs & people',
+    title: 'Understand the current process',
+    description: 'Define the process boundaries, people involved, inputs, and expected outputs.',
   },
   {
-    label: 'Verification',
-    title: 'Verify information',
-    description: 'Show how information is checked before the process moves forward.',
+    label: 'Gather',
+    short: 'Collect details',
+    subtitle: 'Tasks & records',
+    title: 'Gather and organize information',
+    description: 'Organize the activities, records, and responsibilities that shape the existing workflow.',
   },
   {
-    label: 'Decision',
-    title: 'Map decision points',
-    description: 'Illustrate the option to recheck information when an exception appears.',
+    label: 'Map',
+    short: 'Draw the AS-IS',
+    subtitle: 'Steps & decisions',
+    title: 'Create the AS-IS process map',
+    description: 'Turn the current sequence into a visual map of activities, decision points, and role handoffs.',
   },
   {
-    label: 'Handoff',
-    title: 'Document role handoffs',
-    description: 'Make clear how a completed activity connects to the next responsible role.',
+    label: 'Review',
+    short: 'Review the flow',
+    subtitle: 'Gaps & rework',
+    title: 'Analyze opportunities for improvement',
+    description: 'Review the map for unclear handoffs, repeated checks, possible rework, or process gaps.',
+  },
+  {
+    label: 'Document',
+    short: 'Support standards',
+    subtitle: 'Consistent reference',
+    title: 'Support process standardization',
+    description: 'Organize the documented workflow into a reference that can inform consistent work instructions.',
+  },
+];
+
+const benefits = [
+  {
+    title: 'Clearer task sequence',
+    description: 'A shared visual reference makes it easier to follow how activities connect.',
+  },
+  {
+    title: 'Visible responsibilities',
+    description: 'Documented handoffs can help teams understand who handles each stage.',
+  },
+  {
+    title: 'Foundation for SOPs',
+    description: 'An AS-IS flowchart can support reviews, work instructions, and future improvements.',
   },
 ];
 
@@ -37,22 +67,26 @@ export default function AnimatedWorkflow() {
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReducedMotion(preference.matches);
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(media.matches);
     update();
-    preference.addEventListener('change', update);
-    return () => preference.removeEventListener('change', update);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
   }, []);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const element = sectionRef.current;
+    if (!element) return;
 
+    if (!('IntersectionObserver' in window)) {
+      setInView(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.2 }
+      { threshold: 0.18 }
     );
-    observer.observe(section);
+    observer.observe(element);
     return () => observer.disconnect();
   }, []);
 
@@ -66,138 +100,104 @@ export default function AnimatedWorkflow() {
   const finished = completed || reducedMotion;
   const playing = inView && pageVisible && !finished;
 
-  // Advance once through all four stages. Leaving the viewport pauses the
-  // countdown without resetting progress; after completion it never loops.
+  // Play once. Leaving the viewport pauses the sequence without resetting it.
   useEffect(() => {
     if (!playing) return;
-    const timeout = window.setTimeout(() => {
+
+    const timer = window.setTimeout(() => {
       if (active === stages.length - 1) setCompleted(true);
       else setActive(current => current + 1);
     }, STAGE_DURATION);
-    return () => window.clearTimeout(timeout);
+
+    return () => window.clearTimeout(timer);
   }, [active, playing]);
 
   const nodeClass = (index: number) =>
-    'awf-node' +
-    ((finished ? index === stages.length - 1 : index === active)
-      ? ' is-active' : '');
+    'awf-node' + (active === index && !finished ? ' is-active' : '');
 
-  const connectionClass = (destination: number) =>
-    'awf-edge' + (playing && active === destination ? ' is-flowing' : '');
+  const connectorClass = (destination: number) =>
+    'awf-connector' + (playing && active === destination ? ' is-flowing' : '');
 
-  const replay = () => {
+  function replay() {
     setActive(0);
     setCompleted(false);
-  };
+  }
 
   return (
     <div
       ref={sectionRef}
       className={'awf-story' + (playing ? ' is-playing' : '') + (finished ? ' is-complete' : '')}
     >
-      <div className="awf-card">
-        <p className="awf-eyebrow">PROCESS MAPPING IN ACTION</p>
-        <h3 className="awf-heading">A workflow, made clear.</h3>
+      <section className="awf-card" aria-labelledby="awf-method-title">
+        <p className="awf-eyebrow">INDUSTRIAL ENGINEERING · PROCESS MAPPING</p>
+        <h3 id="awf-method-title" className="awf-heading">
+          How I approach process mapping
+        </h3>
         <p className="awf-lead">
-          A visual introduction to activities, decisions, and handoffs.
+          From understanding the current workflow to creating a clearer reference for standardization.
         </p>
 
         <div
           className="awf-visual"
           role="img"
-          aria-label="Illustrative workflow: record intake, verification, a decision about whether records match, and a handoff. Information can return for additional checking."
+          aria-label="Five-stage Industrial Engineering process mapping approach: understand the process, gather information, create an AS-IS map, review opportunities, and document for standardization."
         >
-          <svg viewBox="0 0 820 260" aria-hidden="true" focusable="false">
+          <svg viewBox="0 0 1110 174" focusable="false" aria-hidden="true">
             <defs>
-              <marker
-                id="awf-arrowhead"
-                markerWidth="8"
-                markerHeight="8"
-                refX="7"
-                refY="4"
-                orient="auto"
-              >
-                <path d="M0 0 L8 4 L0 8 Z" fill="#8b95a2" />
+              <marker id="awf-arrowhead" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                <path d="M0 0 L7 3.5 L0 7 Z" fill="#9b9f9f" />
               </marker>
             </defs>
-
-            <path
-              className={connectionClass(1)}
-              d="M182 111 H223"
-              markerEnd="url(#awf-arrowhead)"
-            />
-            <path
-              className={connectionClass(2)}
-              d="M397 111 H434"
-              markerEnd="url(#awf-arrowhead)"
-            />
-            <path
-              className={connectionClass(3)}
-              d="M600 111 H645"
-              markerEnd="url(#awf-arrowhead)"
-            />
-            <path
-              className={'awf-edge awf-return' + (playing && active === 2 ? ' is-flowing' : '')}
-              d="M517 185 V222 H311 V148"
-              markerEnd="url(#awf-arrowhead)"
-            />
-
-            <text className="awf-route-label" x="610" y="90">
-              Continue
-            </text>
-            <text className="awf-route-label" x="415" y="244" textAnchor="middle">
-              Recheck if needed
-            </text>
-
-            <g className={nodeClass(0)}>
-              <rect className="awf-shape" x="16" y="77" width="166" height="70" rx="11" />
-              <text className="awf-node-text" x="99" y="107" textAnchor="middle">Record</text>
-              <text className="awf-node-text" x="99" y="127" textAnchor="middle">intake</text>
-            </g>
-            <g className={nodeClass(1)}>
-              <rect className="awf-shape" x="223" y="77" width="174" height="70" rx="11" />
-              <text className="awf-node-text" x="310" y="117" textAnchor="middle">
-                Verification
-              </text>
-            </g>
-            <g className={nodeClass(2)}>
-              <path className="awf-shape" d="M517 37 L600 111 L517 185 L434 111 Z" />
-              <text className="awf-node-text" x="517" y="106" textAnchor="middle">Records</text>
-              <text className="awf-node-text" x="517" y="125" textAnchor="middle">match?</text>
-            </g>
-            <g className={nodeClass(3)}>
-              <rect className="awf-shape" x="645" y="77" width="160" height="70" rx="11" />
-              <text className="awf-node-text" x="725" y="117" textAnchor="middle">
-                Handoff
-              </text>
-            </g>
+            {stages.slice(1).map((stage, index) => (
+              <path
+                key={stage.label}
+                className={connectorClass(index + 1)}
+                d={'M' + (198 + index * 220) + ' 80 H' + (238 + index * 220)}
+                markerEnd="url(#awf-arrowhead)"
+              />
+            ))}
+            {stages.map((stage, index) => {
+              const x = 16 + index * 220;
+              return (
+                <g key={stage.label} className={nodeClass(index)}>
+                  <rect className="awf-shape" x={x} y={30} width={182} height={100} rx={12} />
+                  <circle className="awf-stage-number" cx={x + 24} cy={53} r={14} />
+                  <text className="awf-stage-digit" x={x + 24} y={58} textAnchor="middle">
+                    {index + 1}
+                  </text>
+                  <text className="awf-node-label" x={x + 16} y={84}>
+                    {stage.short}
+                  </text>
+                  <text className="awf-node-detail" x={x + 16} y={107}>
+                    {stage.subtitle}
+                  </text>
+                </g>
+              );
+            })}
           </svg>
         </div>
 
-        <ol className="awf-mobile-flow" aria-hidden="true">
+        <ol className="awf-mobile-flow">
           {stages.map((stage, index) => (
             <li
               key={stage.label}
-              className={'awf-mobile-node' +
-                ((finished ? index === stages.length - 1 : index === active)
-                  ? ' is-active' : '') +
-                (index === 2 ? ' is-decision' : '')}
+              className={'awf-mobile-node' + (index === active && !finished ? ' is-active' : '')}
             >
-              <span className="awf-mobile-marker">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span>{stage.label}</span>
+              <span className="awf-mobile-marker">{String(index + 1).padStart(2, '0')}</span>
+              <span>{stage.title}</span>
             </li>
           ))}
         </ol>
 
         <div className="awf-explanation" aria-live="off">
-          <span className="awf-step-number">{finished ? '✓' : String(active + 1).padStart(2, '0')}</span>
+          <span className="awf-step-number">
+            {finished ? '✓' : String(active + 1).padStart(2, '0')}
+          </span>
           <div key={finished ? 'complete' : active} className="awf-step-copy">
-            <h4>{finished ? 'Workflow overview complete' : stages[active].title}</h4>
+            <h4>{finished ? 'From current state to a clearer process' : stages[active].title}</h4>
             <p>
               {finished
-                ? 'The full process connects inputs, verification, decisions, and role handoffs.'
+                ? 'The method links process understanding, AS-IS documentation, review, and standardization.'
                 : stages[active].description}
             </p>
           </div>
@@ -219,31 +219,54 @@ export default function AnimatedWorkflow() {
         <div className="awf-footer">
           <p>
             {reducedMotion
-              ? 'Complete workflow · Reduced motion enabled'
+              ? 'Complete overview · Reduced motion enabled'
               : completed
-                ? 'Walkthrough complete · Replay anytime'
+                ? 'Methodology overview complete'
                 : playing
-                  ? 'Playing once · Step ' + (active + 1) + ' of 4'
+                  ? 'Playing once · Step ' + (active + 1) + ' of 5'
                   : active > 0
-                    ? 'Walkthrough continues when visible'
-                    : 'Walkthrough starts when visible'}
+                    ? 'Continues when visible'
+                    : 'Starts when visible'}
           </p>
           {completed && !reducedMotion && (
-            <button
-              type="button"
-              className="awf-control"
-              aria-label="Replay workflow animation"
-              onClick={replay}
-            >
+            <button type="button" className="awf-control" onClick={replay}>
               <RotateCcw size={16} aria-hidden="true" />
               Replay
             </button>
           )}
         </div>
         <p className="awf-disclaimer">
-          Illustrative overview of process-mapping principles, not the full company procedure.
+          An illustrative IE methodology—not a step-by-step reproduction of a company procedure.
         </p>
-      </div>
+      </section>
+
+      <section className="awf-impact" aria-labelledby="awf-impact-title">
+        <p className="awf-eyebrow">INTERNSHIP APPLICATION · FIVE STAR BUS CO.</p>
+        <h3 id="awf-impact-title">From analysis to a documented workflow.</h3>
+        <p className="awf-case-intro">
+          As a Business Process Analyst Intern, I created a four-page cashier-management
+          process flowchart that documented the sequence of activities, verification
+          points, decisions, and handoffs. The output offers a structured view of the
+          existing process.
+        </p>
+
+        <h4 className="awf-benefits-heading">
+          How process documentation can support standardization
+        </h4>
+        <div className="awf-benefit-grid">
+          {benefits.map((benefit, index) => (
+            <article key={benefit.title} className="awf-benefit">
+              <span className="awf-benefit-number">0{index + 1}</span>
+              <h5>{benefit.title}</h5>
+              <p>{benefit.description}</p>
+            </article>
+          ))}
+        </div>
+        <p className="awf-impact-note">
+          These are potential uses of the documentation, not measured improvements
+          or a claim that new procedures were formally implemented.
+        </p>
+      </section>
     </div>
   );
 }
