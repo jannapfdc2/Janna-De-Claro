@@ -1,4 +1,4 @@
-import { ClipboardList, BriefcaseBusiness, Workflow, Monitor } from 'lucide-react';
+import { ClipboardList, BriefcaseBusiness, Workflow, Monitor, LayoutDashboard, Sun } from 'lucide-react';
 
 export const experiences = [
   {
@@ -8,11 +8,10 @@ export const experiences = [
     type: 'Project Operations',
     bullets: [
       'Coordinate project timelines, deliverables, and stakeholder communication.',
-      'Coordinate procurement requests, material deliveries, and payment follow-ups to support daily project operations.',
-      'Route documents and approvals for purchase requests, cash advances, diesel requests, and other transactions.',
-      'Use company-provided tracking templates to monitor procurement, project budgets, and delivery status in support of daily project coordination.',
-      'Prepare weekly reports, meeting minutes, and presentations.',
-      'Work with site teams, purchasing staff, and internal departments to keep information and requests moving.',
+      'Coordinate procurement requests, material deliveries, and payment follow-ups with site teams, purchasing staff, and internal departments.',
+      'Support the flow of documents and approvals for purchase requests, cash advances, diesel requests, and other transactions.',
+      'Use company-provided tracking templates to organize procurement, project budget, and delivery updates for daily monitoring and follow-ups.',
+      'Prepare weekly reports, meeting minutes, and presentations to organize project information and support team coordination.',
     ],
   },
   {
@@ -21,19 +20,19 @@ export const experiences = [
     period: 'Oct 2024 — Apr 2025',
     type: 'Finance & Records',
     bullets: [
-      'Categorized and organized client transactions and expenses, maintaining clear financial records.',
-      'Used QuickBooks for basic bookkeeping tasks and accurate financial documentation.',
+      'Categorized client transactions and expenses to maintain organized financial records for review.',
+      'Used QuickBooks for basic bookkeeping and financial documentation, applying attention to detail and consistent record organization.',
     ],
   },
   {
     position: 'Business Process Analyst Intern',
     organization: 'Five Star Bus Co.',
     period: 'Sep 2023 — Dec 2023',
-    type: 'Workflow Improvement',
+    type: 'Process Mapping & Documentation',
     bullets: [
-      'Analyzed business processes and documented workflows to identify opportunities for improvement.',
-      'Prepared a four-page cashier-management process flowchart covering ticket encoding, record verification, and cash remittance.',
-      'Documented role handoffs and discrepancy-handling steps as a reference for standardized procedures and future work instructions.',
+      'Analyzed the existing cashier-management process and organized its activities into a four-page flowchart covering ticket encoding, record verification, and cash remittance.',
+      'Mapped staff responsibilities, handoffs between roles, and discrepancy-handling steps to make the workflow easier to follow and review.',
+      'Prepared process documentation as a reference for standardized procedures and future work instructions, applying Industrial Engineering process-mapping skills.',
     ],
   },
 ];
@@ -67,22 +66,60 @@ export const skillGroups = [
 
 export const sampleProjects = [
   {
-    title: 'SUNWARD Solar Website',
-    category: 'Website design',
-    image: '/projects/sunward-solar.jpg',
-    alt: 'SUNWARD Solar homepage with a warm cream-and-gold design and an interactive solar installation section.',
-    description: 'A solar business website that introduces solar energy through an interactive installation journey, system planning, and clear service information.',
-    tags: ['Website Design', 'Interactive Experience'],
-    caption: 'Homepage and solar installation experience from my SUNWARD Solar personal project.',
+    id: 'suweco-portal',
+    title: 'Suweco Energy Portal',
+    category: 'Operations & workflow design',
+    status: 'Proposed company system',
+    icon: LayoutDashboard,
+    description: 'A proposed digital workspace shaped by my experience as a Project Coordinator at Suweco Tablas Energy Corp.',
+    tags: ['Workflow Design', 'Project Coordination', 'Operations Monitoring'],
+    url: 'https://suweco-energy-portal.vercel.app/',
+    demoNote: 'The company website is public; monitoring tools require sign-in.',
+    stories: [
+      {
+        label: 'Context',
+        title: 'Start with the way the team works.',
+        text: 'When I joined the company, the team used Google Workspace and did not yet have an independent digital system. This inspired a proposal to bring project information and monitoring into one workspace.',
+      },
+      {
+        label: 'My contribution',
+        title: 'Turn everyday coordination into a system proposal.',
+        text: 'I created a proposed company website and monitoring workspace connecting project schedules, task tracking, procurement, budgets, fuel monitoring, and reports. The system is presented for company consideration.',
+      },
+      {
+        label: 'IE approach',
+        title: 'Connect the work, people, and information.',
+        text: 'I approached the portal as a workflow-design problem: how requests, records, and updates move between people. The intended value is clearer visibility and more consistent follow-ups across project activities.',
+      },
+    ],
   },
   {
-    title: 'STEC Solar Proposal Tool',
-    category: 'Workflow & planning',
-    image: '/projects/stec-solar-proposal.jpg',
-    alt: 'STEC Solar Proposal Tool showing the system configuration step, proposal options, and a project summary with sample data.',
-    description: 'A guided solar proposal workflow that brings client information, energy needs, system options, and financial comparisons into one organized experience.',
-    tags: ['Workflow Design', 'Proposal Planning'],
-    caption: 'System configuration screen from my STEC Solar Proposal personal project, shown with sample data.',
+    id: 'solar-solutions',
+    title: 'Solar Solutions',
+    category: 'Interactive website & assessment',
+    status: 'Personal project',
+    icon: Sun,
+    description: 'A personal project exploring how Claude AI can help turn an idea into an interactive website and a guided solar assessment system.',
+    tags: ['Systems Thinking', 'Interactive Experience', 'Claude AI'],
+    url: 'https://solar-solutions-ph.vercel.app/',
+    demoNote: 'Explore the 3D walkthrough, then start the solar assessment.',
+    stories: [
+      {
+        label: 'Context',
+        title: 'Learn by building something people can explore.',
+        text: 'An opportunity to explore Claude AI became a hands-on personal project: create a website and system that explain solar energy and guide visitors through the information needed for a proposal.',
+      },
+      {
+        label: 'My contribution',
+        title: 'Bring the explanation and assessment together.',
+        text: 'I developed the project with Claude AI assistance. It combines an interactive 3D solar walkthrough with a step-by-step assessment and proposal experience covering property information, energy needs, system options, and proposal review.',
+      },
+      {
+        label: 'IE approach',
+        title: 'Make a complex service easier to navigate.',
+        text: 'The project applies systems thinking and information organization: break a complex service into clear steps, collect relevant inputs, and help users understand their options. The focus is the digital experience and workflow; final solar design requires a site assessment and qualified engineering review.',
+      },
+    ],
   },
 ];
 
@@ -117,8 +154,8 @@ export const services = [
     title: 'Explore a useful way forward.',
     description: 'I explore AI tools, automation ideas, and website-based workflows that could help teams organize their work.',
     tasks: ['Workflow ideas and early prototypes', 'Guided website experiences', 'Practical exploration of AI tools and workspaces'],
-    evidence: 'My personal projects show this exploration in practice. Any new prototype starts with an agreed scope.',
-    link: '#projects', linkLabel: 'View my personal project samples',
+    evidence: 'My proposed company portal and personal solar project show this exploration in practice. Any new prototype starts with an agreed scope.',
+    link: '#projects', linkLabel: 'Explore my digital projects',
   },
 ];
 

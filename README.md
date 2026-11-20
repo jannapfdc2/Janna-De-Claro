@@ -16,8 +16,8 @@ Built with React, TypeScript, Vite, Tailwind CSS, and Lucide icons. The existing
 Soft ivory, navy, and champagne-gold styling, editorial typography, and restrained motion inspired by the supplied visual reference. The site includes:
 
 - Service tabs with scope and links to relevant experience.
-- SUNWARD Solar Website and STEC Solar Proposal Tool screenshot previews. Images open in labeled native dialogs with close, Escape, backdrop dismissal, and explicit focus restoration. STEC uses sample data; no live demo links are claimed.
-- A concise internship contribution describing the cashier-workflow flowchart and its value as a reference for staff responsibilities, standardized procedures, and future work instructions. The original internal document is not included.
+- Suweco Energy Portal (a proposed company system) and Solar Solutions (a personal project developed with Claude AI assistance). Each project has keyboard-accessible Context, My contribution, and IE approach tabs. Click a live website preview to open an interactive dialog, then choose **View full website** to open the original site in a new tab. Previews unload offscreen; dialogs support close, Escape, backdrop dismissal, and focus restoration. Suweco's monitoring workspace requires sign-in; the portfolio does not claim company adoption or measured operational improvements.
+- An internship contribution explaining the cashier-workflow flowchart, process mapping, role handoffs, and its purpose as a reference for standardized procedures and future work instructions. The gallery includes four page images and a PDF link; publication of company materials requires explicit approval.
 - Expandable professional roles, with procurement, budget, and delivery monitoring described as use of company-provided templates.
 - A five-step proposed client approach covering what Janna does, what the client provides, and the expected deliverable at each stage.
 - Text-only About Me, original skill groups, education and certification, academic research themes, and an invitation to volunteer opportunities.
@@ -25,7 +25,7 @@ Soft ivory, navy, and champagne-gold styling, editorial typography, and restrain
 
 ## Content maintenance
 
-Editable portfolio content lives in `src/portfolioData.ts`. Interactions and page composition live in `src/App.tsx`; styles are in `src/index.css`. Screenshot assets are in `public/projects/`.
+Editable portfolio content and project stories live in `src/portfolioData.ts`. Page composition lives in `src/App.tsx`, website previews in `src/ProjectPreview.tsx`, and styles in `src/index.css`. The flowchart gallery lives in `src/InternshipFlowchart.tsx`, with assets in `public/internship/`. Legacy project screenshots remain in `public/projects/` and are no longer displayed.
 
 Tabs support Left/Right/Home/End navigation. Reduced-motion preferences are respected. The page includes visible keyboard focus, a skip link, accessible labels, native disclosure controls, and responsive layouts.
 

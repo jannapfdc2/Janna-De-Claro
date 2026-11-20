@@ -1,9 +1,10 @@
+import InternshipFlowchart from './InternshipFlowchart';
+import ProjectPreview from './ProjectPreview';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode, KeyboardEvent, FormEvent } from 'react';
 import { ChevronDown, ClipboardList, Copy, FileText, Github, GraduationCap, Mail, MapPin, Maximize2, Menu, Phone, Plus, X } from 'lucide-react';
 import { clientSteps, experiences, inquiryTopics, monitoring, research, sampleProjects, services, skillGroups } from './portfolioData';
 
-type Project = typeof sampleProjects[number];
 const navLinks = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#projects' },
@@ -48,38 +49,56 @@ function SectionTitle({ label, title, children }: { label: string; title: string
   return <div className="section-heading"><p className="section-label">{label}</p><h2>{title}</h2>{children && <p className="section-intro">{children}</p>}</div>;
 }
 
+
 function InternshipContribution() {
-  return <section id="cashier-workflow" className="workflow-section section">
-    <div className="container workflow-intro">
-      <SectionTitle label="Internship contribution" title="Cashier Workflow Documentation">
-        Business Process Analyst Intern · Five Star Bus Co.
-      </SectionTitle>
-      <div className="workflow-context">
-        <p>I created a process flowchart for the company’s cashier workflow, documenting key steps and staff responsibilities. The flowchart provides a clear reference to support standardized procedures and future work instructions.</p>
-        <span className="paper-label"><FileText size={17} aria-hidden="true" /> Output: Process flowchart</span>
+  return (
+    <section
+      id="cashier-workflow"
+      className="workflow-section section"
+    >
+      <div className="container workflow-intro">
+        <SectionTitle
+          label="Internship contribution"
+          title="Cashier Workflow Documentation"
+        >
+          Business Process Analyst Intern · Five Star Bus Co.
+        </SectionTitle>
+
+        <div className="workflow-context">
+          <p>
+            <strong>My contribution.</strong> I documented the cashier-management
+            workflow in a four-page process flowchart, covering ticket encoding,
+            record verification, and cash remittance.
+          </p>
+          <p>
+            <strong>Industrial Engineering approach.</strong> I used process
+            mapping to show the sequence of activities, staff responsibilities,
+            handoffs between roles, and steps for handling discrepancies.
+          </p>
+          <p>
+            <strong>Purpose of the output.</strong> The flowchart provides a
+            reference for reviewing the existing workflow, supporting
+            standardized procedures, and preparing future work instructions.
+          </p>
+
+          <span className="paper-label">
+            <FileText size={17} aria-hidden="true" />
+            Output: Process flowchart
+          </span>
+        </div>
+
+        <InternshipFlowchart />
       </div>
-    </div>
-  </section>;
+    </section>
+  );
 }
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [topic, setTopic] = useState(inquiryTopics[0]);
   const [contactStatus, setContactStatus] = useState('');
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const openerRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLButtonElement | null>(null);
   const menuPanelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog || !selectedProject) return;
-    dialog.showModal();
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = previous; };
-  }, [selectedProject]);
 
   useEffect(() => {
     const onEscape = (event: globalThis.KeyboardEvent) => {
@@ -103,11 +122,6 @@ export default function App() {
     window.addEventListener('hashchange', revealLinkedDetail);
     return () => window.removeEventListener('hashchange', revealLinkedDetail);
   }, []);
-
-  function closeDialog() {
-    setSelectedProject(null);
-    openerRef.current?.focus({ preventScroll: true });
-  }
 
   function composeEmail(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -147,7 +161,7 @@ export default function App() {
           </div>
           <aside className="portfolio-directory" aria-label="Explore the portfolio"><p>A little structure.<br />A clearer way forward.</p><div className="directory-links">
             <a href="#cashier-workflow"><FileText size={19} aria-hidden="true" /><span>See my internship work<span>Process documentation</span></span></a>
-            <a href="#projects"><Maximize2 size={19} aria-hidden="true" /><span>See something I made<span>Personal digital projects</span></span></a>
+            <a href="#projects"><Maximize2 size={19} aria-hidden="true" /><span>Explore my digital projects<span>Systems & personal projects</span></span></a>
             <a href="#approach"><ClipboardList size={19} aria-hidden="true" /><span>Picture working together<span>My approach to your project</span></span></a>
           </div><span className="directory-footer">Thoughtful systems. Practical support.</span></aside>
         </div>
@@ -160,18 +174,27 @@ export default function App() {
       </div></section>
 
       <section id="projects" className="section projects-section"><div className="container">
-        <SectionTitle label="Selected personal work" title="Ideas made useful.">Personal projects exploring website design and organized digital workflows. Select a screenshot for a closer look.</SectionTitle>
-        <div className="sample-projects-grid">{sampleProjects.map(project => <article className="sample-project" key={project.title}>
-          <button type="button" className="sample-screenshot-button" aria-label={'Enlarge ' + project.title + ' screenshot'} aria-haspopup="dialog" onClick={event => { openerRef.current = event.currentTarget; setSelectedProject(project); }}><img src={project.image} alt={project.alt} width="1265" height="712" loading="lazy" decoding="async" /><span className="screenshot-hint"><Maximize2 size={16} aria-hidden="true" /> View screenshot</span></button>
-          <div className="project-heading"><p>{project.category}</p><span>Personal project</span></div><h3>{project.title}</h3><p className="project-description">{project.description}</p><div className="skill-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
-        </article>)}</div>
-        <div className="exploration-note"><span>Currently exploring</span><p>AI tools, automation workflows, and web-based systems that could make team handoffs and everyday work more organized.</p></div>
+        <SectionTitle label="Systems & personal projects" title="From daily work to digital ideas.">A proposed company portal and a personal solar project, viewed through an Industrial Engineering lens. Select a website preview to explore it, or read the thinking behind each project.</SectionTitle>
+        <div className="sample-projects-grid">{sampleProjects.map(project => {
+          const Icon = project.icon;
+          return <article className="sample-project" key={project.id} aria-labelledby={`${project.id}-title`}>
+            <ProjectPreview project={project} />
+            <Icon className="project-icon" size={28} aria-hidden="true" />
+            <div className="project-heading"><p>{project.category}</p><span>{project.status}</span></div>
+            <h3 id={`${project.id}-title`}>{project.title}</h3>
+            <p className="project-description">{project.description}</p>
+            <Tabs id={project.id} label={`${project.title} project story`} items={project.stories}>{story => <div className="project-story"><h4>{story.title}</h4><p>{story.text}</p></div>}</Tabs>
+            <div className="skill-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+            <p className="project-demo-note">{project.demoNote}</p>
+          </article>;
+        })}</div>
+        <div className="exploration-note"><span>What connects the work</span><p>I use my Industrial Engineering background to think through processes, organize information, and explore digital tools that make the next step clearer.</p></div>
       </div></section>
 
       <InternshipContribution />
 
       <section id="experience" className="section experience-section"><div className="container">
-        <SectionTitle label="My experience" title="Grounded in everyday operations.">Select a role to see the work behind it.</SectionTitle>
+        <SectionTitle label="My experience" title="Industrial Engineering in practice.">My contributions connect people, processes, and records across daily operations. Select a role to explore the work.</SectionTitle>
         <div className="experience-list">{experiences.map((experience, index) => <details className="experience-detail" id={index === 1 ? 'bookkeeping-experience' : index === 2 ? 'process-experience' : 'coordination-experience'} key={experience.position} open={index === 0}>
           <summary><span className="experience-summary"><span className="experience-company">{experience.organization}</span><span className="experience-title">{experience.position}</span></span><span className="period">{experience.period}</span><Plus size={22} aria-hidden="true" /></summary>
           <div className="experience-body"><p className="experience-type">{experience.type}</p><ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
@@ -194,7 +217,7 @@ export default function App() {
 
       <section id="skills" className="section skills-section"><div className="container">
         <SectionTitle label="Skills in context" title="The tools behind the work." />
-        <div className="skills-grid">{skillGroups.map((group, index) => { const Icon = group.icon; return <article className="skill-group" key={group.title}><Icon size={24} aria-hidden="true" /><h3>{group.title}</h3><p>{group.intro}</p><div className="skill-tags">{group.skills.map(skill => <span key={skill}>{skill}</span>)}</div><a className="text-link" href={index === 2 ? '#cashier-workflow' : index === 3 ? '#projects' : '#coordination-experience'}>{index === 3 ? 'See personal explorations' : 'See related experience'}</a></article>; })}</div>
+        <div className="skills-grid">{skillGroups.map((group, index) => { const Icon = group.icon; return <article className="skill-group" key={group.title}><Icon size={24} aria-hidden="true" /><h3>{group.title}</h3><p>{group.intro}</p><div className="skill-tags">{group.skills.map(skill => <span key={skill}>{skill}</span>)}</div><a className="text-link" href={index === 2 ? '#cashier-workflow' : index === 3 ? '#projects' : '#coordination-experience'}>{index === 3 ? 'See digital projects' : 'See related experience'}</a></article>; })}</div>
       </div></section>
 
       <section id="education" className="section education-section"><div className="container">
@@ -208,9 +231,6 @@ export default function App() {
           <form className="inquiry-form" onSubmit={composeEmail}><h3>Start a conversation</h3><label htmlFor="inquiry-topic">I’m looking for</label><div className="select-wrap"><select id="inquiry-topic" value={topic} onChange={event => setTopic(event.target.value)}>{inquiryTopics.map(item => <option key={item}>{item}</option>)}</select><ChevronDown size={18} aria-hidden="true" /></div><label htmlFor="inquiry-name">Your name <span>(optional)</span></label><input id="inquiry-name" name="name" autoComplete="name" maxLength={100} /><label htmlFor="inquiry-message">What would you like help with?</label><textarea id="inquiry-message" name="message" rows={4} maxLength={1500} required placeholder="A little about your workflow, goals, or project…" /><p className="form-note">This opens a draft in your email app for you to review and send.</p><button type="submit" className="btn btn-gold">Open email draft</button><p className="contact-status" role="status" aria-live="polite">{contactStatus}</p></form>
       </div></section>
     </main>
-    <dialog ref={dialogRef} className="screenshot-dialog" aria-labelledby="screenshot-title" aria-describedby="screenshot-caption" onClose={closeDialog} onClick={event => { if (event.target === event.currentTarget) event.currentTarget.close(); }}>
-      {selectedProject && <div className="screenshot-dialog-content"><div className="screenshot-dialog-header"><h2 id="screenshot-title">{selectedProject.title}</h2><button type="button" className="screenshot-close" aria-label="Close screenshot" autoFocus onClick={() => dialogRef.current?.close()}><X size={22} aria-hidden="true" /></button></div><img src={selectedProject.image} alt={selectedProject.alt} width="1265" height="712" /><div className="dialog-copy"><p id="screenshot-caption">{selectedProject.caption}</p><p>{selectedProject.description}</p><span>Personal project · Screenshot preview</span></div></div>}
-    </dialog>
     <footer className="site-footer"><div className="container footer-inner"><a href="#home" className="brand" aria-label="Janna De Claro home">JDC<span>.</span></a><p>© {new Date().getFullYear()} Janna Patricia De Claro</p><a href="https://github.com/jannapfdc2/Janna-De-Claro" target="_blank" rel="noopener noreferrer"><Github size={18} aria-hidden="true" />Portfolio repository</a><a href="#home">Back to top</a></div></footer>
   </div>;
 }
