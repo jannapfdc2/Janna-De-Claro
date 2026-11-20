@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode, KeyboardEvent, FormEvent } from 'react';
 import { ChevronDown, ClipboardList, Copy, FileText, Github, GraduationCap, Mail, MapPin, Maximize2, Menu, Phone, Plus, X } from 'lucide-react';
-import { cashierStages, clientSteps, experiences, inquiryTopics, monitoring, research, sampleProjects, services, skillGroups } from './portfolioData';
+import { clientSteps, experiences, inquiryTopics, monitoring, research, sampleProjects, services, skillGroups } from './portfolioData';
 
 type Project = typeof sampleProjects[number];
 const navLinks = [
@@ -48,38 +48,16 @@ function SectionTitle({ label, title, children }: { label: string; title: string
   return <div className="section-heading"><p className="section-label">{label}</p><h2>{title}</h2>{children && <p className="section-intro">{children}</p>}</div>;
 }
 
-function CashierWorkflow() {
+function InternshipContribution() {
   return <section id="cashier-workflow" className="workflow-section section">
-    <div className="container">
-      <div className="workflow-intro">
-        <SectionTitle label="Internship case study" title="A process everyone can follow.">
-          Cashier Management Workflow · Five Star Bus Co.
-        </SectionTitle>
-        <div className="workflow-context"><span className="paper-label"><FileText size={17} aria-hidden="true" /> Four-page process flowchart</span>
-          <p>I mapped ticket encoding and cash remittance, documenting responsibilities, verification steps, and exceptions as a reference for standardized procedures.</p>
-        </div>
+    <div className="container workflow-intro">
+      <SectionTitle label="Internship contribution" title="Cashier Workflow Documentation">
+        Business Process Analyst Intern · Five Star Bus Co.
+      </SectionTitle>
+      <div className="workflow-context">
+        <p>I created a process flowchart for the company’s cashier workflow, documenting key steps and staff responsibilities. The flowchart provides a clear reference to support standardized procedures and future work instructions.</p>
+        <span className="paper-label"><FileText size={17} aria-hidden="true" /> Output: Process flowchart</span>
       </div>
-      <p className="interaction-note">Select a stage to explore the workflow.</p>
-      <Tabs id="cashier" label="Cashier workflow stages" items={cashierStages} numbered>
-        {(stage, index) => <div className="workflow-panel">
-          <div className="workflow-story">
-            <p className="stage-counter">Stage {index + 1} of 4</p>
-            <h3>{stage.title}</h3><p>{stage.summary}</p>
-            <ol className="process-actions">{stage.steps.map(step => <li key={step}>{step}</li>)}</ol>
-          </div>
-          <div className="handoff-sheet">
-            <p className="sheet-label">People & handoffs</p>
-            <div className="role-route" aria-label={'Handoff: ' + stage.handoff}>{stage.roles.map(role => <span key={role}>{role}</span>)}</div>
-            <p className="route-caption">{stage.handoff}</p>
-            <dl><div><dt>Starts with</dt><dd>{stage.input}</dd></div><div><dt>Produces</dt><dd>{stage.output}</dd></div></dl>
-          </div>
-        </div>}
-      </Tabs>
-      <details className="exception-details"><summary><span>What happens when records don’t match?</span><Plus size={20} aria-hidden="true" /></summary>
-        <div className="exception-grid"><div><h3>During tally validation</h3><p>The typist rechecks and recomputes. The documented path includes informing the crew about short/over computations, crew rechecking, returning to encoding where needed, and agreement-letter handling.</p></div>
-          <div><h3>During cash remittance</h3><p>If the cashier finds that ticket-entry details do not match the supporting records, the cashier informs the typist and rejects the entry so it can return to encoding for correction.</p></div></div>
-      </details>
-      <p className="workflow-source">Condensed walkthrough of my internship flowchart. The original output is process documentation; this interactive presentation makes the mapped workflow easier to explore.</p>
     </div>
   </section>;
 }
@@ -168,7 +146,7 @@ export default function App() {
             <p className="availability">Open to project, VA, and collaborative opportunities</p>
           </div>
           <aside className="portfolio-directory" aria-label="Explore the portfolio"><p>A little structure.<br />A clearer way forward.</p><div className="directory-links">
-            <a href="#cashier-workflow"><FileText size={19} aria-hidden="true" /><span>Explore a process<span>Cashier workflow case study</span></span></a>
+            <a href="#cashier-workflow"><FileText size={19} aria-hidden="true" /><span>See my internship work<span>Process documentation</span></span></a>
             <a href="#projects"><Maximize2 size={19} aria-hidden="true" /><span>See something I made<span>Personal digital projects</span></span></a>
             <a href="#approach"><ClipboardList size={19} aria-hidden="true" /><span>Picture working together<span>My approach to your project</span></span></a>
           </div><span className="directory-footer">Thoughtful systems. Practical support.</span></aside>
@@ -190,7 +168,7 @@ export default function App() {
         <div className="exploration-note"><span>Currently exploring</span><p>AI tools, automation workflows, and web-based systems that could make team handoffs and everyday work more organized.</p></div>
       </div></section>
 
-      <CashierWorkflow />
+      <InternshipContribution />
 
       <section id="experience" className="section experience-section"><div className="container">
         <SectionTitle label="My experience" title="Grounded in everyday operations.">Select a role to see the work behind it.</SectionTitle>
@@ -198,7 +176,7 @@ export default function App() {
           <summary><span className="experience-summary"><span className="experience-company">{experience.organization}</span><span className="experience-title">{experience.position}</span></span><span className="period">{experience.period}</span><Plus size={22} aria-hidden="true" /></summary>
           <div className="experience-body"><p className="experience-type">{experience.type}</p><ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
             {index === 0 && <div className="monitoring-block"><h3>What I monitor</h3><p>Using company-provided tracking templates.</p><Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>{item => <div className="monitoring-content"><p>{item.text}</p><p><strong>Records involved:</strong> {item.record}</p></div>}</Tabs></div>}
-            {index === 2 && <a href="#cashier-workflow" className="text-link">Explore the cashier workflow case study</a>}
+            {index === 2 && <a href="#cashier-workflow" className="text-link">View my internship contribution</a>}
           </div>
         </details>)}</div>
       </div></section>

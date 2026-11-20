@@ -101,8 +101,8 @@ export const services = [
     title: 'Make the next step clear.',
     description: 'Turn an existing workflow into a clear reference that shows who does what, which records are needed, and where decisions happen.',
     tasks: ['Current-process mapping', 'Role and handoff documentation', 'Flowcharts and references for work instructions'],
-    evidence: 'See the cashier-management flowchart I prepared during my Business Process Analyst internship.',
-    link: '#cashier-workflow', linkLabel: 'Explore the workflow case study',
+    evidence: 'Learn about the cashier-workflow documentation I prepared during my Business Process Analyst internship.',
+    link: '#cashier-workflow', linkLabel: 'View my internship contribution',
   },
   {
     label: 'Bookkeeping support',
@@ -126,45 +126,6 @@ export const monitoring = [
   { label: 'Procurement', text: 'Monitor procurement requests and coordinate follow-ups with purchasing staff and project teams.', record: 'Purchase requests, supporting documents, and approval status.' },
   { label: 'Budget', text: 'Use the existing project budget tracker and support payment and cash-advance follow-ups.', record: 'Project budget records and related transaction documents.' },
   { label: 'Deliveries', text: 'Monitor material delivery status and coordinate updates with site teams and internal departments.', record: 'Delivery updates and outstanding material requests.' },
-];
-
-export const cashierStages = [
-  {
-    label: 'Ticket encoding', roles: ['Crew', 'Issuer', 'Typist'],
-    title: 'From returned tickets to recorded entries.',
-    summary: 'The crew returns tickets. The issuer counts and records used tickets, then passes them to the typist for encoding.',
-    steps: ['Crew returns tickets to the issuer.', 'Issuer records used tickets in the bus crew booklet and hands the tickets to the typist.', 'Typist encodes used and unused tickets in the Ticket Transmittal, then used tickets in the Ticket Entry System.'],
-    input: 'Returned tickets and the bus crew booklet',
-    output: 'Ticket Transmittal and Ticket Entry System records',
-    handoff: 'Crew → Issuer → Typist',
-  },
-  {
-    label: 'Record validation', roles: ['Typist', 'Crew'],
-    title: 'Check that the records agree.',
-    summary: 'The typist compares the Ticket Entry System, Trip Operations Report, and tally sheet before preparing the Summary Collection.',
-    steps: ['Check encoded ticket information against the Trip Operations Report and tally sheet.', 'Verify the tally and recheck calculations when needed.', 'Print the Summary Collection after the required checks and discrepancy steps.'],
-    input: 'Encoded ticket data, Trip Operations Report, and tally sheet',
-    output: 'Summary Collection; agreement letter where the discrepancy path requires it',
-    handoff: 'Typist ↔ Crew',
-  },
-  {
-    label: 'Cash remittance', roles: ['Typist', 'Crew', 'Cashier'],
-    title: 'Bring cash and records together.',
-    summary: 'The crew submits the cash and attachments to the cashier, who counts the cash and verifies the ticket-entry information.',
-    steps: ['Typist signs the Trip Operations Report and provides the Summary Collection to the crew.', 'Crew submits the cash, Trip Operations Report, tally sheet, and Summary Collection.', 'Cashier counts the cash, checks the ticket entry, and records dispatch date and amount received when the information matches.'],
-    input: 'Cash and supporting trip and collection documents',
-    output: 'Verified remittance details recorded in the system',
-    handoff: 'Typist → Crew → Cashier',
-  },
-  {
-    label: 'Documentation', roles: ['Cashier', 'Crew'],
-    title: 'Acknowledge, sign, and file.',
-    summary: 'The cashier acknowledges the ticket in the system and prepares the Bus Remittance Form for the crew to sign.',
-    steps: ['Cashier acknowledges the ticket and prints the Bus Remittance Form.', 'Crew signs the form and returns it to the cashier.', 'Cashier gives the crew its copy and attaches the other copy to the Trip Operations Report.'],
-    input: 'Verified ticket entry and remittance details',
-    output: 'Signed Bus Remittance Form copies and completed trip documentation',
-    handoff: 'Cashier ↔ Crew',
-  },
 ];
 
 export const clientSteps = [

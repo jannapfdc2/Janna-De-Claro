@@ -95,39 +95,14 @@ li::marker { color: var(--gold); }
 .workflow-intro { display: grid; grid-template-columns: 1.25fr 1fr; gap: 85px; align-items: center; }
 .workflow-section .section-label { color: var(--champagne); }
 .workflow-section .section-intro, .workflow-context > p { color: #d0d5de; }
-.workflow-intro .section-heading { margin-bottom: 25px; }
-.workflow-context > p { margin: 18px 0 0; }
+.workflow-intro .section-heading { margin-bottom: 0; }
+.workflow-context > p { margin: 0 0 20px; }
 .paper-label { display: inline-flex; align-items: center; gap: 8px; color: #e3c89b; font-size: .875rem; }
-.interaction-note { margin: 26px 0 15px; color: #d0d5de; font-size: .875rem; }
-.tabs-cashier .tab-list { border-bottom-color: #657085; display: grid; grid-template-columns: repeat(4,1fr); gap: 15px; }
-.tabs-cashier .tab-list button { color: #d0d5de; display: flex; align-items: center; gap: 10px; }
-.tabs-cashier .tab-list button[aria-selected='true'] { color: #f2d9ae; border-bottom-color: var(--champagne); }
 .step-number { width: 26px; height: 26px; flex-shrink: 0; display: inline-grid; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-size: .8125rem; }
-.workflow-panel { display: grid; grid-template-columns: 1.35fr 1fr; gap: 60px; min-height: 440px; align-items: start; }
-.stage-counter { font-size: .8125rem; color: #d5b780; margin-bottom: 12px; }
-.workflow-story h3 { font-size: 2rem; max-width: 540px; margin-bottom: 18px; }
-.workflow-story > p:not(.stage-counter) { color: #d0d5de; }
-.process-actions { padding-left: 21px; color: #e0e4eb; }
-.process-actions li::marker { color: var(--champagne); font-size: .875rem; }
-.handoff-sheet { color: var(--navy); background: #f4f0e8; padding: 30px; border-radius: 3px; }
-.handoff-sheet .sheet-label { color: var(--gold); }
-.role-route { display: flex; flex-wrap: wrap; gap: 9px; }
-.role-route span { padding: 10px 14px; border: 1px solid #9ba3ad; background: white; font-size: .875rem; border-radius: 3px; }
-.route-caption { font-size: .875rem; color: var(--muted); margin: 16px 0 22px; }
-dl { margin: 0; }
-dl > div { border-top: 1px solid #cec8bd; padding-top: 18px; margin-top: 18px; }
-dt { color: var(--gold); font-size: .875rem; font-weight: 600; margin-bottom: 7px; }
-dd { margin: 0; line-height: 1.65; }
 summary { list-style: none; }
 summary::-webkit-details-marker { display: none; }
 summary > svg { flex-shrink: 0; }
 details[open] > summary > svg { transform: rotate(45deg); }
-.exception-details { border-top: 1px solid #657085; border-bottom: 1px solid #657085; }
-.exception-details > summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 23px 0; font-size: 1rem; }
-.exception-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding-bottom: 15px; }
-.exception-grid h3 { font: 600 1rem/1.5 var(--font-sans); margin-bottom: 10px; color: var(--champagne); }
-.exception-grid p { color: #d0d5de; }
-.workflow-source { font-size: .8125rem; color: #c0c8d5; margin: 22px 0 0; max-width: 900px; }
 .experience-list { border-top: 1px solid var(--line); }
 .experience-detail { border-bottom: 1px solid var(--line); scroll-margin-top: 110px; }
 .experience-detail > summary { display: flex; align-items: center; gap: 28px; padding-block: 28px; }
@@ -230,9 +205,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .directory-links a:hover { color: var(--champagne); }
   .sample-screenshot-button:hover .screenshot-hint { background: #344360; }
   .tab-list button:not([aria-selected='true']):hover { color: var(--navy); background: #fff4; }
-  .tabs-cashier .tab-list button:not([aria-selected='true']):hover { color: white; background: #ffffff0a; }
   summary:hover { color: var(--gold); }
-  .exception-details > summary:hover { color: var(--champagne); }
 }
 @media (max-width: 1050px) {
   .hero-layout { gap: 40px; grid-template-columns: minmax(0,1.5fr) minmax(285px,1fr); }
@@ -242,7 +215,6 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .workflow-intro, .about-layout, .education-layout { gap: 50px; }
   .contact-layout { gap: 55px; }
   .service-content { gap: 40px; }
-  .workflow-panel { gap: 35px; }
   .skills-grid { grid-template-columns: 1fr 1fr; gap: 35px; }
 }
 @media (max-width: 800px) {
@@ -261,12 +233,10 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .portfolio-directory > p { font-size: 1.8rem; }
   .hero-bottom { flex-wrap: wrap; gap: 10px 25px; }
   .hero-bottom span + span::before { margin-right: 25px; }
-  .service-content, .workflow-intro, .workflow-panel, .about-layout, .education-layout, .contact-layout { grid-template-columns: 1fr; gap: 32px; }
+  .service-content, .workflow-intro, .about-layout, .education-layout, .contact-layout { grid-template-columns: 1fr; gap: 32px; }
   .service-scope { border-left: 0; border-top: 1px solid #c7c4bd; padding: 24px 0 0; }
-  .workflow-panel { min-height: 0; padding-bottom: 32px; }
-  .workflow-intro { gap: 0; }
+  .workflow-intro { gap: 24px; }
   .workflow-context { max-width: 650px; }
-  .tabs-cashier .tab-list { grid-template-columns: 1fr 1fr; gap: 4px 18px; }
   .sample-projects-grid { gap: 24px; }
   .sample-project h3 { font-size: 1.6rem; }
   .screenshot-hint { font-size: .75rem; right: 8px; bottom: 8px; padding: 8px; }
@@ -297,16 +267,11 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .section-heading { margin-bottom: 30px; }
   .tabs-services .tab-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
   .tab-list button { font-size: .875rem; }
-  .sample-projects-grid, .skills-grid, .exception-grid, .approach-columns { grid-template-columns: 1fr; }
+  .sample-projects-grid, .skills-grid, .approach-columns { grid-template-columns: 1fr; }
   .sample-projects-grid { gap: 44px; }
   .sample-project h3 { font-size: 1.85rem; }
   .exploration-note { grid-template-columns: 1fr; gap: 12px; }
-  .tabs-cashier .tab-list { gap: 2px 10px; }
-  .tabs-cashier .tab-list button { gap: 7px; }
   .step-number { width: 23px; height: 23px; }
-  .workflow-story h3 { font-size: 1.8rem; }
-  .handoff-sheet { padding: 24px; }
-  .exception-grid { gap: 10px; }
   .experience-title { font-size: 1.6rem; }
   .monitoring-block { padding: 22px 18px; }
   .tabs-monitoring .tab-list { gap: 0 15px; }
