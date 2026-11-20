@@ -744,8 +744,6 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .awf-shape, .awf-node-text, .awf-arrow { transition: none !important; }
   .awf-arrow.is-flowing, .awf-detail-copy { animation: none !important; }
 }
-  .awf-detail-copy { animation: none !important; }
-}
 
 
 /* Scroll-triggered entrance animations: opt-in via JS, once per element. */
