@@ -53,43 +53,51 @@ function SectionTitle({ label, title, children }: { label: string; title: string
 
 function InternshipContribution() {
   return (
-    <section
-      id="cashier-workflow"
-      className="workflow-section section"
-    >
-      <div className="container workflow-intro">
-        <SectionTitle
-          label="Internship contribution"
-          title="Cashier Workflow Documentation"
-        >
-          Business Process Analyst Intern · Five Star Bus Co.
-        </SectionTitle>
-
-        <div className="workflow-context">
-          <p>
-            <strong>My contribution.</strong> I documented the cashier-management
-            workflow in a four-page process flowchart, covering ticket encoding,
-            record verification, and cash remittance.
-          </p>
-          <p>
-            <strong>Industrial Engineering approach.</strong> I used process
-            mapping to show the sequence of activities, staff responsibilities,
-            handoffs between roles, and steps for handling discrepancies.
-          </p>
-          <p>
-            <strong>Purpose of the output.</strong> The flowchart provides a
-            reference for reviewing the existing workflow, supporting
-            standardized procedures, and preparing future work instructions.
-          </p>
-
-          <span className="paper-label">
-            <FileText size={17} aria-hidden="true" />
-            Output: Process flowchart
-          </span>
-        </div>
+    <section id="cashier-workflow" className="workflow-section section">
+      <div className="container workflow-case-study">
+        <header className="workflow-case-heading">
+          <p className="section-label">Internship contribution / Industrial Engineering</p>
+          <h2>Making complex processes clearer.</h2>
+          <p>An IE-based case study on documenting a cashier workflow at Five Star Bus Co.</p>
+        </header>
 
         <AnimatedWorkflow />
-        <InternshipFlowchart />
+
+        <div className="workflow-case-grid">
+          <section className="workflow-evidence" aria-labelledby="workflow-output-title">
+            <p className="workflow-case-label">02 / THE OUTPUT</p>
+            <h3 id="workflow-output-title">Cashier Workflow Documentation</h3>
+            <p className="workflow-case-summary">
+              4-page process map covering activities, checks, decisions, and handoffs.
+            </p>
+            <InternshipFlowchart />
+          </section>
+
+          <section className="workflow-value" aria-labelledby="workflow-value-title">
+            <p className="workflow-case-label">03 / THE VALUE</p>
+            <h3 id="workflow-value-title">Why it matters</h3>
+            <p className="workflow-case-summary">
+              A clearer reference for existing procedures.
+            </p>
+            <ul className="workflow-value-list">
+              <li>
+                <strong>Process visibility</strong>
+                <span>See how each task connects.</span>
+              </li>
+              <li>
+                <strong>Defined handoffs</strong>
+                <span>Clarify roles and decision points.</span>
+              </li>
+              <li>
+                <strong>Supports standardization</strong>
+                <span>A foundation for SOP review and training.</span>
+              </li>
+            </ul>
+            <p className="workflow-value-note">
+              Potential benefits of documentation; not measured outcomes.
+            </p>
+          </section>
+        </div>
       </div>
     </section>
   );
