@@ -533,68 +533,58 @@ details[open] > summary > svg { transform: rotate(45deg); }
   color: #b9c6d7;
   font-size: .78rem;
 }
-.awf-timeline {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0,1fr));
-  gap: 0;
-  list-style: none;
-  margin: 0 0 30px;
-  padding: 0;
+.awf-diagram {
+  margin: 0 0 18px;
+  width: 100%;
+  min-width: 0;
 }
-.awf-timeline-track,
-.awf-timeline-progress {
-  position: absolute;
-  top: 23px;
-  left: 10%;
-  height: 2px;
-  pointer-events: none;
+.awf-desktop-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
-.awf-timeline-track { right: 10%; background: #667187; }
-.awf-timeline-progress {
-  background: var(--champagne);
-  transition: width 750ms var(--ease-out);
+.awf-shape {
+  fill: #26354d;
+  stroke: #8998af;
+  stroke-width: 2;
+  transition: fill 700ms ease, stroke 700ms ease, stroke-width 700ms ease;
 }
-.awf-stage {
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin: 0;
-  padding: 0 5px;
-  text-align: center;
+.awf-node-text {
+  fill: #f4f1eb;
+  font: 600 16px var(--font-sans);
+  transition: fill 700ms ease;
 }
-.awf-dot {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border: 1.5px solid #7d8aa0;
-  border-radius: 50%;
-  background: var(--navy);
-  color: #d6dce5;
-  font-size: .85rem;
-  font-weight: 700;
-  transition: background 700ms ease, color 700ms ease, border-color 700ms ease, transform 700ms ease;
+.awf-node.is-active .awf-shape {
+  fill: var(--champagne);
+  stroke: #f3ddb6;
+  stroke-width: 3;
 }
-.awf-stage-label {
-  color: #d1d9e3;
-  font-size: .88rem;
-  font-weight: 600;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+.awf-node.is-active .awf-node-text { fill: var(--navy); }
+.awf-node.is-done .awf-shape { stroke: var(--champagne); }
+.awf-arrow {
+  fill: none;
+  stroke: #aab6c6;
+  stroke-width: 2.5;
+  transition: stroke 500ms ease;
 }
-.awf-stage.is-active .awf-dot {
-  background: var(--champagne);
-  color: var(--navy);
-  border-color: var(--champagne);
-  transform: scale(1.06);
+.awf-arrow.is-done { stroke: var(--champagne); }
+.awf-arrow.is-flowing {
+  stroke: var(--champagne);
+  stroke-dasharray: 8 5;
+  animation: awf-arrow-flow 1s linear infinite;
 }
-.awf-stage.is-active .awf-stage-label { color: #f6deb3; }
-.awf-stage.is-done .awf-dot {
-  border-color: var(--champagne);
-  color: var(--champagne);
+.awf-return { stroke-dasharray: 5 5; }
+.awf-return-caption,
+.awf-shape-captions {
+  fill: #bdc8d8;
+  font: 500 12px var(--font-sans);
+  letter-spacing: .05em;
+}
+.awf-return-caption { fill: var(--champagne); }
+.awf-mobile-diagram { display: none; }
+@keyframes awf-arrow-flow {
+  to { stroke-dashoffset: -26; }
 }
 .awf-detail {
   display: flex;
@@ -716,18 +706,44 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .workflow-case-heading { margin-bottom: 35px; }
   .awf-meta { align-items: flex-start; margin-bottom: 23px; }
   .awf-meta > span { max-width: 80px; text-align: right; }
-  .awf-timeline-track,
-  .awf-timeline-progress { top: 17px; }
-  .awf-dot { width: 34px; height: 34px; font-size: .7rem; }
-  .awf-stage { gap: 9px; padding-inline: 2px; }
-  .awf-stage-label { font-size: .67rem; }
+  .awf-desktop-svg { display: none; }
+  .awf-mobile-diagram {
+    display: grid;
+    justify-items: center;
+    list-style: none;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .awf-mobile-diagram .awf-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .awf-mobile-diagram svg { display: block; width: min(200px, 100%); height: auto; }
+  .awf-mobile-stage-caption {
+    color: #c3cbd7;
+    font-size: .77rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .awf-mobile-connector {
+    color: var(--champagne);
+    font-size: 1.2rem;
+    line-height: 1.1;
+    padding: 5px 0;
+  }
   .awf-detail { min-height: 112px; }
   .workflow-case-grid { padding-top: 37px; }
   .workflow-evidence .internship-preview span { font-size: .82rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .awf-dot,
-  .awf-timeline-progress { transition: none !important; }
+  .awf-shape, .awf-node-text, .awf-arrow { transition: none !important; }
+  .awf-arrow.is-flowing, .awf-detail-copy { animation: none !important; }
+}
   .awf-detail-copy { animation: none !important; }
 }
 
