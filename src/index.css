@@ -738,3 +738,31 @@ details[open] > summary > svg { transform: rotate(45deg); }
     transition: none !important;
   }
 }
+
+
+/* Completed overview stays visible until the visitor chooses Replay. */
+.awf-story.is-complete .awf-node .awf-shape {
+  fill: #f5efe5;
+  stroke: #bd965c;
+  stroke-width: 3;
+}
+.awf-story.is-complete .awf-node .awf-node-text { fill: var(--navy); }
+.awf-story.is-complete .awf-node.is-active .awf-shape {
+  fill: var(--navy);
+  stroke: var(--champagne);
+  stroke-width: 4;
+}
+.awf-story.is-complete .awf-node.is-active .awf-node-text { fill: white; }
+.awf-story.is-complete .awf-edge:not(.awf-return) { stroke: #af8650; }
+@media (max-width: 600px) {
+  .awf-story.is-complete .awf-mobile-node {
+    border-color: #bd965c;
+    background: #f5efe5;
+    color: var(--navy);
+  }
+  .awf-story.is-complete .awf-mobile-node.is-active {
+    border-color: var(--champagne);
+    background: var(--navy);
+    color: white;
+  }
+}

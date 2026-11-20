@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Pause, Play } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
-const STAGE_DURATION = 3800;
+const STAGE_DURATION = 2700;
 
 // An illustrative overview: company-specific operating details remain in
 // the separate source document, subject to publication permission.
@@ -31,7 +31,7 @@ const stages = [
 export default function AnimatedWorkflow() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [completed, setCompleted] = useState(false);
   const [inView, setInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -63,24 +63,37 @@ export default function AnimatedWorkflow() {
     return () => document.removeEventListener('visibilitychange', update);
   }, []);
 
-  const playing = inView && pageVisible && !paused && !reducedMotion;
+  const finished = completed || reducedMotion;
+  const playing = inView && pageVisible && !finished;
 
+  // Advance once through all four stages. Leaving the viewport pauses the
+  // countdown without resetting progress; after completion it never loops.
   useEffect(() => {
     if (!playing) return;
-    const interval = window.setInterval(
-      () => setActive(current => (current + 1) % stages.length),
-      STAGE_DURATION
-    );
-    return () => window.clearInterval(interval);
-  }, [playing]);
+    const timeout = window.setTimeout(() => {
+      if (active === stages.length - 1) setCompleted(true);
+      else setActive(current => current + 1);
+    }, STAGE_DURATION);
+    return () => window.clearTimeout(timeout);
+  }, [active, playing]);
+
+  const nodeClass = (index: number) =>
+    'awf-node' +
+    ((finished ? index === stages.length - 1 : index === active)
+      ? ' is-active' : '');
 
   const connectionClass = (destination: number) =>
     'awf-edge' + (playing && active === destination ? ' is-flowing' : '');
 
+  const replay = () => {
+    setActive(0);
+    setCompleted(false);
+  };
+
   return (
     <div
       ref={sectionRef}
-      className={'awf-story' + (playing ? ' is-playing' : '')}
+      className={'awf-story' + (playing ? ' is-playing' : '') + (finished ? ' is-complete' : '')}
     >
       <div className="awf-card">
         <p className="awf-eyebrow">PROCESS MAPPING IN ACTION</p>
@@ -136,23 +149,23 @@ export default function AnimatedWorkflow() {
               Recheck if needed
             </text>
 
-            <g className={'awf-node' + (active === 0 ? ' is-active' : '')}>
+            <g className={nodeClass(0)}>
               <rect className="awf-shape" x="16" y="77" width="166" height="70" rx="11" />
               <text className="awf-node-text" x="99" y="107" textAnchor="middle">Record</text>
               <text className="awf-node-text" x="99" y="127" textAnchor="middle">intake</text>
             </g>
-            <g className={'awf-node' + (active === 1 ? ' is-active' : '')}>
+            <g className={nodeClass(1)}>
               <rect className="awf-shape" x="223" y="77" width="174" height="70" rx="11" />
               <text className="awf-node-text" x="310" y="117" textAnchor="middle">
                 Verification
               </text>
             </g>
-            <g className={'awf-node' + (active === 2 ? ' is-active' : '')}>
+            <g className={nodeClass(2)}>
               <path className="awf-shape" d="M517 37 L600 111 L517 185 L434 111 Z" />
               <text className="awf-node-text" x="517" y="106" textAnchor="middle">Records</text>
               <text className="awf-node-text" x="517" y="125" textAnchor="middle">match?</text>
             </g>
-            <g className={'awf-node' + (active === 3 ? ' is-active' : '')}>
+            <g className={nodeClass(3)}>
               <rect className="awf-shape" x="645" y="77" width="160" height="70" rx="11" />
               <text className="awf-node-text" x="725" y="117" textAnchor="middle">
                 Handoff
@@ -165,7 +178,9 @@ export default function AnimatedWorkflow() {
           {stages.map((stage, index) => (
             <li
               key={stage.label}
-              className={'awf-mobile-node' + (index === active ? ' is-active' : '') +
+              className={'awf-mobile-node' +
+                ((finished ? index === stages.length - 1 : index === active)
+                  ? ' is-active' : '') +
                 (index === 2 ? ' is-decision' : '')}
             >
               <span className="awf-mobile-marker">
@@ -177,10 +192,14 @@ export default function AnimatedWorkflow() {
         </ol>
 
         <div className="awf-explanation" aria-live="off">
-          <span className="awf-step-number">{String(active + 1).padStart(2, '0')}</span>
-          <div key={active} className="awf-step-copy">
-            <h4>{stages[active].title}</h4>
-            <p>{stages[active].description}</p>
+          <span className="awf-step-number">{finished ? '✓' : String(active + 1).padStart(2, '0')}</span>
+          <div key={finished ? 'complete' : active} className="awf-step-copy">
+            <h4>{finished ? 'Workflow overview complete' : stages[active].title}</h4>
+            <p>
+              {finished
+                ? 'The full process connects inputs, verification, decisions, and role handoffs.'
+                : stages[active].description}
+            </p>
           </div>
         </div>
 
@@ -189,8 +208,8 @@ export default function AnimatedWorkflow() {
             <span
               key={stage.label}
               className={'awf-progress-track' +
-                (index < active ? ' is-done' : '') +
-                (index === active ? ' is-current' : '')}
+                (finished || index < active ? ' is-done' : '') +
+                (!finished && index === active ? ' is-current' : '')}
             >
               <span className="awf-progress-fill" />
             </span>
@@ -200,34 +219,26 @@ export default function AnimatedWorkflow() {
         <div className="awf-footer">
           <p>
             {reducedMotion
-              ? 'Reduced-motion mode · Use Next step'
-              : paused
-                ? 'Animation paused'
+              ? 'Complete workflow · Reduced motion enabled'
+              : completed
+                ? 'Walkthrough complete · Replay anytime'
                 : playing
-                  ? 'Auto-playing · Step ' + (active + 1) + ' of 4'
-                  : 'Animation plays when visible'}
+                  ? 'Playing once · Step ' + (active + 1) + ' of 4'
+                  : active > 0
+                    ? 'Walkthrough continues when visible'
+                    : 'Walkthrough starts when visible'}
           </p>
-          <button
-            type="button"
-            className="awf-control"
-            aria-label={
-              reducedMotion ? 'Show next workflow step' :
-                paused ? 'Resume workflow animation' : 'Pause workflow animation'
-            }
-            aria-pressed={reducedMotion ? undefined : paused}
-            onClick={() => {
-              if (reducedMotion) {
-                setActive(current => (current + 1) % stages.length);
-              } else {
-                setPaused(current => !current);
-              }
-            }}
-          >
-            {reducedMotion || paused
-              ? <Play size={16} aria-hidden="true" />
-              : <Pause size={16} aria-hidden="true" />}
-            {reducedMotion ? 'Next step' : paused ? 'Resume' : 'Pause'}
-          </button>
+          {completed && !reducedMotion && (
+            <button
+              type="button"
+              className="awf-control"
+              aria-label="Replay workflow animation"
+              onClick={replay}
+            >
+              <RotateCcw size={16} aria-hidden="true" />
+              Replay
+            </button>
+          )}
         </div>
         <p className="awf-disclaimer">
           Illustrative overview of process-mapping principles, not the full company procedure.
