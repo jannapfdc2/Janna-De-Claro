@@ -490,18 +490,18 @@ details[open] > summary > svg { transform: rotate(45deg); }
 }
 
 
-/* Minimal editorial internship case study */
+/* Scroll-driven IE methodology · one continuous diagram and dynamic description */
 .workflow-case-heading {
   max-width: 790px;
-  margin-bottom: 46px;
+  margin-bottom: 35px;
 }
 .workflow-case-heading .section-label {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   letter-spacing: .04em;
 }
 .workflow-case-heading h2 {
   max-width: 720px;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   color: var(--ivory);
 }
 .workflow-case-heading > p:last-child {
@@ -509,7 +509,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
   margin: 0;
   color: #cbd3de;
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.65;
 }
 .workflow-case-label {
   margin: 0;
@@ -519,9 +519,9 @@ details[open] > summary > svg { transform: rotate(45deg); }
   letter-spacing: .13em;
 }
 .awf-story {
-  min-width: 0;
   width: 100%;
-  padding-bottom: 32px;
+  min-width: 0;
+  padding-bottom: 26px;
   border-bottom: 1px solid #526076;
 }
 .awf-meta {
@@ -529,23 +529,39 @@ details[open] > summary > svg { transform: rotate(45deg); }
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 15px;
 }
-.awf-meta > span { color: #b9c6d7; font-size: .78rem; }
-.awf-scroll-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(235px, .9fr);
-  align-items: start;
-  gap: clamp(22px, 3vw, 45px);
+.awf-meta > span {
+  color: #b9c6d7;
+  font-size: .78rem;
+  white-space: nowrap;
 }
-.awf-sticky-diagram {
-  position: sticky;
-  top: clamp(90px, 13vh, 140px);
-  align-self: start;
+.awf-scroll-frame {
+  position: relative;
   min-width: 0;
-  padding-top: 40px;
 }
-.awf-desktop-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.awf-sticky-panel {
+  position: sticky;
+  top: 88px;
+  z-index: 2;
+  padding: 7px 0 14px;
+  background: var(--navy);
+}
+.awf-flow-viewport {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #667792 transparent;
+  overscroll-behavior-x: contain;
+}
+.awf-flow-svg {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+}
 .awf-shape {
   fill: #26354d;
   stroke: #8998af;
@@ -564,7 +580,12 @@ details[open] > summary > svg { transform: rotate(45deg); }
 }
 .awf-node.is-active .awf-node-text { fill: var(--navy); }
 .awf-node.is-done .awf-shape { stroke: var(--champagne); }
-.awf-arrow { fill: none; stroke: #aab6c6; stroke-width: 2.5; transition: stroke 240ms ease; }
+.awf-arrow {
+  fill: none;
+  stroke: #aab6c6;
+  stroke-width: 2.5;
+  transition: stroke 240ms ease;
+}
 .awf-arrow.is-done { stroke: var(--champagne); }
 .awf-return { stroke-dasharray: 5 5; opacity: .66; }
 .awf-return.is-reviewing { stroke: var(--champagne); opacity: 1; }
@@ -575,61 +596,95 @@ details[open] > summary > svg { transform: rotate(45deg); }
   letter-spacing: .05em;
 }
 .awf-return-caption { fill: var(--champagne); }
-.awf-sticky-hint {
-  margin: 4px 0 0;
-  color: #aabacf;
-  font-size: .77rem;
-  line-height: 1.5;
+.awf-live-description {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-height: 78px;
+  margin-top: 7px;
+  padding: 17px 0 12px;
+  border-top: 1px solid #526076;
 }
-.awf-scroll-steps {
+.awf-description-number {
+  flex: 0 0 auto;
+  color: var(--champagne);
+  font-size: .8rem;
+  font-weight: 700;
+  padding-top: 2px;
+}
+.awf-description-copy { animation: awf-copy-in 220ms ease both; }
+.awf-description-copy h4 {
+  margin: 0 0 5px;
+  color: #f7e6c8;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.awf-description-copy p {
+  margin: 0;
+  color: #c6cfdd;
+  font-size: .88rem;
+  line-height: 1.55;
+}
+.awf-step-progress {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 7px;
+  margin: 7px 0 0;
+}
+.awf-step-progress span {
+  height: 2px;
+  background: #53617a;
+  transition: background 240ms ease;
+}
+.awf-step-progress span.is-reached { background: var(--champagne); }
+.awf-scroll-cues {
+  display: grid;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.awf-scroll-steps li {
-  min-height: clamp(125px, 18vh, 170px);
+.awf-scroll-cues li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-height: clamp(74px, 10vh, 92px);
   margin: 0;
-  padding: 24px 0 20px 18px;
-  border-left: 2px solid #56637a;
-  opacity: .65;
-  transition: opacity 240ms ease, border-color 240ms ease;
+  padding: 10px 14px;
+  border-bottom: 1px solid #405069;
+  color: #bac4d4;
+  font-size: .9rem;
+  font-weight: 500;
+  opacity: .68;
+  transition: color 240ms ease, opacity 240ms ease;
 }
-.awf-scroll-steps li.is-active {
-  border-left-color: var(--champagne);
+.awf-scroll-cues li.is-active {
+  color: #f5e3be;
   opacity: 1;
 }
-.awf-scroll-number {
+.awf-cue-number {
   color: var(--champagne);
-  font-size: .76rem;
-  letter-spacing: .08em;
+  font-size: .75rem;
   font-weight: 700;
-}
-.awf-scroll-steps h4 {
-  color: var(--ivory);
-  margin: 10px 0 5px;
-  font-size: 1.02rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-.awf-scroll-steps p {
-  color: #d1d9e5;
-  font-size: .89rem;
-  line-height: 1.6;
-  margin: 0;
+  letter-spacing: .1em;
 }
 .awf-method-note {
-  color: #9fadc0;
-  margin: 10px 0 0;
+  color: #aebbcf;
+  margin: 14px 0 0;
   font-size: .76rem;
   line-height: 1.5;
 }
-.awf-mobile-sequence { display: none; }
+@keyframes awf-copy-in {
+  from { opacity: .6; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .workflow-case-grid {
   display: grid;
   grid-template-columns: minmax(0,1.35fr) minmax(270px,1fr);
   gap: clamp(30px,5vw,65px);
   align-items: start;
-  padding-top: 48px;
+  padding-top: 40px;
 }
 .workflow-evidence, .workflow-value { min-width: 0; }
 .workflow-case-grid h3 {
@@ -647,7 +702,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .workflow-evidence .internship-gallery {
   width: 100%;
   max-width: none;
-  margin: 24px 0 0;
+  margin: 20px 0 0;
 }
 .workflow-evidence .internship-preview { border-radius: 7px; }
 .workflow-evidence .internship-preview img {
@@ -685,65 +740,35 @@ details[open] > summary > svg { transform: rotate(45deg); }
   line-height: 1.6;
 }
 @media (max-width: 920px) {
-  .workflow-case-heading { margin-bottom: 36px; }
-  .awf-mobile-sequence {
-    display: grid;
-    list-style: none;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-  }
-  .awf-mobile-sequence li {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(125px, 34%) minmax(0,1fr);
-    gap: clamp(14px, 3vw, 25px);
-    align-items: center;
-    min-height: 140px;
-    padding: 10px 0 30px;
-    margin: 0;
-    opacity: .65;
-    transition: opacity 240ms ease;
-  }
-  .awf-mobile-sequence li.is-active { opacity: 1; }
-  .awf-mobile-sequence svg { display: block; width: 100%; max-width: 195px; height: auto; }
-  .awf-mobile-copy h4 {
-    color: var(--ivory);
-    font-size: .94rem;
-    font-weight: 600;
-    margin: 0 0 5px;
-  }
-  .awf-mobile-copy p {
-    margin: 0;
-    color: #c6d0de;
-    font-size: .83rem;
-    line-height: 1.5;
-  }
-  .awf-mobile-connector {
-    position: absolute;
-    left: 16%;
-    bottom: 1px;
-    color: var(--champagne);
-    font-size: 1.1rem;
-    transform: translateX(-50%);
-  }
+  .workflow-case-heading { margin-bottom: 30px; }
   .workflow-case-grid {
     grid-template-columns: 1fr;
     gap: 38px;
-    padding-top: 39px;
+    padding-top: 34px;
   }
   .workflow-value { max-width: 670px; }
 }
+@media (max-width: 800px) {
+  .awf-sticky-panel { top: 76px; }
+  .awf-flow-svg { min-width: 700px; }
+}
 @media (max-width: 540px) {
-  .awf-meta { align-items: flex-start; margin-bottom: 18px; }
-  .awf-meta > span { max-width: 125px; text-align: right; }
-  .awf-mobile-sequence li { min-height: 127px; padding-bottom: 23px; }
-  .awf-mobile-sequence .awf-node-text { font-size: 15px; }
+  .awf-meta { align-items: flex-start; }
+  .awf-meta > span {
+    max-width: 128px;
+    text-align: right;
+    white-space: normal;
+  }
+  .awf-sticky-panel { top: 72px; }
+  .awf-flow-svg { min-width: 680px; }
+  .awf-live-description { min-height: 90px; gap: 12px; }
+  .awf-scroll-cues li { min-height: 75px; }
   .workflow-evidence .internship-preview span { font-size: .82rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .awf-shape, .awf-node-text, .awf-arrow,
-  .awf-mobile-sequence li, .awf-scroll-steps li { transition: none !important; }
+  .awf-scroll-cues li, .awf-step-progress span { transition: none !important; }
+  .awf-description-copy { animation: none !important; }
 }
 
 
