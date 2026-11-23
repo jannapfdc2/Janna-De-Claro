@@ -3,7 +3,7 @@ import AnimatedWorkflow from './AnimatedWorkflow';
 import ProjectPreview from './ProjectPreview';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode, KeyboardEvent, FormEvent } from 'react';
-import { ChevronDown, ClipboardList, Copy, FileText, Github, GraduationCap, Mail, MapPin, Maximize2, Menu, Phone, Plus, X } from 'lucide-react';
+import { ChevronDown, ClipboardList, Copy, FileText, Github, GraduationCap, Mail, MapPin, Maximize2, Menu, Phone, Plus, Workflow, Calculator, BriefcaseBusiness, Check, MousePointerClick, X } from 'lucide-react';
 import { clientSteps, experiences, inquiryTopics, monitoring, research, sampleProjects, services, skillGroups } from './portfolioData';
 
 const navLinks = [
@@ -50,6 +50,122 @@ function SectionTitle({ label, title, children }: { label: string; title: string
   return <div className="section-heading"><p className="section-label">{label}</p><h2>{title}</h2>{children && <p className="section-intro">{children}</p>}</div>;
 }
 
+
+const timelineEntries = [...experiences].reverse();
+const timelineIds = ['process-experience', 'bookkeeping-experience', 'coordination-experience'];
+const timelineYears = ['2023', '2024–25', '2025–Now'];
+const timelineTitles = ['Process Analyst Intern', 'Bookkeeper', 'Project Coordinator'];
+const timelineIcons = [Workflow, Calculator, BriefcaseBusiness];
+
+function ExperienceTimeline() {
+  const milestoneButtons = useRef<Array<HTMLButtonElement | null>>([]);
+  const [selected, setSelected] = useState(() => {
+    const hash = typeof window === 'undefined' ? '' : window.location.hash.slice(1);
+    const found = timelineIds.indexOf(hash);
+    return found >= 0 ? found : timelineEntries.length - 1;
+  });
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const found = timelineIds.indexOf(window.location.hash.slice(1));
+      if (found >= 0) setSelected(found);
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    let next = index;
+    if (event.key === 'ArrowRight') next = (index + 1) % timelineEntries.length;
+    else if (event.key === 'ArrowLeft') next = (index - 1 + timelineEntries.length) % timelineEntries.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = timelineEntries.length - 1;
+    else return;
+    event.preventDefault();
+    setSelected(next);
+    milestoneButtons.current[next]?.focus();
+  }
+
+  const experience = timelineEntries[selected];
+
+  return (
+    <div className="experience-timeline-section">
+      <p className="experience-timeline-hint">
+        <MousePointerClick size={17} aria-hidden="true" />
+        Select a milestone to view the details
+      </p>
+      <div className="experience-timeline" role="tablist" aria-label="Career milestones">
+        {timelineEntries.map((item, index) => {
+          const Icon = timelineIcons[index];
+          const current = selected === index;
+          return (
+            <button
+              key={item.position}
+              id={timelineIds[index]}
+              ref={element => { milestoneButtons.current[index] = element; }}
+              type="button"
+              role="tab"
+              aria-selected={current}
+              aria-controls="experience-detail-panel"
+              tabIndex={current ? 0 : -1}
+              className={'experience-milestone' + (current ? ' is-active' : '')}
+              onClick={() => setSelected(index)}
+              onKeyDown={event => navigate(event, index)}
+            >
+              <span className="experience-hex-outline" aria-hidden="true">
+                <span className="experience-hex-inner">
+                  <Icon size={28} strokeWidth={1.8} />
+                </span>
+              </span>
+              <span className="experience-milestone-stem" aria-hidden="true" />
+              <span className="experience-year-ribbon">{timelineYears[index]}</span>
+              <span className="experience-milestone-role">{timelineTitles[index]}</span>
+              <span className="experience-milestone-org">{item.organization}</span>
+              <span className="experience-milestone-action">
+                {current ? 'Viewing details' : 'View details'}
+                {current ? <Check size={15} aria-hidden="true" /> : <Plus size={15} aria-hidden="true" />}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      <div
+        className="experience-detail-panel"
+        id="experience-detail-panel"
+        role="tabpanel"
+        aria-labelledby={timelineIds[selected]}
+        tabIndex={0}
+      >
+        <div className="experience-detail-heading">
+          <div>
+            <p className="experience-type">{experience.type}</p>
+            <h3>{experience.position}</h3>
+            <p className="experience-detail-org">{experience.organization}</p>
+          </div>
+          <span className="experience-detail-period">{experience.period}</span>
+        </div>
+        <div className="experience-body">
+          <ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
+          {selected === 2 && (
+            <div className="monitoring-block">
+              <h3>What I monitor</h3>
+              <p>Using company-provided tracking templates.</p>
+              <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
+                {item => <div className="monitoring-content">
+                  <p>{item.text}</p>
+                  <p><strong>Records involved:</strong> {item.record}</p>
+                </div>}
+              </Tabs>
+            </div>
+          )}
+          {selected === 0 && (
+            <a href="#cashier-workflow" className="text-link">View my internship contribution</a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function InternshipContribution() {
   return (
@@ -265,16 +381,14 @@ export default function App() {
 
       <InternshipContribution />
 
-      <section id="experience" className="section experience-section"><div className="container">
-        <SectionTitle label="My experience" title="Industrial Engineering in practice.">My contributions connect people, processes, and records across daily operations. Select a role to explore the work.</SectionTitle>
-        <div className="experience-list">{experiences.map((experience, index) => <details className="experience-detail" id={index === 1 ? 'bookkeeping-experience' : index === 2 ? 'process-experience' : 'coordination-experience'} key={experience.position} open={index === 0}>
-          <summary><span className="experience-summary"><span className="experience-company">{experience.organization}</span><span className="experience-title">{experience.position}</span></span><span className="period">{experience.period}</span><Plus size={22} aria-hidden="true" /></summary>
-          <div className="experience-body"><p className="experience-type">{experience.type}</p><ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
-            {index === 0 && <div className="monitoring-block"><h3>What I monitor</h3><p>Using company-provided tracking templates.</p><Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>{item => <div className="monitoring-content"><p>{item.text}</p><p><strong>Records involved:</strong> {item.record}</p></div>}</Tabs></div>}
-            {index === 2 && <a href="#cashier-workflow" className="text-link">View my internship contribution</a>}
-          </div>
-        </details>)}</div>
-      </div></section>
+      <section id="experience" className="section experience-section">
+        <div className="container">
+          <SectionTitle label="My experience" title="Industrial Engineering in practice.">
+            My work connects people, processes, and records. Select a milestone to explore each role.
+          </SectionTitle>
+          <ExperienceTimeline />
+        </div>
+      </section>
 
       <section id="approach" className="section approach-section"><div className="container">
         <SectionTitle label="How I work with clients" title="From your challenge to a clear next step.">My proposed approach for new engagements, adapted to your team and agreed scope.</SectionTitle>
