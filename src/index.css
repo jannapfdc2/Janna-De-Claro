@@ -872,8 +872,11 @@ details[open] > summary > svg { transform: rotate(45deg); }
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: 42px;
-  padding: 10px 12px;
+  min-height: 48px;
+  padding: 10px 15px;
+  line-height: 1.3;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
   background: var(--navy);
   color: var(--ivory);
   clip-path: polygon(0 0, 94% 0, 100% 50%, 94% 100%, 0 100%, 6% 50%);
@@ -980,7 +983,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .experience-hex-inner svg { width: 23px; height: 23px; }
   .experience-milestone { padding: 6px 2px 15px; }
   .experience-milestone-stem { height: 23px; }
-  .experience-year-ribbon { min-height: 34px; padding: 7px 4px; font-size: .72rem; }
+  .experience-year-ribbon { min-height: 50px; padding: 7px 5px; font-size: .7rem; line-height: 1.35; }
   .experience-milestone-role { font-size: .77rem; margin-top: 13px; }
   .experience-milestone-org { font-size: .72rem; line-height: 1.45; }
   .experience-milestone-action { gap: 3px; font-size: .69rem; }

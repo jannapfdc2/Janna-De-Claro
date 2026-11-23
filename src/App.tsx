@@ -53,7 +53,7 @@ function SectionTitle({ label, title, children }: { label: string; title: string
 
 const timelineEntries = [...experiences].reverse();
 const timelineIds = ['process-experience', 'bookkeeping-experience', 'coordination-experience'];
-const timelineYears = ['2023', '2024–25', '2025–Now'];
+const timelineYears = ['Sep–Dec 2023', 'Oct 2024–Apr 2025', 'May 2025–Present'];
 const timelineTitles = ['Process Analyst Intern', 'Bookkeeper', 'Project Coordinator'];
 const timelineIcons = [Workflow, Calculator, BriefcaseBusiness];
 
@@ -383,8 +383,8 @@ export default function App() {
 
       <section id="experience" className="section experience-section">
         <div className="container">
-          <SectionTitle label="My experience" title="Industrial Engineering in practice.">
-            My work connects people, processes, and records. Select a milestone to explore each role.
+          <SectionTitle label="My experience" title="Bringing structure to everyday work.">
+            Process mapping, bookkeeping, and project coordination—different roles, one structured approach.
           </SectionTitle>
           <ExperienceTimeline />
         </div>
