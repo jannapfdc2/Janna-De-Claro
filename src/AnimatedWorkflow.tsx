@@ -149,59 +149,60 @@ export default function AnimatedWorkflow() {
       ) : (
         <div className="awf-scroll-layout">
           <div className="awf-sticky-diagram" role="img" aria-label={shapeDescription}>
-            <svg className="awf-desktop-svg" viewBox="0 0 960 210" aria-hidden="true" focusable="false">
+            <svg className="awf-desktop-svg" viewBox="0 0 700 370" aria-hidden="true" focusable="false">
               <defs>
                 <marker id="awf-forward-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
                   <path d="M0 0 L7 3.5 L0 7 Z" fill="#aab6c6" />
                 </marker>
               </defs>
-              <path className={arrowClass(1)} d="M155 87 H210" markerEnd="url(#awf-forward-arrow)" />
-              <path className={arrowClass(2)} d="M350 87 H400" markerEnd="url(#awf-forward-arrow)" />
-              <path className={arrowClass(3)} d="M540 87 H585" markerEnd="url(#awf-forward-arrow)" />
-              <path className={arrowClass(4)} d="M735 87 H790" markerEnd="url(#awf-forward-arrow)" />
+
+              <path className={arrowClass(1)} d="M177 86 H245" markerEnd="url(#awf-forward-arrow)" />
+              <path className={arrowClass(2)} d="M395 86 H480" markerEnd="url(#awf-forward-arrow)" />
+              <path className={arrowClass(3)} d="M567 118 V165" markerEnd="url(#awf-forward-arrow)" />
+              <path className={arrowClass(4)} d="M484 246 H413" markerEnd="url(#awf-forward-arrow)" />
               <path
                 className={'awf-arrow awf-return' + (active === 3 ? ' is-reviewing' : '')}
-                d="M660 158 V175 H470 V128"
+                d="M650 246 H674 V144 H621 V118"
                 markerEnd="url(#awf-forward-arrow)"
               />
 
               <g className={nodeClass(0)}>
-                <rect className="awf-shape" x="12" y="49" width="143" height="76" rx="38" />
-                <text className="awf-node-text" x="83.5" y="92" textAnchor="middle">Understand</text>
+                <rect className="awf-shape" x="12" y="49" width="165" height="74" rx="37" />
+                <text className="awf-node-text" x="94.5" y="92" textAnchor="middle">Understand</text>
               </g>
               <g className={nodeClass(1)}>
-                <rect className="awf-shape" x="210" y="49" width="140" height="76" rx="7" />
-                <text className="awf-node-text" x="280" y="92" textAnchor="middle">Gather</text>
+                <rect className="awf-shape" x="245" y="49" width="150" height="74" rx="7" />
+                <text className="awf-node-text" x="320" y="92" textAnchor="middle">Gather</text>
               </g>
               <g className={nodeClass(2)}>
-                <rect className="awf-shape" x="400" y="49" width="140" height="76" rx="7" />
-                <text className="awf-node-text" x="470" y="92" textAnchor="middle">Map AS-IS</text>
+                <rect className="awf-shape" x="480" y="49" width="174" height="74" rx="7" />
+                <text className="awf-node-text" x="567" y="92" textAnchor="middle">Map AS-IS</text>
               </g>
               <g className={nodeClass(3)}>
-                <path className="awf-shape" d="M660 16 L735 87 L660 158 L585 87 Z" />
-                <text className="awf-node-text" x="660" y="84" textAnchor="middle">Review</text>
-                <text className="awf-node-text" x="660" y="103" textAnchor="middle">gaps?</text>
+                <path className="awf-shape" d="M567 165 L650 246 L567 327 L484 246 Z" />
+                <text className="awf-node-text" x="567" y="243" textAnchor="middle">Review</text>
+                <text className="awf-node-text" x="567" y="263" textAnchor="middle">gaps?</text>
               </g>
               <g className={nodeClass(4)}>
                 <path
                   className="awf-shape"
-                  d="M790 49 H941 V128 Q903 111 865 128 Q828 145 790 128 Z"
+                  d="M228 207 H413 V285 Q367 267 321 285 Q275 303 228 285 Z"
                 />
-                <text className="awf-node-text" x="866" y="84" textAnchor="middle">Document</text>
-                <text className="awf-node-text" x="866" y="103" textAnchor="middle">standards</text>
+                <text className="awf-node-text" x="320" y="244" textAnchor="middle">Document</text>
+                <text className="awf-node-text" x="320" y="264" textAnchor="middle">standards</text>
               </g>
+
               <g className="awf-shape-captions" textAnchor="middle">
-                <text x="83.5" y="148">START</text>
-                <text x="280" y="148">PROCESS</text>
-                <text x="470" y="148">PROCESS</text>
-                <text x="660" y="196">DECISION</text>
-                <text x="866" y="163">DOCUMENT</text>
+                <text x="94.5" y="145">START</text>
+                <text x="320" y="145">PROCESS</text>
+                <text x="567" y="145">PROCESS</text>
+                <text x="567" y="350">DECISION</text>
+                <text x="320" y="319">DOCUMENT</text>
               </g>
-              <text className="awf-return-caption" x="554" y="192" textAnchor="middle">
-                Refine if needed
+              <text className="awf-return-caption" x="663" y="206" textAnchor="end">
+                Refine
               </text>
             </svg>
-            <p className="awf-sticky-hint">The highlighted step follows your scroll.</p>
           </div>
           <ol className="awf-scroll-steps" aria-label="Five IE methodology steps">
             {stages.map((stage, index) => (
