@@ -490,10 +490,9 @@ details[open] > summary > svg { transform: rotate(45deg); }
 
 
 /* Minimal editorial internship case study */
-.workflow-section { padding-block: clamp(62px, 7vw, 90px); }
 .workflow-case-heading {
   max-width: 790px;
-  margin-bottom: 32px;
+  margin-bottom: 46px;
 }
 .workflow-case-heading .section-label {
   margin-bottom: 18px;
@@ -521,7 +520,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .awf-story {
   min-width: 0;
   width: 100%;
-  padding-bottom: 24px;
+  padding-bottom: 32px;
   border-bottom: 1px solid #526076;
 }
 .awf-meta {
@@ -534,16 +533,16 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .awf-meta > span { color: #b9c6d7; font-size: .78rem; }
 .awf-scroll-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.8fr) minmax(235px, .9fr);
   align-items: start;
-  gap: clamp(26px, 3.4vw, 50px);
+  gap: clamp(22px, 3vw, 45px);
 }
 .awf-sticky-diagram {
   position: sticky;
-  top: clamp(90px, 14vh, 145px);
+  top: clamp(90px, 13vh, 140px);
   align-self: start;
   min-width: 0;
-  padding-top: 10px;
+  padding-top: 40px;
 }
 .awf-desktop-svg { display: block; width: 100%; height: auto; overflow: visible; }
 .awf-shape {
@@ -575,15 +574,21 @@ details[open] > summary > svg { transform: rotate(45deg); }
   letter-spacing: .05em;
 }
 .awf-return-caption { fill: var(--champagne); }
+.awf-sticky-hint {
+  margin: 4px 0 0;
+  color: #aabacf;
+  font-size: .77rem;
+  line-height: 1.5;
+}
 .awf-scroll-steps {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .awf-scroll-steps li {
-  min-height: clamp(112px, 15vh, 138px);
+  min-height: clamp(125px, 18vh, 170px);
   margin: 0;
-  padding: 18px 0 16px 18px;
+  padding: 24px 0 20px 18px;
   border-left: 2px solid #56637a;
   opacity: .65;
   transition: opacity 240ms ease, border-color 240ms ease;
@@ -600,7 +605,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
 }
 .awf-scroll-steps h4 {
   color: var(--ivory);
-  margin: 7px 0 4px;
+  margin: 10px 0 5px;
   font-size: 1.02rem;
   font-weight: 600;
   line-height: 1.4;
@@ -621,9 +626,9 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .workflow-case-grid {
   display: grid;
   grid-template-columns: minmax(0,1.35fr) minmax(270px,1fr);
-  gap: clamp(28px,4vw,54px);
+  gap: clamp(30px,5vw,65px);
   align-items: start;
-  padding-top: 35px;
+  padding-top: 48px;
 }
 .workflow-evidence, .workflow-value { min-width: 0; }
 .workflow-case-grid h3 {
@@ -641,7 +646,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .workflow-evidence .internship-gallery {
   width: 100%;
   max-width: none;
-  margin: 18px 0 0;
+  margin: 24px 0 0;
 }
 .workflow-evidence .internship-preview { border-radius: 7px; }
 .workflow-evidence .internship-preview img {
@@ -679,7 +684,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
   line-height: 1.6;
 }
 @media (max-width: 920px) {
-  .workflow-case-heading { margin-bottom: 28px; }
+  .workflow-case-heading { margin-bottom: 36px; }
   .awf-mobile-sequence {
     display: grid;
     list-style: none;
@@ -693,8 +698,8 @@ details[open] > summary > svg { transform: rotate(45deg); }
     grid-template-columns: minmax(125px, 34%) minmax(0,1fr);
     gap: clamp(14px, 3vw, 25px);
     align-items: center;
-    min-height: 126px;
-    padding: 8px 0 24px;
+    min-height: 140px;
+    padding: 10px 0 30px;
     margin: 0;
     opacity: .65;
     transition: opacity 240ms ease;
@@ -724,7 +729,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .workflow-case-grid {
     grid-template-columns: 1fr;
     gap: 38px;
-    padding-top: 31px;
+    padding-top: 39px;
   }
   .workflow-value { max-width: 670px; }
 }
