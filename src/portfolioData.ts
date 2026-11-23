@@ -3,6 +3,17 @@ import { ClipboardList, BriefcaseBusiness, Workflow, Monitor, LayoutDashboard, S
 export const experiences = [
   {
     position: 'Project Coordinator',
+    roleSummary: 'Coordinate project activities, requests, and updates across teams.',
+    keyResponsibilities: [
+      'Project schedules and stakeholder updates',
+      'Procurement, delivery, and payment follow-ups',
+      'Document approvals, reports, and meeting minutes',
+    ],
+    outputs: [
+      'Organized project monitoring records',
+      'Cross-team status coordination',
+      'Weekly reports and presentations',
+    ],
     organization: 'Suweco Tablas Energy Corp.',
     period: 'May 2025 — Present',
     type: 'Project Operations',
@@ -16,6 +27,15 @@ export const experiences = [
   },
   {
     position: 'Bookkeeper',
+    roleSummary: 'Maintain organized financial records for client review.',
+    keyResponsibilities: [
+      'Categorize client transactions and expenses',
+      'Maintain QuickBooks bookkeeping records',
+    ],
+    outputs: [
+      'Organized financial records',
+      'Bookkeeping documentation',
+    ],
     organization: 'Part-time',
     period: 'Oct 2024 — Apr 2025',
     type: 'Finance & Records',
@@ -26,6 +46,16 @@ export const experiences = [
   },
   {
     position: 'Business Process Analyst Intern',
+    roleSummary: 'Analyze and document the existing cashier-management workflow.',
+    keyResponsibilities: [
+      'Review encoding, verification, and remittance',
+      'Map staff roles and process handoffs',
+      'Document discrepancy-handling steps',
+    ],
+    outputs: [
+      'Four-page cashier-management flowchart',
+      'Reference for future SOP review',
+    ],
     organization: 'Five Star Bus Co.',
     period: 'Sep 2023 — Dec 2023',
     type: 'Process Mapping & Documentation',

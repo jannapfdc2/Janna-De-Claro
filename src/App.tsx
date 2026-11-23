@@ -145,21 +145,63 @@ function ExperienceTimeline() {
           <span className="experience-detail-period">{experience.period}</span>
         </div>
         <div className="experience-body">
-          <ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
-          {selected === 2 && (
-            <div className="monitoring-block">
-              <h3>What I monitor</h3>
-              <p>Using company-provided tracking templates.</p>
-              <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
-                {item => <div className="monitoring-content">
-                  <p>{item.text}</p>
-                  <p><strong>Records involved:</strong> {item.record}</p>
-                </div>}
-              </Tabs>
+          <div className="experience-role-overview">
+            <h4><BriefcaseBusiness size={18} aria-hidden="true" /> My Role</h4>
+            <p>{experience.roleSummary}</p>
+          </div>
+
+          <div className="experience-highlights">
+            <section aria-labelledby="experience-responsibilities-label">
+              <h4 id="experience-responsibilities-label">
+                <ClipboardList size={18} aria-hidden="true" /> Key Responsibilities
+              </h4>
+              <ul className="experience-short-list">
+                {experience.keyResponsibilities.map((item, index) => (
+                  <li key={item}>
+                    <span className="experience-short-number">{String(index + 1).padStart(2, '0')}</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section aria-labelledby="experience-contributions-label">
+              <h4 id="experience-contributions-label">
+                <Check size={18} aria-hidden="true" /> Contributions & Output
+              </h4>
+              <ul className="experience-output-list">
+                {experience.outputs.map(item => (
+                  <li key={item}><Check size={16} aria-hidden="true" /><span>{item}</span></li>
+                ))}
+              </ul>
+            </section>
+          </div>
+
+          <details className="experience-full-details" key={experience.position}>
+            <summary>
+              <span>Read full responsibilities</span>
+              <ChevronDown size={18} aria-hidden="true" />
+            </summary>
+            <div className="experience-full-content">
+              <ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
+              {selected === 2 && (
+                <div className="monitoring-block">
+                  <h3>What I monitor</h3>
+                  <p>Using company-provided tracking templates.</p>
+                  <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
+                    {item => <div className="monitoring-content">
+                      <p>{item.text}</p>
+                      <p><strong>Records involved:</strong> {item.record}</p>
+                    </div>}
+                  </Tabs>
+                </div>
+              )}
             </div>
-          )}
+          </details>
+
           {selected === 0 && (
-            <a href="#cashier-workflow" className="text-link">View my internship contribution</a>
+            <a href="#cashier-workflow" className="text-link experience-case-link">
+              View my internship contribution
+            </a>
           )}
         </div>
       </div>
