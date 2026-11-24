@@ -177,27 +177,24 @@ function ExperienceTimeline() {
             </section>
           </div>
 
-          <details className="experience-full-details" key={experience.position}>
-            <summary>
-              <span>Read full responsibilities</span>
-              <ChevronDown size={18} aria-hidden="true" />
-            </summary>
-            <div className="experience-full-content">
-              <ul>{experience.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
-              {selected === 2 && (
-                <div className="monitoring-block">
-                  <h3>What I monitor</h3>
-                  <p>Using company-provided tracking templates.</p>
-                  <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
-                    {item => <div className="monitoring-content">
-                      <p>{item.text}</p>
-                      <p><strong>Records involved:</strong> {item.record}</p>
-                    </div>}
-                  </Tabs>
-                </div>
-              )}
-            </div>
-          </details>
+          {selected === 2 && (
+            <details className="experience-monitoring-details">
+              <summary>
+                <span>Explore what I monitor</span>
+                <ChevronDown size={18} aria-hidden="true" />
+              </summary>
+              <div className="monitoring-block">
+                <h3>What I monitor</h3>
+                <p>Using company-provided tracking templates.</p>
+                <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
+                  {item => <div className="monitoring-content">
+                    <p>{item.text}</p>
+                    <p><strong>Records involved:</strong> {item.record}</p>
+                  </div>}
+                </Tabs>
+              </div>
+            </details>
+          )}
 
           {selected === 0 && (
             <a href="#cashier-workflow" className="text-link experience-case-link">

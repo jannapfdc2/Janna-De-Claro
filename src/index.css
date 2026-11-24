@@ -1142,11 +1142,11 @@ details[open] > summary > svg { transform: rotate(45deg); }
   margin-top: 3px;
   color: var(--gold);
 }
-.experience-full-details {
+.experience-monitoring-details {
+  padding: 12px 0 0;
   border-top: 1px solid var(--line);
-  padding: 13px 0 0;
 }
-.experience-full-details > summary {
+.experience-monitoring-details > summary {
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -1159,32 +1159,17 @@ details[open] > summary > svg { transform: rotate(45deg); }
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-.experience-full-details > summary::-webkit-details-marker { display: none; }
-.experience-full-details > summary svg {
-  transition: transform 180ms ease;
+.experience-monitoring-details > summary::-webkit-details-marker { display: none; }
+.experience-monitoring-details > summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
 }
-.experience-full-details[open] > summary svg { transform: rotate(180deg); }
-.experience-full-content {
-  padding: 15px 0 8px;
-}
-.experience-full-content > ul {
-  columns: 2;
-  column-gap: clamp(30px, 4vw, 65px);
-  margin: 0 0 23px;
-  padding-left: 20px;
-  color: var(--muted);
-}
-.experience-full-content > ul > li {
-  break-inside: avoid;
-  margin: 0 0 10px;
-  line-height: 1.65;
-}
+.experience-monitoring-details > summary svg { transition: transform 180ms ease; }
+.experience-monitoring-details[open] > summary svg { transform: rotate(180deg); }
+.experience-monitoring-details .monitoring-block { margin-top: 15px; }
 .experience-case-link {
   display: inline-flex;
   margin-top: 17px;
-}
-@media (max-width: 800px) {
-  .experience-full-content > ul { columns: 1; }
 }
 @media (max-width: 600px) {
   .experience-highlights {
@@ -1196,5 +1181,5 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .experience-output-list li { padding: 7px 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .experience-full-details > summary svg { transition: none; }
+  .experience-monitoring-details > summary svg { transition: none; }
 }
