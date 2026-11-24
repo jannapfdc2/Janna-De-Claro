@@ -1,20 +1,33 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Janna Patricia De Claro — Portfolio
 
-# Run and deploy your AI Studio app
+An interactive portfolio for an Industrial Engineering graduate with experience in project coordination, process documentation, administrative support, and bookkeeping.
 
-This contains everything you need to run your app locally.
+## Run locally
 
-View your app in AI Studio: https://ai.studio/apps/233c738d-383e-4c81-82ed-994245d7a72b
+- Install dependencies: `npm install`
+- Start the development server: `npm run dev`
+- Check TypeScript: `npm run lint`
+- Build for production: `npm run build`
 
-## Run Locally
+Built with React, TypeScript, Vite, Tailwind CSS, and Lucide icons. The existing package manifest and entry point are retained.
 
-**Prerequisites:**  Node.js
+## Experience
 
+Soft ivory, navy, and champagne-gold styling, editorial typography, and restrained motion inspired by the supplied visual reference. The site includes:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- Service tabs with scope and links to relevant experience.
+- Suweco Energy Portal (a proposed company system) and Solar Solutions (a personal project developed with Claude AI assistance). Each card has a concise introduction and a link to its own walkthrough. Click a live website preview to open an interactive dialog, then choose **View full website** to open the original site in a new tab. Previews unload offscreen; dialogs support close, Escape, backdrop dismissal, and focus restoration. Suweco's monitoring workspace requires sign-in; the portfolio does not claim company adoption or measured operational improvements.
+- An internship contribution explaining the cashier-workflow flowchart, process mapping, role handoffs, and its purpose as a reference for standardized procedures and future work instructions. The gallery includes four page images and a PDF link; publication of company materials requires explicit approval.
+- Four-step project walkthroughs follow normal page scrolling in both directions: Suweco covers the existing setup, coordination needs, proposed modules, and intended value; Solar Solutions covers personal exploration, the 3D solar guide, guided assessment, and IE thinking. A sticky desktop diagram follows the active story; mobile and short screens show each diagram inline. Step labels are keyboard-accessible anchor shortcuts, with a current-step indicator. All stories remain readable without clicking through panels. Content distinguishes proposals and personal work from measured outcomes.
+- Expandable professional roles, with procurement, budget, and delivery monitoring described as use of company-provided templates.
+- A five-step proposed client approach covering what Janna does, what the client provides, and the expected deliverable at each stage.
+- Text-only About Me, original skill groups, education and certification, academic research themes, and an invitation to volunteer opportunities.
+- A topic-based inquiry form that opens an email draft for the visitor to review and send. No messages are sent by the site and no backend stores form contents.
+
+## Content maintenance
+
+Editable portfolio content and walkthrough stories live in `src/portfolioData.ts`. Page composition lives in `src/App.tsx`, website previews in `src/ProjectPreview.tsx`, the shared walkthrough component in `src/ProjectWalkthrough.tsx`, and styles in `src/index.css`. The flowchart gallery lives in `src/InternshipFlowchart.tsx`, with assets in `public/internship/`. Legacy project screenshots remain in `public/projects/` and are no longer displayed.
+
+Tabs support Left/Right/Home/End navigation. Reduced-motion preferences are respected. The page includes visible keyboard focus, a skip link, accessible labels, native disclosure controls, and responsive layouts.
+
+Only add a resume download after a real public PDF is supplied. The current portfolio states that a resume is available upon request. Keep project status, dates, claims, and contact details aligned with the owner's confirmed information.
