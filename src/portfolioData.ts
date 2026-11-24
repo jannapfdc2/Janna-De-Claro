@@ -3,7 +3,7 @@ import { ClipboardList, BriefcaseBusiness, Workflow, Monitor, LayoutDashboard, S
 export const experiences = [
   {
     position: 'Project Coordinator',
-    roleSummary: 'Coordinate project activities, requests, and updates across teams.',
+    roleSummary: 'I coordinate project schedules, deliverables, and day-to-day updates with site teams and internal departments. My role includes following up on procurement requests, material deliveries, payment status, and document approvals to keep project information organized. I also update company-provided trackers and prepare meeting minutes, weekly reports, and presentations to support team coordination.',
     keyResponsibilities: [
       'Project schedules and stakeholder updates',
       'Procurement, delivery, and payment follow-ups',
@@ -27,7 +27,7 @@ export const experiences = [
   },
   {
     position: 'Bookkeeper',
-    roleSummary: 'Maintain organized financial records for client review.',
+    roleSummary: 'As a part-time bookkeeper, I organized client financial records by categorizing transactions and expenses. I used QuickBooks for basic bookkeeping and maintained clear supporting documentation for review. This role strengthened my attention to detail and my approach to consistent recordkeeping.',
     keyResponsibilities: [
       'Categorize client transactions and expenses',
       'Maintain QuickBooks bookkeeping records',
@@ -46,7 +46,7 @@ export const experiences = [
   },
   {
     position: 'Business Process Analyst Intern',
-    roleSummary: 'Analyze and document the existing cashier-management workflow.',
+    roleSummary: 'During my internship, I analyzed the existing cashier-management workflow to understand how tasks and records moved between staff. I mapped activities, verification points, responsibilities, and discrepancy-handling steps into a four-page process flowchart. The documentation provided a structured reference for workflow review and could support future standardized procedures and work instructions.',
     keyResponsibilities: [
       'Review encoding, verification, and remittance',
       'Map staff roles and process handoffs',
