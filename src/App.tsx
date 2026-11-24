@@ -59,151 +59,222 @@ const timelineTitles = ['Process Analyst Intern', 'Bookkeeper', 'Project Coordin
 const timelineIcons = [Workflow, Calculator, BriefcaseBusiness];
 
 function ExperienceTimeline() {
-  const milestoneButtons = useRef<Array<HTMLButtonElement | null>>([]);
-  const [selected, setSelected] = useState(() => {
-    const hash = typeof window === 'undefined' ? '' : window.location.hash.slice(1);
-    const found = timelineIds.indexOf(hash);
-    return found >= 0 ? found : timelineEntries.length - 1;
-  });
+  const disclosureRef = useRef<HTMLDetailsElement>(null);
+  const railRef = useRef<HTMLOListElement>(null);
+  const stepRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const [expanded, setExpanded] = useState(false);
+  const [active, setActive] = useState(0);
+  const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 800px)').matches);
 
   useEffect(() => {
-    const onHashChange = () => {
-      const found = timelineIds.indexOf(window.location.hash.slice(1));
-      if (found >= 0) setSelected(found);
-    };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    const media = window.matchMedia('(max-width: 800px)');
+    const update = () => setCompact(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
   }, []);
 
-  function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    let next = index;
-    if (event.key === 'ArrowRight') next = (index + 1) % timelineEntries.length;
-    else if (event.key === 'ArrowLeft') next = (index - 1 + timelineEntries.length) % timelineEntries.length;
-    else if (event.key === 'Home') next = 0;
-    else if (event.key === 'End') next = timelineEntries.length - 1;
-    else return;
-    event.preventDefault();
-    setSelected(next);
-    milestoneButtons.current[next]?.focus();
+  useEffect(() => {
+    // Preserve existing links to individual experience entries.
+    function followHash() {
+      const found = timelineIds.indexOf(window.location.hash.slice(1));
+      if (found < 0) return;
+      disclosureRef.current?.setAttribute('open', '');
+      setExpanded(true);
+      setActive(found);
+      window.requestAnimationFrame(() => {
+        stepRefs.current[found]?.scrollIntoView({
+          block: compact ? 'nearest' : 'center',
+          inline: 'center',
+          behavior: 'instant',
+        });
+      });
+    }
+    window.addEventListener('hashchange', followHash);
+    if (timelineIds.includes(window.location.hash.slice(1))) followHash();
+    return () => window.removeEventListener('hashchange', followHash);
+  }, [compact]);
+
+  useEffect(() => {
+    if (!expanded) return;
+    let frame: number | null = null;
+    const rail = railRef.current;
+    if (!rail) return;
+
+    // The page scroll drives desktop milestones; swiping the horizontal rail
+    // drives mobile milestones. Neither uses autoplay or forced scroll-jacking.
+    const measure = () => {
+      frame = null;
+      const readingLine = compact
+        ? rail.getBoundingClientRect().left + rail.clientWidth / 2
+        : window.innerHeight * 0.52;
+      let next = 0;
+      let closest = Number.POSITIVE_INFINITY;
+      stepRefs.current.forEach((step, index) => {
+        if (!step) return;
+        const rect = step.getBoundingClientRect();
+        const midpoint = compact ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
+        const distance = Math.abs(midpoint - readingLine);
+        if (distance < closest) {
+          closest = distance;
+          next = index;
+        }
+      });
+      setActive(current => current === next ? current : next);
+    };
+
+    const schedule = () => {
+      if (frame === null) frame = window.requestAnimationFrame(measure);
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    rail.addEventListener('scroll', schedule, { passive: true });
+    schedule();
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      rail.removeEventListener('scroll', schedule);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
+  }, [expanded, compact]);
+
+  function chooseStep(index: number) {
+    setActive(index);
+    const step = stepRefs.current[index];
+    if (!step) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (compact && railRef.current) {
+      const rail = railRef.current;
+      const left = step.offsetLeft - rail.offsetLeft - (rail.clientWidth - step.clientWidth) / 2;
+      rail.scrollTo({ left, behavior: reduced ? 'instant' : 'smooth' });
+    } else {
+      step.scrollIntoView({ block: 'center', behavior: reduced ? 'instant' : 'smooth' });
+    }
   }
 
-  const experience = timelineEntries[selected];
+  const experience = timelineEntries[active];
 
   return (
-    <div className="experience-timeline-section">
-      <p className="experience-timeline-hint">
-        <MousePointerClick size={17} aria-hidden="true" />
-        Select a milestone to view the details
-      </p>
-      <div className="experience-timeline" role="tablist" aria-label="Career milestones">
-        {timelineEntries.map((item, index) => {
-          const Icon = timelineIcons[index];
-          const current = selected === index;
-          return (
-            <button
-              key={item.position}
-              id={timelineIds[index]}
-              ref={element => { milestoneButtons.current[index] = element; }}
-              type="button"
-              role="tab"
-              aria-selected={current}
-              aria-controls="experience-detail-panel"
-              tabIndex={current ? 0 : -1}
-              className={'experience-milestone' + (current ? ' is-active' : '')}
-              onClick={() => setSelected(index)}
-              onKeyDown={event => navigate(event, index)}
-            >
-              <span className="experience-hex-outline" aria-hidden="true">
-                <span className="experience-hex-inner">
-                  <Icon size={28} strokeWidth={1.8} />
-                </span>
-              </span>
-              <span className="experience-milestone-stem" aria-hidden="true" />
-              <span className="experience-year-ribbon">{timelineYears[index]}</span>
-              <span className="experience-milestone-role">{timelineTitles[index]}</span>
-              <span className="experience-milestone-org">{item.organization}</span>
-              <span className="experience-milestone-action">
-                {current ? 'Viewing details' : 'View details'}
-                {current ? <Check size={15} aria-hidden="true" /> : <Plus size={15} aria-hidden="true" />}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      <div
-        className="experience-detail-panel"
-        id="experience-detail-panel"
-        role="tabpanel"
-        aria-labelledby={timelineIds[selected]}
-        tabIndex={0}
-      >
-        <div className="experience-detail-heading">
-          <div>
-            <p className="experience-type">{experience.type}</p>
-            <h3>{experience.position}</h3>
-            <p className="experience-detail-org">{experience.organization}</p>
-          </div>
-          <span className="experience-detail-period">{experience.period}</span>
+    <details
+      className="experience-explorer"
+      ref={disclosureRef}
+      onToggle={event => setExpanded(event.currentTarget.open)}
+    >
+      <summary className="experience-explorer-toggle">
+        <span className="experience-explorer-intro">
+          <span className="experience-explorer-kicker">03 CAREER MILESTONES</span>
+          <strong>Explore my experience</strong>
+          <span>From process mapping to bookkeeping and project coordination</span>
+        </span>
+        <span className="experience-explorer-action">
+          {expanded ? 'Close walkthrough' : 'Explore walkthrough'}
+          <ChevronDown size={19} aria-hidden="true" />
+        </span>
+      </summary>
+
+      <div className="experience-explorer-content">
+        <div className="experience-explorer-status">
+          <span>Scroll to explore</span>
+          <span>Step {String(active + 1).padStart(2, '0')} of 03</span>
         </div>
-        <div className="experience-body">
-          <div className="experience-role-overview">
-            <h4><BriefcaseBusiness size={18} aria-hidden="true" /> My Role</h4>
-            <p>{experience.roleSummary}</p>
-          </div>
 
-          <div className="experience-highlights">
-            <section aria-labelledby="experience-responsibilities-label">
-              <h4 id="experience-responsibilities-label">
-                <ClipboardList size={18} aria-hidden="true" /> Key Responsibilities
-              </h4>
-              <ul className="experience-short-list">
-                {experience.keyResponsibilities.map((item, index) => (
-                  <li key={item}>
-                    <span className="experience-short-number">{String(index + 1).padStart(2, '0')}</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-            <section aria-labelledby="experience-contributions-label">
-              <h4 id="experience-contributions-label">
-                <Check size={18} aria-hidden="true" /> Contributions & Output
-              </h4>
-              <ul className="experience-output-list">
-                {experience.outputs.map(item => (
-                  <li key={item}><Check size={16} aria-hidden="true" /><span>{item}</span></li>
-                ))}
-              </ul>
-            </section>
-          </div>
-
-          {selected === 2 && (
-            <details className="experience-monitoring-details">
-              <summary>
-                <span>Explore what I monitor</span>
-                <ChevronDown size={18} aria-hidden="true" />
-              </summary>
-              <div className="monitoring-block">
-                <h3>What I monitor</h3>
-                <p>Using company-provided tracking templates.</p>
-                <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
-                  {item => <div className="monitoring-content">
-                    <p>{item.text}</p>
-                    <p><strong>Records involved:</strong> {item.record}</p>
-                  </div>}
-                </Tabs>
+        <div className="experience-explorer-layout">
+          <div className="experience-explorer-spotlight" id="experience-walkthrough-panel">
+            <div className="experience-detail-heading">
+              <div>
+                <p className="experience-type">{experience.type}</p>
+                <h3>{experience.position}</h3>
+                <p className="experience-detail-org">{experience.organization}</p>
               </div>
-            </details>
-          )}
+              <span className="experience-detail-period">{experience.period}</span>
+            </div>
+            <div className="experience-body">
+              <div className="experience-role-overview">
+                <h4><BriefcaseBusiness size={18} aria-hidden="true" /> My Role</h4>
+                <p>{experience.roleSummary}</p>
+              </div>
+              <div className="experience-highlights">
+                <section aria-label="Key responsibilities">
+                  <h4><ClipboardList size={18} aria-hidden="true" /> Key Responsibilities</h4>
+                  <ul className="experience-short-list">
+                    {experience.keyResponsibilities.map((item, index) => (
+                      <li key={item}>
+                        <span className="experience-short-number">{String(index + 1).padStart(2, '0')}</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+                <section aria-label="Contributions and output">
+                  <h4><Check size={18} aria-hidden="true" /> Contributions &amp; Output</h4>
+                  <ul className="experience-output-list">
+                    {experience.outputs.map(item => (
+                      <li key={item}><Check size={16} aria-hidden="true" /><span>{item}</span></li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
 
-          {selected === 0 && (
-            <a href="#cashier-workflow" className="text-link experience-case-link">
-              View my internship contribution
-            </a>
-          )}
+              {active === 2 && (
+                <details className="experience-monitoring-details">
+                  <summary>
+                    <span>Explore what I monitor</span>
+                    <ChevronDown size={18} aria-hidden="true" />
+                  </summary>
+                  <div className="monitoring-block">
+                    <h3>What I monitor</h3>
+                    <p>Using company-provided tracking templates.</p>
+                    <Tabs id="monitoring" label="Monitoring responsibilities" items={monitoring}>
+                      {item => <div className="monitoring-content">
+                        <p>{item.text}</p>
+                        <p><strong>Records involved:</strong> {item.record}</p>
+                      </div>}
+                    </Tabs>
+                  </div>
+                </details>
+              )}
+              {active === 0 && (
+                <a href="#cashier-workflow" className="text-link experience-case-link">
+                  View my internship contribution
+                </a>
+              )}
+            </div>
+          </div>
+
+          <ol ref={railRef} className="experience-explorer-rail" aria-label="Career milestones">
+            {timelineEntries.map((item, index) => {
+              const Icon = timelineIcons[index];
+              return (
+                <li
+                  key={item.position}
+                  id={timelineIds[index]}
+                  ref={node => { stepRefs.current[index] = node; }}
+                  className={active === index ? 'is-active' : ''}
+                >
+                  <button
+                    type="button"
+                    className="experience-explorer-step"
+                    onClick={() => chooseStep(index)}
+                    aria-current={active === index ? 'step' : undefined}
+                    aria-controls="experience-walkthrough-panel"
+                  >
+                    <span className="experience-explorer-hex" aria-hidden="true"><Icon size={22} /></span>
+                    <span className="experience-explorer-step-copy">
+                      <span className="experience-explorer-date">{timelineYears[index]}</span>
+                      <strong>{timelineTitles[index]}</strong>
+                      <span>{item.organization}</span>
+                    </span>
+                    <span className="experience-explorer-step-index" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
-    </div>
+    </details>
   );
 }
 
@@ -426,7 +497,7 @@ export default function App() {
       <section id="experience" className="section experience-section">
         <div className="container">
           <SectionTitle label="My experience" title="Bringing structure to everyday work.">
-            Process mapping, bookkeeping, and project coordination—different roles, one structured approach.
+            Three roles, one structured approach.
           </SectionTitle>
           <ExperienceTimeline />
         </div>

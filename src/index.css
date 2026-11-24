@@ -1183,3 +1183,217 @@ details[open] > summary > svg { transform: rotate(45deg); }
 @media (prefers-reduced-motion: reduce) {
   .experience-monitoring-details > summary svg { transition: none; }
 }
+
+
+/* Compact expandable experience walkthrough: remains short until explored. */
+.experience-explorer {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 110px;
+}
+.experience-explorer > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.experience-explorer > summary::-webkit-details-marker { display: none; }
+.experience-explorer-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(16px, 4vw, 45px);
+  min-height: 114px;
+  padding: 22px 2px;
+  color: var(--navy);
+}
+.experience-explorer-toggle:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+.experience-explorer-intro { display: grid; gap: 5px; min-width: 0; }
+.experience-explorer-kicker {
+  color: var(--gold);
+  font-size: .71rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+.experience-explorer-intro strong {
+  font: 500 clamp(1.3rem, 2.5vw, 1.9rem)/1.3 var(--font-serif);
+}
+.experience-explorer-intro > span:last-child {
+  font-size: .87rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.experience-explorer-action {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 10px;
+  color: var(--gold);
+  font-size: .86rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.experience-explorer-action svg { transition: transform 180ms ease; }
+.experience-explorer[open] .experience-explorer-action svg { transform: rotate(180deg); }
+.experience-explorer-content { padding: 9px 0 24px; }
+.experience-explorer-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .78rem;
+}
+.experience-explorer-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, .72fr);
+  gap: clamp(25px, 4vw, 55px);
+  align-items: start;
+}
+.experience-explorer-spotlight {
+  position: sticky;
+  top: 94px;
+  min-width: 0;
+  align-self: start;
+  padding: 28px 0 18px;
+}
+.experience-explorer-spotlight .experience-detail-heading {
+  margin-bottom: 18px;
+}
+.experience-explorer-spotlight .experience-detail-heading h3 {
+  font-size: clamp(1.3rem, 2.5vw, 1.85rem);
+}
+.experience-explorer-spotlight .experience-role-overview {
+  margin-bottom: 15px;
+}
+.experience-explorer-spotlight .experience-role-overview p {
+  font-size: .87rem;
+  line-height: 1.55;
+}
+.experience-explorer-spotlight .experience-highlights {
+  gap: 22px;
+  padding: 15px 0 12px;
+}
+.experience-explorer-spotlight .experience-short-list li,
+.experience-explorer-spotlight .experience-output-list li {
+  padding: 5px 0;
+  font-size: .81rem;
+  line-height: 1.5;
+}
+.experience-explorer-spotlight .experience-highlights h4,
+.experience-explorer-spotlight .experience-role-overview h4 { font-size: .88rem; }
+.experience-explorer-rail {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.experience-explorer-rail > li {
+  display: block;
+  margin: 0;
+  min-height: clamp(190px, 27vh, 240px);
+  padding: 18px 0 18px 17px;
+  border-left: 2px solid #d4cfbf;
+  opacity: .64;
+  transition: opacity 180ms ease, border-color 180ms ease;
+  scroll-margin-top: 115px;
+}
+.experience-explorer-rail > li.is-active {
+  opacity: 1;
+  border-left-color: var(--gold);
+}
+.experience-explorer-step {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 13px;
+  border: 0;
+  padding: 10px 4px;
+  background: transparent;
+  color: var(--navy);
+  text-align: left;
+  cursor: pointer;
+}
+.experience-explorer-step:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.experience-explorer-hex {
+  display: grid;
+  place-items: center;
+  flex: 0 0 51px;
+  width: 51px;
+  height: 56px;
+  border: 2px solid #b3bcc8;
+  border-radius: 13px;
+  color: var(--navy);
+  transition: border-color 180ms ease, background 180ms ease;
+}
+.is-active .experience-explorer-hex {
+  border-color: var(--gold);
+  background: #f1e8d8;
+  color: #956b33;
+}
+.experience-explorer-step-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+.experience-explorer-step-copy strong { font-size: .93rem; line-height: 1.4; }
+.experience-explorer-step-copy > span:last-child {
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.35;
+}
+.experience-explorer-date { color: var(--gold); font-size: .75rem; font-weight: 700; }
+.experience-explorer-step-index {
+  color: var(--gold);
+  font-size: .75rem;
+  font-weight: 700;
+}
+@media (max-width: 800px) {
+  .experience-explorer-layout { display: flex; flex-direction: column; gap: 0; }
+  .experience-explorer-rail {
+    display: flex;
+    order: -1;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    padding: 12px 0;
+    gap: 10px;
+  }
+  .experience-explorer-rail > li {
+    flex: 0 0 min(260px, 75vw);
+    min-height: 0;
+    border-left: 0;
+    border-bottom: 2px solid #d4cfbf;
+    padding: 3px;
+    scroll-snap-align: center;
+  }
+  .experience-explorer-rail > li.is-active { border-bottom-color: var(--gold); }
+  .experience-explorer-spotlight {
+    position: static;
+    padding: 20px 0 6px;
+    width: 100%;
+  }
+  .experience-explorer-step { gap: 10px; }
+  .experience-explorer-spotlight .experience-highlights { gap: 25px; }
+}
+@media (max-width: 540px) {
+  .experience-explorer-toggle { align-items: flex-start; flex-direction: column; min-height: 0; gap: 13px; }
+  .experience-explorer-intro > span:last-child { font-size: .8rem; }
+  .experience-explorer-action { font-size: .82rem; }
+  .experience-explorer-status { font-size: .72rem; }
+  .experience-explorer-spotlight .experience-detail-heading { gap: 8px 16px; }
+  .experience-explorer-spotlight .experience-detail-period { white-space: normal; }
+  .experience-explorer-spotlight .experience-highlights { gap: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .experience-explorer-action svg,
+  .experience-explorer-rail > li,
+  .experience-explorer-hex { transition: none !important; }
+}
