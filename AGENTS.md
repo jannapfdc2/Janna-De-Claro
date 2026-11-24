@@ -7,9 +7,11 @@ Janna De Claro's single-page professional portfolio uses React 19, TypeScript 5.
 ## Project structure
 
 - `src/main.tsx`: StrictMode entry and global CSS import.
-- `src/App.tsx`: navigation, reusable Tabs/SectionTitle, hero, services, projects, InternshipContribution (`#cashier-workflow`), experience, approach, about, skills, education/research, contact, and project-story tabs.
+- `src/App.tsx`: navigation, reusable Tabs/SectionTitle, hero, services, projects, InternshipContribution (`#cashier-workflow`), experience, approach, about, skills, education/research, and contact.
 - `src/portfolioData.ts`: experience, services, skills, project metadata, monitoring, client steps, research, and inquiry topics.
 - `src/ProjectPreview.tsx`: clickable live previews, accessible expanded dialogs, and full-website links; offscreen previews unload.
+- `src/ProjectWalkthrough.tsx`: shared Suweco/Solar scroll stories; content in `portfolioData.ts`, sticky desktop diagram, inline mobile diagrams, and anchor shortcuts. Keep project cards concise and intended benefits distinct from measured results.
+- `src/AnimatedWorkflow.tsx`: scroll-driven five-stage IE methodology illustration.
 - `src/InternshipFlowchart.tsx`: four-page native dialog gallery, wrapping Previous/Next buttons, arrow-key navigation, dismissal, and PDF link.
 - `src/index.css`: theme tokens, semantic classes, responsive layouts, motion, and gallery styles.
 - `public/projects/`: legacy screenshots. `public/internship/`: four `cashier-workflow-page-N.png` images and `cashier-management-workflow.pdf`, opened in a new tab.
@@ -31,7 +33,7 @@ Start from this map; use targeted `rg` searches and relevant file ranges. Exclud
 
 ## Testing
 
-`npm run lint` runs TypeScript checking, not ESLint. Use it for TS/TSX changes; run `npm run build` for integration changes. No test script exists. `npm run dev` serves port 3000. For UI changes, check affected interactions, mobile layout, and keyboard access; gallery changes need pagination, dismissal, and PDF-link checks. Documentation-only edits need content/diff review.
+`npm run lint` runs TypeScript checking, not ESLint. Use it for TS/TSX changes; run `npm run build` for integration changes. No test script exists. `npm run dev` serves port 3000. For UI changes, check affected interactions, mobile layout, and keyboard access; walkthrough changes need scroll in both directions and anchor checks; gallery changes need pagination, dismissal, and PDF-link checks. Documentation-only edits need content/diff review.
 
 ## Git safety
 

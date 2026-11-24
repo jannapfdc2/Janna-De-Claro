@@ -1,10 +1,11 @@
 import InternshipFlowchart from './InternshipFlowchart';
 import AnimatedWorkflow from './AnimatedWorkflow';
 import ProjectPreview from './ProjectPreview';
+import ProjectWalkthrough from './ProjectWalkthrough';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode, KeyboardEvent, FormEvent } from 'react';
 import { ChevronDown, ClipboardList, Copy, FileText, Github, GraduationCap, Mail, MapPin, Maximize2, Menu, Phone, Plus, Workflow, Calculator, BriefcaseBusiness, Check, MousePointerClick, X } from 'lucide-react';
-import { clientSteps, experiences, inquiryTopics, monitoring, research, sampleProjects, services, skillGroups } from './portfolioData';
+import { clientSteps, experiences, inquiryTopics, monitoring, projectWalkthroughs, research, sampleProjects, services, skillGroups } from './portfolioData';
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -413,11 +414,13 @@ export default function App() {
             <div className="project-heading"><p>{project.category}</p><span>{project.status}</span></div>
             <h3 id={`${project.id}-title`}>{project.title}</h3>
             <p className="project-description">{project.description}</p>
-            <Tabs id={project.id} label={`${project.title} project story`} items={project.stories}>{story => <div className="project-story"><h4>{story.title}</h4><p>{story.text}</p></div>}</Tabs>
             <div className="skill-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
             <p className="project-demo-note">{project.demoNote}</p>
+            <a className="text-link project-walkthrough-link" href={`#${project.walkthroughId}`}>{project.walkthroughLabel}</a>
           </article>;
         })}</div>
+        <ProjectWalkthrough walkthrough={projectWalkthroughs[0]} />
+        <ProjectWalkthrough walkthrough={projectWalkthroughs[1]} />
         <div className="exploration-note"><span>What connects the work</span><p>I use my Industrial Engineering background to think through processes, organize information, and explore digital tools that make the next step clearer.</p></div>
       </div></section>
 
