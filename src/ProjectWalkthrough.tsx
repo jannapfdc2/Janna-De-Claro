@@ -1,16 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
+import { ChevronDown, X } from 'lucide-react';
 import type { projectWalkthroughs } from './portfolioData';
 
 type ProjectWalkthroughProps = { walkthrough: (typeof projectWalkthroughs)[number] };
 
 export default function ProjectWalkthrough({ walkthrough }: ProjectWalkthroughProps) {
   const [active, setActive] = useState(0);
+  const [expanded, setExpanded] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = window.location.hash.slice(1);
+    return hash === walkthrough.id || hash.startsWith(`${walkthrough.id}-scene-`);
+  });
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const rootRef = useRef<HTMLElement>(null);
   const navigationRef = useRef<HTMLElement>(null);
   const storyRefs = useRef<Array<HTMLElement | null>>([]);
   const { id, steps, icon: Icon } = walkthrough;
 
   useEffect(() => {
+    // Project card links still open the appropriate walkthrough automatically.
+    const followProjectLink = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash === id || hash.startsWith(`${id}-scene-`)) setExpanded(true);
+    };
+    window.addEventListener('hashchange', followProjectLink);
+    followProjectLink();
+    return () => window.removeEventListener('hashchange', followProjectLink);
+  }, [id]);
+
+  function closeWalkthrough() {
+    // Avoid leaving visitors partway down a section that is about to shrink.
+    rootRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    setExpanded(false);
+    toggleRef.current?.focus({ preventScroll: true });
+  }
+
+  useEffect(() => {
+    if (!expanded) return;
     let frame: number | null = null;
     const navigation = navigationRef.current;
     const root = rootRef.current;
@@ -44,7 +70,7 @@ export default function ProjectWalkthrough({ walkthrough }: ProjectWalkthroughPr
       window.removeEventListener('resize', schedule);
       if (frame !== null) window.cancelAnimationFrame(frame);
     };
-  }, [steps]);
+  }, [steps, expanded]);
 
   function renderFigure(step: typeof steps[number], inline = false) {
     return <figure className={`walkthrough-figure${inline ? ' walkthrough-inline-figure' : ''}`}>
@@ -62,7 +88,7 @@ export default function ProjectWalkthrough({ walkthrough }: ProjectWalkthroughPr
     </figure>;
   }
 
-  return <section className="project-walkthrough" id={id} ref={rootRef} aria-labelledby={`${id}-title`}>
+  return <section className={`project-walkthrough${expanded ? ' is-expanded' : ''}`} id={id} ref={rootRef} aria-labelledby={`${id}-title`}>
     <header className="project-walkthrough-heading">
       <div>
         <p className="section-label">{walkthrough.label}</p>
@@ -72,8 +98,27 @@ export default function ProjectWalkthrough({ walkthrough }: ProjectWalkthroughPr
       <span className="walkthrough-status">{walkthrough.status}</span>
     </header>
 
+    <button
+      type="button"
+      ref={toggleRef}
+      className="walkthrough-expand-button"
+      aria-expanded={expanded}
+      aria-controls={`${id}-content`}
+      onClick={() => expanded ? closeWalkthrough() : setExpanded(true)}
+    >
+      <span>{expanded ? 'Close walkthrough' : 'Explore interactive walkthrough'}</span>
+      <ChevronDown size={18} aria-hidden="true" />
+    </button>
+
+    <div className="walkthrough-expandable" id={`${id}-content`} hidden={!expanded}>
     <nav className="walkthrough-navigation" ref={navigationRef} aria-label={`${walkthrough.projectTitle} walkthrough steps`}>
-      <div className="walkthrough-scroll-hint"><span>Scroll to explore</span><span>Step {active + 1} of {steps.length}</span></div>
+      <div className="walkthrough-scroll-hint">
+        <span>Scroll to explore</span>
+        <span>Step {active + 1} of {steps.length}</span>
+        <button type="button" className="walkthrough-close-inline" onClick={closeWalkthrough}>
+          Close <X size={15} aria-hidden="true" />
+        </button>
+      </div>
       <ol className="walkthrough-step-list">
         {steps.map((step, index) => <li key={step.label}>
           <a href={`#${id}-scene-${index}`} aria-current={active === index ? 'step' : undefined}>
@@ -105,5 +150,6 @@ export default function ProjectWalkthrough({ walkthrough }: ProjectWalkthroughPr
     </div>
 
     <p className="walkthrough-scope-note">{walkthrough.scopeNote}</p>
+    </div>
   </section>;
 }
