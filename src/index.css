@@ -1191,11 +1191,16 @@ details[open] > summary > svg { transform: rotate(45deg); }
   border-bottom: 1px solid var(--line);
   scroll-margin-top: 110px;
 }
-.experience-explorer > summary {
-  list-style: none;
+/* A controlled button keeps the disclosure state reliable in React. */
+.experience-explorer > .experience-explorer-toggle {
+  display: flex;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
   cursor: pointer;
 }
-.experience-explorer > summary::-webkit-details-marker { display: none; }
 .experience-explorer-toggle {
   display: flex;
   justify-content: space-between;
@@ -1235,17 +1240,33 @@ details[open] > summary > svg { transform: rotate(45deg); }
   white-space: nowrap;
 }
 .experience-explorer-action svg { transition: transform 180ms ease; }
-.experience-explorer[open] .experience-explorer-action svg { transform: rotate(180deg); }
+.experience-explorer.is-open .experience-explorer-action svg { transform: rotate(180deg); }
 .experience-explorer-content { padding: 9px 0 24px; }
+.experience-explorer-content[hidden] { display: none !important; }
 .experience-explorer-status {
   display: flex;
   justify-content: space-between;
-  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 18px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--line);
   color: var(--muted);
   font-size: .78rem;
 }
+.experience-explorer-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 0;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font-weight: 700;
+  cursor: pointer;
+}
+.experience-explorer-close:hover { text-decoration: underline; text-underline-offset: 3px; }
+.experience-explorer-close:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 .experience-explorer-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(260px, .72fr);

@@ -59,7 +59,7 @@ const timelineTitles = ['Process Analyst Intern', 'Bookkeeper', 'Project Coordin
 const timelineIcons = [Workflow, Calculator, BriefcaseBusiness];
 
 function ExperienceTimeline() {
-  const disclosureRef = useRef<HTMLDetailsElement>(null);
+  const disclosureToggleRef = useRef<HTMLButtonElement>(null);
   const railRef = useRef<HTMLOListElement>(null);
   const stepRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [expanded, setExpanded] = useState(false);
@@ -79,21 +79,27 @@ function ExperienceTimeline() {
     function followHash() {
       const found = timelineIds.indexOf(window.location.hash.slice(1));
       if (found < 0) return;
-      disclosureRef.current?.setAttribute('open', '');
       setExpanded(true);
       setActive(found);
-      window.requestAnimationFrame(() => {
-        stepRefs.current[found]?.scrollIntoView({
-          block: compact ? 'nearest' : 'center',
-          inline: 'center',
-          behavior: 'instant',
-        });
-      });
     }
     window.addEventListener('hashchange', followHash);
     if (timelineIds.includes(window.location.hash.slice(1))) followHash();
     return () => window.removeEventListener('hashchange', followHash);
-  }, [compact]);
+  }, []);
+
+  useEffect(() => {
+    if (!expanded) return;
+    const found = timelineIds.indexOf(window.location.hash.slice(1));
+    if (found < 0) return;
+    const frame = window.requestAnimationFrame(() => {
+      stepRefs.current[found]?.scrollIntoView({
+        block: compact ? 'nearest' : 'center',
+        inline: 'center',
+        behavior: 'instant',
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [expanded, compact]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -138,6 +144,13 @@ function ExperienceTimeline() {
     };
   }, [expanded, compact]);
 
+  function closeWalkthrough() {
+    // Bring the trigger back into view before reducing the document height.
+    disclosureToggleRef.current?.scrollIntoView({ behavior: 'instant', block: 'center' });
+    setExpanded(false);
+    disclosureToggleRef.current?.focus({ preventScroll: true });
+  }
+
   function chooseStep(index: number) {
     setActive(index);
     const step = stepRefs.current[index];
@@ -155,12 +168,15 @@ function ExperienceTimeline() {
   const experience = timelineEntries[active];
 
   return (
-    <details
-      className="experience-explorer"
-      ref={disclosureRef}
-      onToggle={event => setExpanded(event.currentTarget.open)}
-    >
-      <summary className="experience-explorer-toggle">
+    <div className={'experience-explorer' + (expanded ? ' is-open' : '')}>
+      <button
+        type="button"
+        className="experience-explorer-toggle"
+        ref={disclosureToggleRef}
+        aria-expanded={expanded}
+        aria-controls="experience-explorer-content"
+        onClick={() => setExpanded(value => !value)}
+      >
         <span className="experience-explorer-intro">
           <span className="experience-explorer-kicker">03 CAREER MILESTONES</span>
           <strong>Explore my experience</strong>
@@ -170,12 +186,14 @@ function ExperienceTimeline() {
           {expanded ? 'Close walkthrough' : 'Explore walkthrough'}
           <ChevronDown size={19} aria-hidden="true" />
         </span>
-      </summary>
+      </button>
 
-      <div className="experience-explorer-content">
+      <div className="experience-explorer-content" id="experience-explorer-content" hidden={!expanded}>
         <div className="experience-explorer-status">
-          <span>Scroll to explore</span>
-          <span>Step {String(active + 1).padStart(2, '0')} of 03</span>
+          <span>Scroll to explore · Step {String(active + 1).padStart(2, '0')} of 03</span>
+          <button type="button" className="experience-explorer-close" onClick={closeWalkthrough}>
+            Close walkthrough <X size={16} aria-hidden="true" />
+          </button>
         </div>
 
         <div className="experience-explorer-layout">
@@ -274,7 +292,7 @@ function ExperienceTimeline() {
           </ol>
         </div>
       </div>
-    </details>
+    </div>
   );
 }
 
